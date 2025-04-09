@@ -47,7 +47,7 @@ Multi-tenancy makes it possible to handle a variety of use cases, such as:
 
 ## Installation steps
 
-- Apply the multi-tenancy patch to Moodle™ codebase: [GitHub Repository](https://github.com/mutms/moodle/tree/patch/mutenancy/453)
+- Apply the multi-tenancy patch to Moodle™ codebase: [GitHub Repository](https://github.com/mutms/moodle/tree/patch/mutenancy/MOODLE_405_STABLE)
 - Install the `tool_mulib` plugin: [GitHub Plugin Page](https://github.com/mutms/mutms-tool_mulib)
 - Install the `tool_mutenancy` plugin: [GitHub Plugin Page](https://github.com/mutms/mutms-tool_mutenancy)
 - Install or upgrade the site

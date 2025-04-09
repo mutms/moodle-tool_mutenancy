@@ -77,6 +77,7 @@ Feature: Tenant appearance logos
     And I upload "admin/tool/mutenancy/tests/fixtures/logo_cyan.png" file to "Favicon" filemanager
     And I press "Save changes"
 
+    And I am on homepage
     And I log out
     And I log in as "manager"
 

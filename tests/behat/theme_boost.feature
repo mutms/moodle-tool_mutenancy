@@ -88,6 +88,7 @@ Feature: Tenant Boost theme settings
       | Brand colour | cyan       |
     And I press "Save changes"
 
+    And I am on homepage
     And I log out
     And I log in as "manager"
 
