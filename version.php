@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->component = 'tool_mutenancy';
 $plugin->version = 2025100645;
 $plugin->requires = 2024100705;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_BETA;
 $plugin->supported = [405, 405];
 $plugin->incompatible = 500;
 $plugin->release = 'mu-4.5.7-01+';
