@@ -77,26 +77,47 @@ final class tenant_switch extends \tool_mulib\local\ajax_form {
             $options[$mytenants][$k] = $v;
         }
 
-        $syscontext = \context_system::instance();
-        if (!has_capability('tool/mutenancy:view', $syscontext)) {
-            return $options;
-        }
-
         if (isset($options[$mytenants])) {
             $othertenants = get_string('tenant_switch_other', 'tool_mutenancy');
         } else {
             $othertenants = get_string('tenants', 'tool_mutenancy');
         }
 
-        $sql = "SELECT t.id, t.name
-                  FROM {tool_mutenancy_tenant} t
-             LEFT JOIN {cohort_members} cm ON cm.cohortid = t.assoccohortid AND cm.userid = :me
-                 WHERE t.archived = 0 AND cm.id IS NULL";
-        $tenants = $DB->get_records_sql_menu($sql, ['me' => $USER->id]);
+        // Cheat here a bit to make this faster,
+        // also keep this consistent with tenancy::can_switch().
+        $syscontext = \context_system::instance();
+
+        if (has_capability('tool/mutenancy:switch', $syscontext)) {
+            $sql = "SELECT t.id, t.name
+                      FROM {tool_mutenancy_tenant} t
+                 LEFT JOIN {cohort_members} cm ON cm.cohortid = t.assoccohortid AND cm.userid = :me
+                     WHERE t.archived = 0 AND cm.id IS NULL";
+            $params = ['me' => $USER->id];
+        } else {
+            [$needed, $forbidden] = get_roles_with_cap_in_context($syscontext, 'tool/mutenancy:switch');
+            if (!$needed) {
+                return $options;
+            }
+            $needed = implode(',', $needed);
+            $sql = "SELECT t.id, t.name
+                      FROM {role_assignments} ra
+                      JOIN {context} c ON c.id = ra.contextid AND c.contextlevel = :tenantlevel
+                      JOIN {tool_mutenancy_tenant} t ON t.id = c.instanceid AND t.archived = 0
+                 LEFT JOIN {cohort_members} cm ON cm.cohortid = t.assoccohortid AND cm.userid = ra.userid
+                     WHERE ra.userid = :me AND ra.roleid IN ($needed) AND cm.id IS NULL";
+            $params = ['tenantlevel' => \context_tenant::LEVEL, 'me' => $USER->id];
+        }
+
+        $tenants = $DB->get_records_sql_menu($sql, $params);
         $tenants = array_map('format_string', $tenants);
         \core_collator::asort($tenants);
-        foreach ($tenants as $k => $v) {
-            $options[$othertenants][$k] = $v;
+        foreach ($tenants as $tid => $tname) {
+            // Use real capability check here, no more guessing!
+            $tenantcontext = \context_tenant::instance($tid);
+            if (!has_capability('tool/mutenancy:switch', $tenantcontext)) {
+                continue;
+            }
+            $options[$othertenants][$tid] = $tname;
         }
 
         return $options;
