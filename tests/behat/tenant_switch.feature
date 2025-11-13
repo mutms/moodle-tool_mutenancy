@@ -40,7 +40,7 @@ Feature: Tenant switching
     And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
     Then I should see "Acceptance test site" in the ".navbar" "css_element"
 
-  Scenario: Tenant switcher may switch to associated tenants
+  Scenario: Tenant switcher may switch to tenants
     Given the following "roles" exist:
       | name            | shortname |
       | Tenant switcher | tswitcher |
@@ -52,12 +52,9 @@ Feature: Tenant switching
       | tswitcher | Tenant    | Switcher  | tswitcher@example.com |        |
     And the following "role assigns" exist:
       | user      | role          | contextlevel | reference |
-      | tswitcher | tswitcher     | System       |           |
-    And the following "cohort members" exist:
-      | user      | cohort  |
-      | tswitcher | cohort1 |
-      | tswitcher | cohort2 |
-      | tswitcher | cohort4 |
+      | tswitcher | tswitcher     | Tenant       | TEN1      |
+      | tswitcher | tswitcher     | Tenant       | TEN2      |
+      | tswitcher | tswitcher     | Tenant       | TEN4      |
     And I log in as "tswitcher"
     And I should see "Acceptance test site" in the ".navbar" "css_element"
 
@@ -79,21 +76,16 @@ Feature: Tenant switching
     And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
     Then I should see "Acceptance test site" in the ".navbar" "css_element"
 
-  Scenario: Tenant viewer may switch to any active tenant
-    Given the following "roles" exist:
-      | name          | shortname |
-      | Tenant viewer | tviewer   |
-    And the following "permission overrides" exist:
-      | capability                           | permission | role    | contextlevel | reference |
-      | tool/mutenancy:switch                | Allow      | tviewer | System       |           |
-      | tool/mutenancy:view                  | Allow      | tviewer | System       |           |
+  Scenario: Associated users may switch to tenants
     And the following "users" exist:
-      | username  | firstname | lastname  | email               | tenant |
-      | tviewer   | Tenant    | Viewer    | tviewer@example.com |        |
-    And the following "role assigns" exist:
-      | user    | role        | contextlevel | reference |
-      | tviewer | tviewer     | System       |           |
-    And I log in as "tviewer"
+      | username  | firstname | lastname  | email                 | tenant |
+      | tswitcher | Tenant    | Switcher  | tswitcher@example.com |        |
+    And the following "cohort members" exist:
+      | user      | cohort  |
+      | tswitcher | cohort1 |
+      | tswitcher | cohort2 |
+      | tswitcher | cohort4 |
+    And I log in as "tswitcher"
     And I should see "Acceptance test site" in the ".navbar" "css_element"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
@@ -107,12 +99,6 @@ Feature: Tenant switching
       | Tenant      | Tenant 2         |
     And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
     Then I should see "TSS2" in the ".navbar" "css_element"
-
-    When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
-      | Tenant      | Tenant 3         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
-    Then I should see "TSS3" in the ".navbar" "css_element"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
     And I set the following fields to these values:

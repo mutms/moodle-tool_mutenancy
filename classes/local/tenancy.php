@@ -198,12 +198,14 @@ final class tenancy {
     }
 
     /**
-     * Can current user switch tenants?
+     * Can current user see the tenant switching widget?
+     *
+     * NOTE: this information is cached and may not be always accurate.
      *
      * @return bool
      */
     public static function can_switch(): bool {
-        global $DB, $USER;
+        global $DB, $USER, $SESSION;
 
         if (!self::is_active()) {
             return false;
@@ -213,16 +215,17 @@ final class tenancy {
             return false;
         }
 
-        $syscontext = \context_system::instance();
-        if (!has_capability('tool/mutenancy:switch', $syscontext)) {
-            return false;
-        }
-
         if (self::get_user_tenantid($USER->id)) {
             return false;
         }
 
-        if (has_capability('tool/mutenancy:view', $syscontext)) {
+        $syscontext = \context_system::instance();
+        if (has_capability('tool/mutenancy:switch', $syscontext)) {
+            unset($SESSION->tool_mutenancy_can_switch);
+            return true;
+        }
+
+        if (!empty($SESSION->tool_mutenancy_can_switch)) {
             return true;
         }
 
@@ -231,10 +234,26 @@ final class tenancy {
                   JOIN {tool_mutenancy_tenant} t ON t.assoccohortid = cm.cohortid AND t.archived = 0
                  WHERE cm.userid = :me";
         if ($DB->record_exists_sql($sql, ['me' => $USER->id])) {
+            $SESSION->tool_mutenancy_can_switch = true;
             return true;
         }
 
-        return false;
+        // For now, we just guess here to make this faster.
+        [$needed, $forbidden] = get_roles_with_cap_in_context($syscontext, 'tool/mutenancy:switch');
+        if (!$needed) {
+            $SESSION->tool_mutenancy_can_switch = false;
+            return false;
+        }
+        $needed = implode(',', $needed);
+        $sql = "SELECT 'x'
+                  FROM {role_assignments} ra
+                  JOIN {context} c ON c.id = ra.contextid AND c.contextlevel = :tenantlevel
+                  JOIN {tool_mutenancy_tenant} t ON t.id = c.instanceid AND t.archived = 0
+                 WHERE ra.userid = :me AND ra.roleid IN ($needed)";
+        $params = ['tenantlevel' => \context_tenant::LEVEL, 'me' => $USER->id];
+        $SESSION->tool_mutenancy_can_switch = $DB->record_exists_sql($sql, $params);
+
+        return $SESSION->tool_mutenancy_can_switch;
     }
 
     /**
@@ -247,6 +266,9 @@ final class tenancy {
      */
     public static function switch(?int $tenantid): void {
         global $SESSION, $USER;
+
+        // Purge switching cache just in case.
+        unset($SESSION->tool_mutenancy_can_switch);
 
         if ($tenantid < 0) {
             throw new \core\exception\invalid_parameter_exception('Invalid tenant id');
