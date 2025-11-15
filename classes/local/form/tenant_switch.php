@@ -15,8 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
+// phpcs:disable moodle.Files.LineLength.TooLong
 
 namespace tool_mutenancy\local\form;
+
+use tool_mutenancy\local\tenancy;
 
 /**
  * Switch tenant form.
@@ -30,14 +33,16 @@ final class tenant_switch extends \tool_mulib\local\ajax_form {
     protected function definition(): void {
         $mform = $this->_form;
 
-        $info = '<div class="alert alert-info">' . markdown_to_html(get_string('tenant_switch_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        if (has_capability('tool/mutenancy:admin', \context_system::instance())) {
+            $info = '<div class="alert alert-info">' . markdown_to_html(get_string('tenant_switch_info', 'tool_mutenancy')) . '</div>';
+            $mform->addElement('html', $info);
+        }
 
         $options = self::get_options();
-        $mform->addElement('selectgroups', 'tenantid', get_string('tenant', 'tool_mutenancy'), $options);
+        $mform->addElement('selectgroups', 'tenantid', tenancy::get_tenant_string('tenant'), $options);
         $mform->setDefault('tenantid', (int)\tool_mutenancy\local\tenancy::get_current_tenantid());
 
-        $this->add_action_buttons(true, get_string('tenant_switch', 'tool_mutenancy'));
+        $this->add_action_buttons(true, tenancy::get_tenant_string('tenant_switch'));
     }
 
     #[\Override]
@@ -60,8 +65,8 @@ final class tenant_switch extends \tool_mulib\local\ajax_form {
     public static function get_options(): array {
         global $DB, $USER;
 
-        $notenant = get_string('tenant_switch_notenant', 'tool_mutenancy');
-        $mytenants = get_string('tenant_switch_my', 'tool_mutenancy');
+        $notenant = tenancy::get_tenant_string('tenant_switch_notenant');
+        $mytenants = tenancy::get_tenants_string('tenant_switch_my');
 
         $options = [];
         $options[''][0] = $notenant;
@@ -78,9 +83,9 @@ final class tenant_switch extends \tool_mulib\local\ajax_form {
         }
 
         if (isset($options[$mytenants])) {
-            $othertenants = get_string('tenant_switch_other', 'tool_mutenancy');
+            $othertenants = tenancy::get_tenants_string('tenant_switch_other');
         } else {
-            $othertenants = get_string('tenants', 'tool_mutenancy');
+            $othertenants = tenancy::get_tenants_string('tenants');
         }
 
         // Cheat here a bit to make this faster,

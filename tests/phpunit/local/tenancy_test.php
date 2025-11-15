@@ -527,6 +527,30 @@ final class tenancy_test extends \advanced_testcase {
     }
 
     /**
+     * @covers ::get_tenant_string
+     */
+    public function test_get_tenant_string(): void {
+        $this->assertSame('Tenant', tenancy::get_tenant_string('tenant'));
+        $this->assertSame('Add tenant', tenancy::get_tenant_string('tenant_create'));
+
+        set_config('tenantentity', 'Fakulta', 'tool_mutenancy');
+        $this->assertSame('Fakulta', tenancy::get_tenant_string('tenant'));
+        $this->assertSame('Add Fakulta', tenancy::get_tenant_string('tenant_create'));
+    }
+
+    /**
+     * @covers ::get_tenants_string
+     */
+    public function test_get_tenants_string(): void {
+        $this->assertSame('Tenants', tenancy::get_tenants_string('tenants'));
+        $this->assertSame('Other tenants', tenancy::get_tenants_string('tenant_switch_other'));
+
+        set_config('tenantentities', 'Fakulty', 'tool_mutenancy');
+        $this->assertSame('Fakulty', tenancy::get_tenants_string('tenants'));
+        $this->assertSame('Other Fakulty', tenancy::get_tenants_string('tenant_switch_other'));
+    }
+
+    /**
      * @covers ::callback_lib_setup
      */
     public function test_callback_lib_setup(): void {
