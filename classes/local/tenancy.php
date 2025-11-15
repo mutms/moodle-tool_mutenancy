@@ -438,6 +438,52 @@ final class tenancy {
     }
 
     /**
+     * Return string with tenant entity name singular.
+     *
+     * NOTE: customised strings are meant for end users, tenant management may still show the word "Tenant".
+     *
+     * @param string $identifier
+     * @param string $component
+     * @return string
+     */
+    public static function get_tenant_string(string $identifier, string $component = 'tool_mutenancy'): string {
+        $entity = get_config('tool_mutenancy', 'tenantentity');
+        if ($identifier === 'tenant' && $component === 'tool_mutenancy') {
+            if ($entity) {
+                return $entity;
+            }
+            return get_string('tenant', $component);
+        }
+        if ($entity) {
+            return get_string($identifier . '_a', $component, $entity);
+        }
+        return get_string($identifier, $component);
+    }
+
+    /**
+     * Return string with tenant entity name plural.
+     *
+     * NOTE: customised strings are meant for end users, tenant management may still show the word "Tenants".
+     *
+     * @param string $identifier
+     * @param string $component
+     * @return string
+     */
+    public static function get_tenants_string(string $identifier, string $component = 'tool_mutenancy'): string {
+        $entities = get_config('tool_mutenancy', 'tenantentities');
+        if ($identifier === 'tenants' && $component === 'tool_mutenancy') {
+            if ($entities) {
+                return $entities;
+            }
+            return get_string('tenants', $component);
+        }
+        if ($entities) {
+            return get_string($identifier . '_a', $component, $entities);
+        }
+        return get_string($identifier, $component);
+    }
+
+    /**
      * Called from lib/setup.php to initialise $SITE always
      * and to set current tenant on pages that do not use sessions.
      * Is also sets, refreshes and uses cookies.

@@ -77,4 +77,22 @@ $settings->add(new admin_setting_configcheckbox(
     1
 ));
 
+$settings->add(new admin_setting_configtext(
+    'tool_mutenancy/tenantentity',
+    new lang_string('setting_tenantentity', 'tool_mutenancy'),
+    new lang_string('setting_tenantentity_desc', 'tool_mutenancy'),
+    '',
+    PARAM_TEXT,
+    15
+));
+
+$settings->add(new admin_setting_configtext(
+    'tool_mutenancy/tenantentities',
+    new lang_string('setting_tenantentities', 'tool_mutenancy'),
+    new lang_string('setting_tenantentities_desc', 'tool_mutenancy'),
+    '',
+    PARAM_TEXT,
+    15
+));
+
 $ADMIN->add('tool_mutenancy', $settings, 'tool_mutenancy_tenants');

@@ -4,6 +4,7 @@
 
 Release date: xx/11/2025
 
+* Added tenant entity name - it is not necessary to edit language packs to replace "Tenant" and "Tenants" words in UI
 * Added tenantid in core WS: core_user_create_users, core_user_get_users_by_field, core_user_get_users 
 * Added web services for management of tenants.
 * Tenant switching has been simplified: associated users and tenant managers can now switch tenants by default. Internally, the tool/mutenancy:switch capability is now used in the tenant context instead of the system context, and no longer requires the tool/mutenancy:view capability. Existing tenant manager roles need to be updated manually to include the switch permission.
