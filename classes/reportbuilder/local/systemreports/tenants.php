@@ -23,6 +23,7 @@ use core_course\reportbuilder\local\entities\course_category;
 use core_reportbuilder\system_report;
 use moodle_url;
 use lang_string;
+use tool_mutenancy\local\tenancy;
 
 /**
  * Embedded tenants report.
@@ -142,7 +143,7 @@ final class tenants extends system_report {
 
         $url = new moodle_url('/admin/tool/mutenancy/management/tenant_update.php', ['id' => ':id']);
         $link = new \tool_mulib\output\ajax_form\link($url, new lang_string('edit', 'moodle'), 't/edit');
-        $link->set_modal_title(get_string('tenant_update', 'tool_mutenancy'));
+        $link->set_modal_title(tenancy::get_tenant_string('tenant_update'));
         $link->set_form_size('lg');
         $this->add_action($link->create_report_action()
             ->add_callback(static function (\stdclass $row): bool {

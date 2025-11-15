@@ -105,3 +105,36 @@ Feature: Tenant switching
       | Tenant      | No tenant        |
     And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
     Then I should see "Acceptance test site" in the ".navbar" "css_element"
+
+  Scenario: Associated users may switch to custom tenant entity names
+    And the following "users" exist:
+      | username  | firstname | lastname  | email                 | tenant |
+      | tswitcher | Tenant    | Switcher  | tswitcher@example.com |        |
+    And the following "cohort members" exist:
+      | user      | cohort  |
+      | tswitcher | cohort1 |
+      | tswitcher | cohort2 |
+      | tswitcher | cohort4 |
+    And the following config values are set as admin:
+      | tenantentity   | Faculty   | tool_mutenancy |
+      | tenantentities | Faculties | tool_mutenancy |
+    And I log in as "tswitcher"
+    And I should see "Acceptance test site" in the ".navbar" "css_element"
+
+    When I click on "Switch Faculty" "link" in the ".navbar" "css_element"
+    And I set the following fields to these values:
+      | Faculty     | Tenant 1         |
+    And I click on "Switch Faculty" "button" in the ".modal-dialog" "css_element"
+    Then I should see "TSS1" in the ".navbar" "css_element"
+
+    When I click on "Switch Faculty" "link" in the ".navbar" "css_element"
+    And I set the following fields to these values:
+      | Faculty      | Tenant 2         |
+    And I click on "Switch Faculty" "button" in the ".modal-dialog" "css_element"
+    Then I should see "TSS2" in the ".navbar" "css_element"
+
+    When I click on "Switch Faculty" "link" in the ".navbar" "css_element"
+    And I set the following fields to these values:
+      | Faculty      | No Faculty       |
+    And I click on "Switch Faculty" "button" in the ".modal-dialog" "css_element"
+    Then I should see "Acceptance test site" in the ".navbar" "css_element"

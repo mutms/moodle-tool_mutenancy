@@ -136,5 +136,21 @@ final class tenant_switch_test extends \advanced_testcase {
             ],
         ];
         $this->assertSame($expected, form::get_options());
+
+        set_config('tenantentity', 'Unit', 'tool_mutenancy');
+        set_config('tenantentities', 'Units', 'tool_mutenancy');
+        $expected = [
+            '' => [
+                0 => 'No Unit',
+            ],
+            'My Units' => [
+                $tenant2->id => $tenant2->name,
+            ],
+            'Other Units' => [
+                $tenant1->id => $tenant1->name,
+                $tenant3->id => $tenant3->name,
+            ],
+        ];
+        $this->assertSame($expected, form::get_options());
     }
 }
