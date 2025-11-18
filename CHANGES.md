@@ -4,6 +4,7 @@
 
 Release date: xx/11/2025
 
+* List of tenants in management UI is sorted by name by default
 * Added tenant entity name - it is not necessary to edit language packs to replace "Tenant" and "Tenants" words in UI
 * Added tenantid in core WS: core_user_create_users, core_user_get_users_by_field, core_user_get_users 
 * Added web services for management of tenants.
