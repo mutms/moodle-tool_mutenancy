@@ -55,6 +55,7 @@ final class tenants extends system_report {
         $this->add_actions();
 
         $this->set_downloadable(true);
+        $this->set_initial_sort_column('tenant:name', SORT_ASC);
     }
 
     #[\Override]
