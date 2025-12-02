@@ -4,6 +4,7 @@
 
 Release date: xx/11/2025
 
+* Tidied up autocomplete web services and improved performance on large sites.
 * List of tenants in management UI is sorted by name by default
 * Added tenant entity name - it is not necessary to edit language packs to replace "Tenant" and "Tenants" words in UI
 * Added tenantid in core WS: core_user_create_users, core_user_get_users_by_field, core_user_get_users 
