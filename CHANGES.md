@@ -4,6 +4,9 @@
 
 Release date: xx/11/2025
 
+* Added new setting to allow guest access to tenants.
+* Added tenant restriction to get_with_capability_sql().
+* Fixed listing of tenant contexts on permissions related pages.
 * Tidied up autocomplete web services and improved performance on large sites.
 * List of tenants in management UI is sorted by name by default
 * Added tenant entity name - it is not necessary to edit language packs to replace "Tenant" and "Tenants" words in UI
