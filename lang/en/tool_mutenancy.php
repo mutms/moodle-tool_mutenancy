@@ -125,6 +125,10 @@ $string['secondary_tenant_appearance'] = 'Appearance';
 $string['secondary_tenant_auth'] = 'Authentication';
 $string['secondary_tenant_details'] = 'Details';
 $string['secondary_tenant_users'] = 'Users';
+$string['setting_allowguests'] = 'Allow guest access to tenants';
+$string['setting_allowguests_desc'] = 'Enable this setting if you want to allow guest access to tenant courses.
+
+Note that this feature requires site‑level guest access to be enabled. In addition, tenant courses must have guest access enabled, and users should be associated with tenants rather than being tenant members.';
 $string['setting_tenantentities'] = 'Tenant entity plural';
 $string['setting_tenantentities_desc'] = 'If provided the plural "Tenants" word will be replaced with given custom name. For example: Units, Faculties or Events';
 $string['setting_tenantentity'] = 'Tenant entity singular';

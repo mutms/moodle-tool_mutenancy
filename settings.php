@@ -95,4 +95,16 @@ $settings->add(new admin_setting_configtext(
     15
 ));
 
+$setting = new admin_setting_configcheckbox(
+    'tool_mutenancy/allowguests',
+    new lang_string('setting_allowguests', 'tool_mutenancy'),
+    new lang_string('setting_allowguests_desc', 'tool_mutenancy'),
+    0
+);
+$setting->set_updatedcallback(function () {
+    cache_helper::purge_by_event('changesincourse');
+    cache_helper::purge_by_event('changesincoursecat');
+});
+$settings->add($setting);
+
 $ADMIN->add('tool_mutenancy', $settings, 'tool_mutenancy_tenants');
