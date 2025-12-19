@@ -1,0 +1,62 @@
+# Change log
+
+Plugin versioning is derived from Moodle releases, it does not comply with the semantic versioning standard.
+
+The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
+
+## [Unreleased]
+
+### Changed
+
+- Switched to new change log format
+
+## [mu-4.5.8-02] - 2025-12-16
+
+- No changes.
+
+## [mu-4.5.8-01] - 2025-12-08
+
+- Added new setting to allow guest access to tenants.
+- Added tenant restriction to get_with_capability_sql().
+- Fixed listing of tenant contexts on permissions related pages.
+- Tidied up autocomplete web services and improved performance on large sites.
+- List of tenants in management UI is sorted by name by default
+- Added tenant entity name - it is not necessary to edit language packs to replace "Tenant" and "Tenants" words in UI
+- Added tenantid in core WS: core_user_create_users, core_user_get_users_by_field, core_user_get_users 
+- Added web services for management of tenants.
+- Tenant switching has been simplified: associated users and tenant managers can now switch tenants by default. Internally, the tool/mutenancy:switch capability is now used in the tenant context instead of the system context, and no longer requires the tool/mutenancy:view capability. Existing tenant manager roles need to be updated manually to include the switch permission.
+
+## [mu-4.5.7-02] - 2025-11-08
+
+- No changes.
+
+## [mu-4.5.7-01] - 2025-10-06
+
+- No changes.
+
+## [mu-4.5.6-03] - 2025-09-24
+
+- Added event for user tenant allocation changes.
+
+## [mu-4.5.6-02] - 2025-08-31
+
+- Added bulk tenant members allocation and deallocation in Browse list of users.
+- Added help icons to tenant forms.
+- Added checkbox to create Associated users cohort when creating or updating tenants.
+- Added Tenant management section to primary menu.
+- Fixed compatibility with unsupported MS SQL databases.
+
+## [mu-4.5.6-01] - 2025-08-09
+
+- Internal refactoring.
+- Moodle 4.5.6 support.
+
+## [mu-4.5.5-02] - 2025-06-30
+
+- New plugin versioning.
+
+## [mu-4.5.5-01] - 2025-06-09
+
+- Improved docs and added acknowledgements. 
+- Standardised admin settings.
+- Added hooks for plugins to add manager capabilities.
