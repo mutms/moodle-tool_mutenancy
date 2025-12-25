@@ -6,6 +6,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Added
+
+- Added pre_tenant_delete hook
+
 ### Changed
 
 - Switched to new change log format
