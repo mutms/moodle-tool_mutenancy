@@ -6,6 +6,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased]
 
+### Fixed
+
+- Added "Copy tenant login URL to clipboard" label to copy icons to improve accessibility
+
 ### Added
 
 - Added pre_tenant_delete hook
@@ -13,6 +17,8 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Changed
 
 - Switched to new change log format
+- Tenant login URL in PDF and HTML exports was changed to link.
+- Removed \tool_mutenancy\output\loginurl renderable and template
 
 ## [mu-4.5.8-02] - 2025-12-16
 
