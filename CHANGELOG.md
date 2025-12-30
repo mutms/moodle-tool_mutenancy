@@ -13,6 +13,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Added
 
 - Added pre_tenant_delete hook
+- Added tenant activation and deactivation to Config changes report
 
 ### Changed
 
