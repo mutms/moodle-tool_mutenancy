@@ -54,7 +54,15 @@ final class navigation {
         }
         $tenant = tenant::fetch($tenantid);
 
-        $tenantnode = $hook->get_primaryview()->add(get_string('navigation_top', 'tool_mutenancy'), null);
+        $primary = $hook->get_primaryview();
+
+        $tenantnode = $primary->add(
+            get_string('navigation_top', 'tool_mutenancy'),
+            null,
+            $primary::TYPE_CUSTOM,
+            null,
+            'tool_mutenancy'
+        );
         $tenantnode->add(
             format_string($tenant->name),
             new \moodle_url('/admin/tool/mutenancy/tenant.php', ['id' => $tenantid])
