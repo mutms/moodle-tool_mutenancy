@@ -65,14 +65,14 @@ final class navigation {
         );
         $tenantnode->add(
             format_string($tenant->name),
-            new \moodle_url('/admin/tool/mutenancy/tenant.php', ['id' => $tenantid])
+            new \core\url('/admin/tool/mutenancy/tenant.php', ['id' => $tenantid])
         );
 
         $catcontext = \context_coursecat::instance($tenant->categoryid);
         if (has_capability('moodle/category:manage', $catcontext)) {
-            $url = new \moodle_url('/course/management.php', ['categoryid' => $tenant->categoryid]);
+            $url = new \core\url('/course/management.php', ['categoryid' => $tenant->categoryid]);
         } else {
-            $url = new \moodle_url('/course/index.php', ['categoryid' => $tenant->categoryid]);
+            $url = new \core\url('/course/index.php', ['categoryid' => $tenant->categoryid]);
         }
         $tenantnode->add(
             get_string('navigation_category', 'tool_mutenancy'),
