@@ -9,6 +9,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 ### Fixed
 
 - Added internal key to Tenant management primary menu
+- Fixed usage of legacy moodle_url class
 
 ## [mu-5.1.1-03] - 2025-12-31
 
