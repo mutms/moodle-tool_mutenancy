@@ -48,7 +48,7 @@ jobs:
           - php: '8.2'
             moodle-branch: 'MOODLE_501_STABLE'
             db: pgsql
-            dbversion: 14
+            dbversion: 15
           - php: '8.3'
             moodle-branch: 'MOODLE_501_STABLE'
             db: mysqli
