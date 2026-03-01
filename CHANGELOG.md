@@ -6,7 +6,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [v4.5.10.02](https://github.com/mutms/moodle-tool_mutenancy/compare/v4.5.10.01...v4.5.10.02) - 2026-03-01
 
-- No changes
+### Changed
+
+- Patch repository https://github.com/mutms/moodle.git was renamed to https://github.com/mutms/patches.git
 
 ## [v4.5.10.01](https://github.com/mutms/moodle-tool_mutenancy/compare/mu-4.5.9-01...v4.5.10.01) - 2026-02-12
 
