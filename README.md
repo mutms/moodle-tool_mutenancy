@@ -26,7 +26,7 @@ independent business units or client organisations from one installation.
 
 ## Requirements
 
-* Moodle™ LMS (see compatibility matrix for supported versions)
+* Moodle™ LMS
 * MuTMS core patch (included in the [MuTMS distribution](https://github.com/mutms/mutms))
 
 ## Documentation
