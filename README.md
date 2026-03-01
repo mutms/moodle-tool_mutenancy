@@ -23,6 +23,7 @@ independent business units or client organisations from one installation.
 * Universal catalogue — tenant-specific course catalogue
 * Tenant separation improvements
 * Migration scripts — automated migration from other Moodle-based multi-tenancy systems
+* Moodle Mobile App support improvements
 
 ## Requirements
 
