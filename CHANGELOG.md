@@ -6,7 +6,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.3.02...HEAD)
 
-- No changes
+### Fixed
+
+- Fixed error when non-administrators access My courses page
 
 ## [v5.1.3.02](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.3.01...v5.1.3.02) - 2026-03-01
 
