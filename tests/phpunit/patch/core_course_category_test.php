@@ -317,14 +317,18 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertEmpty(core_course_category::get_nearest_editable_subcategory($coursecat, ['create', 'manage']));
         // The get_nearest_editable_subcategory should return Cat1.
         $this->assertEquals($category1->id, core_course_category::get_nearest_editable_subcategory($coursecat, ['create'])->id);
-        $this->assertEquals($category1->id,
-            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/course:create'])->id);
+        $this->assertEquals(
+            $category1->id,
+            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/course:create'])->id
+        );
         // Assign the user1 to 'Course creator' role for Cat2.
         role_assign($coursecreatorrole->id, $user1->id, $category2context->id);
         // The get_nearest_editable_subcategory should still return Cat1 (First creatable subcategory) for create course capability.
         $this->assertEquals($category1->id, core_course_category::get_nearest_editable_subcategory($coursecat, ['create'])->id);
-        $this->assertEquals($category1->id,
-            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/course:create'])->id);
+        $this->assertEquals(
+            $category1->id,
+            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/course:create'])->id
+        );
         // End scenario 2.
 
         // Start scenario 3.
@@ -340,8 +344,10 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertEmpty(core_course_category::get_nearest_editable_subcategory($coursecat, ['create', 'manage']));
         // The get_nearest_editable_subcategory should return Cat3.
         $this->assertEquals($category3->id, core_course_category::get_nearest_editable_subcategory($coursecat, ['manage'])->id);
-        $this->assertEquals($category3->id,
-            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/category:manage'])->id);
+        $this->assertEquals(
+            $category3->id,
+            core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/category:manage'])->id
+        );
         // End scenario 3.
 
         // Start scenario 4.
@@ -356,10 +362,14 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertNotEmpty(core_course_category::get_nearest_editable_subcategory($coursecat, ['moodle/category:manage']));
         $this->assertNotEmpty(core_course_category::get_nearest_editable_subcategory($coursecat, ['create', 'manage']));
         // The get_nearest_editable_subcategory should return Cat3.
-        $this->assertEquals($category3->id,
-            core_course_category::get_nearest_editable_subcategory($coursecat, ['create', 'manage'])->id);
-        $this->assertEquals($category3->id, core_course_category::get_nearest_editable_subcategory($coursecat,
-            ['moodle/course:create', 'moodle/category:manage'])->id);
+        $this->assertEquals(
+            $category3->id,
+            core_course_category::get_nearest_editable_subcategory($coursecat, ['create', 'manage'])->id
+        );
+        $this->assertEquals($category3->id, core_course_category::get_nearest_editable_subcategory(
+            $coursecat,
+            ['moodle/course:create', 'moodle/category:manage']
+        )->id);
         // End scenario 4.
 
         // Start scenario 5.
