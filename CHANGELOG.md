@@ -4,7 +4,7 @@ Plugin versioning is derived from Moodle releases, it does not comply with the s
 
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
-## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.3.02...HEAD)
+## [v5.1.3.03](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.3.02...v5.1.3.03) - 2026-03-26
 
 ### Fixed
 
