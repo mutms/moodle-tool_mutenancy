@@ -32,7 +32,7 @@ $plugin->version = 2026032650;
 $plugin->requires = 2025041404;
 $plugin->supported = [500, 500];
 $plugin->incompatible = 501;
-$plugin->release = 'v5.0.6.02+';
+$plugin->release = 'v5.0.6.03';
 
 $plugin->dependencies = [
     'tool_mulib' => 2026032650,
