@@ -59,6 +59,8 @@ final class accesslib_test extends \advanced_testcase {
         global $DB, $CFG;
         tenancy::activate();
 
+        $CFG->forcelogin = 0; // On by default since Moodle 5.2
+
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
 
