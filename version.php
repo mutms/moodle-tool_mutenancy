@@ -28,10 +28,10 @@ defined('MOODLE_INTERNAL') || die();
 
 /** @var stdClass $plugin */
 $plugin->component = 'tool_mutenancy';
-$plugin->version = 2026032651;
-$plugin->requires = 2025100601;
-$plugin->supported = [501, 501];
-$plugin->incompatible = 502;
+$plugin->version = 2026032652;
+$plugin->requires = 2026032000;
+$plugin->supported = [502, 502];
+$plugin->incompatible = 503;
 $plugin->release = 'v5.1.3.03+';
 
 $plugin->dependencies = [

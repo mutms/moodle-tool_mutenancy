@@ -46,15 +46,15 @@ jobs:
       matrix:
         include:
           - php: '8.2'
-            moodle-branch: 'MOODLE_501_STABLE'
+            moodle-branch: 'MOODLE_502_STABLE'
             db: pgsql
             dbversion: 15
           - php: '8.3'
-            moodle-branch: 'MOODLE_501_STABLE'
+            moodle-branch: 'MOODLE_502_STABLE'
             db: mysqli
             dbversion: 8.4
           - php: '8.4'
-            moodle-branch: 'MOODLE_501_STABLE'
+            moodle-branch: 'MOODLE_502_STABLE'
             db: mariadb
             dbversion: 10.11
 
