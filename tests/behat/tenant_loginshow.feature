@@ -2,15 +2,11 @@
 Feature: Tenant authentication setting loginshow
   Background:
     Given unnecessary Admin bookmarks block gets deleted
+    And the following config values are set as admin:
+      | guestloginbutton | 1 |
 
   Scenario: Users may access tenant login pages
-    Given I am on homepage
-    When I click on "Log in" "link" in the ".logininfo" "css_element"
-    Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
-    And I should not see "Select site"
-
-    When the following "tool_mutenancy > tenants" exist:
+    Given  the following "tool_mutenancy > tenants" exist:
       | name     | idnumber | loginshow | sitefullname     | siteshortname | archived |
       | Tenant 1 | TEN1     | 1         | Tent Site full 1 | TSS1          | 0        |
       | Tenant 2 | TEN2     | 0         | Tent Site full 2 | TSS2          | 0        |
@@ -24,10 +20,10 @@ Feature: Tenant authentication setting loginshow
       | tenant | user     |
       | TEN1   | manager1 |
       | TEN2   | manager2 |
-    And I am on homepage
-    And I click on "Log in" "link" in the ".logininfo" "css_element"
+
+    When I am on homepage
     Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
+    And I should see "Log in as guest"
     And I should see "Select site"
 
     When I click on "Select site" "link"
@@ -39,7 +35,7 @@ Feature: Tenant authentication setting loginshow
 
     When I click on "Tent Site full 1" "link"
     Then I should see "Tent Site full 1"
-    And I should not see "Access as a guest"
+    And I should not see "Log in as guest"
     And I should see "Select site"
 
     When I click on "Select site" "link"
@@ -51,12 +47,12 @@ Feature: Tenant authentication setting loginshow
 
     When I click on "Acceptance test site" "link"
     Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
+    And I should see "Log in as guest"
     And I should see "Select site"
 
     When I am on the "TEN2" "tool_mutenancy > Tenant login" page
     Then I should see "Log in to Tent Site full 2"
-    And I should not see "Access as a guest"
+    And I should not see "Log in as guest"
     And I should see "Select site"
 
     When I click on "Select site" "link"
@@ -68,13 +64,13 @@ Feature: Tenant authentication setting loginshow
 
     When I am on the "TEN4" "tool_mutenancy > Tenant login" page
     Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
+    And I should see "Log in as guest"
     And I should see "Select site"
 
     When I am on the "TEN2" "tool_mutenancy > Tenant login" page
     And I am on the "0" "tool_mutenancy > Tenant login" page
     Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
+    And I should see "Log in as guest"
     And I should see "Select site"
 
   Scenario: Tenant managers may configure tenant login instructions
@@ -138,11 +134,10 @@ Feature: Tenant authentication setting loginshow
       | name     | idnumber | loginshow | sitefullname     | siteshortname | archived |
       | Tenant 1 | TEN1     | 1         | Tent Site full 1 | TSS1          | 0        |
       | Tenant 2 | TEN2     | 0         | Tent Site full 2 | TSS2          | 0        |
-    And I am on homepage
 
-    When I click on "Log in" "link" in the ".logininfo" "css_element"
+    When I am on homepage
     Then I should see "Log in to Acceptance test site"
-    And I should see "Access as a guest"
+    And I should see "Log in as guest"
     And I should see "Select Faculty"
 
     When I click on "Select Faculty" "link"
@@ -151,5 +146,5 @@ Feature: Tenant authentication setting loginshow
 
     When I click on "Tent Site full 1" "link"
     Then I should see "Tent Site full 1"
-    And I should not see "Access as a guest"
+    And I should not see "Log in as guest"
     And I should see "Select Faculty"

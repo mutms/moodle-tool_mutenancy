@@ -32,31 +32,31 @@ Feature: Tenant authentication setting showloginform
   Scenario: Users can see login form
     When I am on the "0" "tool_mutenancy > Tenant login" page
     Then I should see "Log in" in the "#loginbtn" "css_element"
-    And I should see "Lost password?"
+    And I should see "Forgot password?"
 
     When I am on the "TEN1" "tool_mutenancy > Tenant login" page
     Then I should see "Log in" in the "#loginbtn" "css_element"
-    And I should see "Lost password?"
+    And I should see "Forgot password?"
 
     When I am on the "TEN2" "tool_mutenancy > Tenant login" page
-    And I should not see "Lost password?"
+    And I should not see "Forgot password?"
 
     When I am on the "TEN3" "tool_mutenancy > Tenant login" page
     Then I should see "Log in" in the "#loginbtn" "css_element"
-    And I should see "Lost password?"
+    And I should see "Forgot password?"
 
     And the following config values are set as admin:
       | showloginform   | 0 |
 
     When I am on the "0" "tool_mutenancy > Tenant login" page
-    Then I should not see "Lost password?"
+    Then I should not see "Forgot password?"
 
     When I am on the "TEN1" "tool_mutenancy > Tenant login" page
-    Then I should not see "Lost password?"
+    Then I should not see "Forgot password?"
 
     When I am on the "TEN2" "tool_mutenancy > Tenant login" page
-    And I should not see "Lost password?"
+    And I should not see "Forgot password?"
 
     When I am on the "TEN3" "tool_mutenancy > Tenant login" page
     Then I should see "Log in" in the "#loginbtn" "css_element"
-    And I should see "Lost password?"
+    And I should see "Forgot password?"

@@ -18,7 +18,7 @@ Feature: Tenant authentication setting instructions
     And the following config values are set as admin:
       | auth_instructions | Welcome to main site |
 
-  Scenario: Tenant managers may configure tenant login instructions
+  Scenario: Tenant managers may override tenant login instructions
     Given I log in as "manager1"
     And I am on the "TEN1" "tool_mutenancy > Tenant authentication" page
     And I should see "Default value (Welcome to main site)" in the "Instructions" definition list item

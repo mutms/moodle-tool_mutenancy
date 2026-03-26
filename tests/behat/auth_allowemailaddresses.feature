@@ -32,7 +32,7 @@ Feature: Tenant authentication setting allowemailaddresses
 
   Scenario: Users may self register with email from allowemailaddresses overridden for tenant
     When I am on the "0" "tool_mutenancy > Tenant login" page
-    And I click on "Create new account" "link"
+    And I click on "Sign up" "link"
     And I should see "Acceptance test site"
     And I set the following fields to these values:
       | Username      | siteuser0                 |
@@ -58,7 +58,7 @@ Feature: Tenant authentication setting allowemailaddresses
     And I log out
 
     When I am on the "TEN1" "tool_mutenancy > Tenant login" page
-    And I click on "Create new account" "link"
+    And I click on "Sign up" "link"
     And I should see "Tent Site full 1"
     And I set the following fields to these values:
       | Username      | tenantuser1                 |
@@ -84,7 +84,7 @@ Feature: Tenant authentication setting allowemailaddresses
     And I log out
 
     When I am on the "TEN2" "tool_mutenancy > Tenant login" page
-    And I click on "Create new account" "link"
+    And I click on "Sign up" "link"
     And I should see "Tent Site full 2"
     And I set the following fields to these values:
       | Username      | tenantuser2                 |
@@ -110,7 +110,7 @@ Feature: Tenant authentication setting allowemailaddresses
     And I log out
 
     When I am on the "TEN3" "tool_mutenancy > Tenant login" page
-    And I click on "Create new account" "link"
+    And I click on "Sign up" "link"
     And I should see "Tent Site full 3"
     And I set the following fields to these values:
       | Username      | tenantuser3                 |

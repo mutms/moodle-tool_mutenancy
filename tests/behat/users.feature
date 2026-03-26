@@ -31,7 +31,6 @@ Feature: Tenant members and associated users section
 
     And I log out
     And I am on homepage
-    And I click on "Log in" "link" in the ".logininfo" "css_element"
     When I set the field "Username" to "member1"
     And I set the field "Password" to "tEstP_s8"
     And I press "Log in"
