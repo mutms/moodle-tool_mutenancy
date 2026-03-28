@@ -5,7 +5,8 @@
   "homepage": "https://github.com/mutms/moodle-tool_mutenancy",
   "license": "GPL-3.0-or-later",
   "require": {
-    "composer/installers": "*"
+    "composer/installers": "*",
+    "mutms/moodle-tool_mulib": "4.5.*"
   },
   "extra": {
     "installer-name": "mutenancy"
