@@ -6,7 +6,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v4.5.10.06...MOODLE_405_STABLE)
 
-- No changes
+### Changed
+
+- Compatible with Moodle 4.5.11
 
 ## [v4.5.10.06](https://github.com/mutms/moodle-tool_mutenancy/compare/v4.5.10.05...v4.5.10.06) - 2026-03-29
 
