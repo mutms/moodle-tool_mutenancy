@@ -6,11 +6,11 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.0.8.01...MOODLE_500_STABLE)
 
-- No changes
+- Compatible with Moodle 5.0.9
 
 ## [v5.0.8.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.0.7.01...v5.0.8.01) - 2026-06-05
 
-- No changes
+- Compatible with Moodle 5.0.8
 
 ## [v5.0.7.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.0.6.06...v5.0.7.01) - 2026-04-19
 
