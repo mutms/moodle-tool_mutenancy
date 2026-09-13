@@ -6,7 +6,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [v5.1.7.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.6.01...v5.1.7.01) - 2026-09-13
 
-- No changes
+- Compatible with Moodle 5.1.7
 
 ## [v5.1.6.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.1.5.01...v5.1.6.01) - 2026-06-05
 
