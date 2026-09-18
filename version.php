@@ -35,5 +35,5 @@ $plugin->incompatible = 502;
 $plugin->release = 'v5.1.7.03';
 
 $plugin->dependencies = [
-    'tool_mulib' => 2026091350,
+    'tool_mulib' => 2026092000,
 ];
