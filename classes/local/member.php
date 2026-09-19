@@ -100,7 +100,7 @@ final class member {
         }
 
         $user->suspended = 1;
-        user_update_user($user, false);
+        \core\user::update_user($user, false);
 
         // Force logout.
         \core\session\manager::destroy_user_sessions($user->id);
@@ -132,7 +132,7 @@ final class member {
         }
 
         $user->suspended = 0;
-        user_update_user($user, false);
+        \core\user::update_user($user, false);
 
         return $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXIST);
     }
@@ -178,7 +178,7 @@ final class member {
             return;
         }
 
-        user_delete_user($user);
+        \core\user::delete_user($user);
     }
 
     /**

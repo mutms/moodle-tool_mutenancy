@@ -132,7 +132,7 @@ if ($userform->is_cancelled()) {
         // Auth update failed.
         throw new \moodle_exception('cannotupdateuseronexauth', '', '', $user->auth);
     }
-    user_update_user($usernew, false, false);
+    \core\user::update_user($usernew, false, false);
 
     // Set new password if specified.
     if (!empty($usernew->newpassword)) {

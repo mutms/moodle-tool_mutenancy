@@ -115,7 +115,7 @@ if ($userform->is_cancelled()) {
     } else {
         $usernew->password = hash_internal_user_password($usernew->newpassword);
     }
-    $usernew->id = user_create_user($usernew, false, false);
+    $usernew->id = \core\user::create_user($usernew, false, false);
 
     $usercontext = context_user::instance($usernew->id);
 
