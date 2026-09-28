@@ -51,10 +51,10 @@ $syscontext = context_system::instance();
 require_login();
 require_capability('tool/mutenancy:allocate', $syscontext);
 
-$PAGE->set_url('/admin/tool/mutenancy/management/bulk_deallocate.php');
+$PAGE->set_url('/admin/tool/mutenancy/management/bulk_deallocate.php', ['returnurl' => $returnurl->out_as_local_url(false)]);
 $PAGE->set_context($syscontext);
 
-$form = new \tool_mutenancy\local\form\bulk_deallocate(null, ['returnurl' => $returnurl->out_as_local_url(false)]);
+$form = new \tool_mutenancy\local\form\bulk_deallocate($PAGE->url, []);
 
 if ($form->is_cancelled()) {
     redirect($returnurl);
@@ -76,6 +76,6 @@ if ($data = $form->get_data()) {
 
 echo $OUTPUT->header();
 
-$form->display();
+echo $form->render($OUTPUT);
 
 echo $OUTPUT->footer();

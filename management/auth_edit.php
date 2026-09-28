@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 use tool_mutenancy\local\config;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -49,22 +48,27 @@ $syscontext = context_system::instance();
 $context = context_tenant::instance($tenant->id);
 require_capability('tool/mutenancy:configauth', $context);
 
-$PAGE->set_url('/admin/tool/mutenancy/management/auth_favicon.php', ['id' => $tenant->id]);
+$PAGE->set_url('/admin/tool/mutenancy/management/auth_edit.php', ['id' => $tenant->id]);
 $PAGE->set_context($context);
+$title = get_string('auth_edit', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-$returnurl = new \core\url('/admin/tool/tenant_auth.php', ['id' => $tenant->id]);
+$handler = handler::from_request();
 
-$form = new \tool_mutenancy\local\form\auth_edit(null, ['tenant' => $tenant]);
+$returnurl = new \core\url('/admin/tool/mutenancy/tenant_auth.php', ['id' => $tenant->id]);
+
+$form = new \tool_mutenancy\local\form\auth_edit($PAGE->url, [], ['tenant' => $tenant]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     if (has_capability('moodle/site:config', $syscontext)) {
         if (isset($data->registerauth_override)) {
             if ($data->registerauth_override) {
-                config::override($tenant->id, 'registerauth', $data->registerauth, 'core');
+                config::override($tenant->id, 'registerauth', (string)$data->registerauth, 'core');
             } else {
                 config::override($tenant->id, 'registerauth', null, 'core');
             }
@@ -73,7 +77,7 @@ if ($data = $form->get_data()) {
 
     if (isset($data->showloginform_override)) {
         if ($data->showloginform_override) {
-            config::override($tenant->id, 'showloginform', $data->showloginform, 'core');
+            config::override($tenant->id, 'showloginform', (string)$data->showloginform, 'core');
         } else {
             config::override($tenant->id, 'showloginform', null, 'core');
         }
@@ -99,7 +103,7 @@ if ($data = $form->get_data()) {
 
     if (isset($data->auth_instructions_override)) {
         if ($data->auth_instructions_override) {
-            $text = clean_text($data->auth_instructions['text']);
+            $text = clean_text($data->auth_instructions);
             if (trim($text) === '') {
                 $text = '';
             }
@@ -111,7 +115,7 @@ if ($data = $form->get_data()) {
 
     \tool_mutenancy\event\auth_updated::create_from_tenant($tenant)->trigger();
 
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

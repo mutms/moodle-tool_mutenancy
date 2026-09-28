@@ -19,6 +19,13 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Member delete form.
  *
@@ -26,21 +33,18 @@ namespace tool_mutenancy\local\form;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class member_delete extends \tool_mulib\local\ajax_form {
+final class member_delete extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $user = $this->_customdata['user'];
+        $user = $this->get_extra_data()['user'];
 
         $info = '<div class="alert alert-danger">' . markdown_to_html(get_string('member_delete_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        $mform->addElement('static', 'fullname', get_string('user'), fullname($user));
+        $this->add(new info('fullname', get_string('user'), fullname($user), info::PLAIN));
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setConstant('id', $user->id);
-
-        $this->add_action_buttons(true, get_string('delete', 'core'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('delete', 'core')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

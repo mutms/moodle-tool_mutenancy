@@ -19,7 +19,13 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mutenancy\external\form_autocomplete\tenant_managers_userids;
+use tool_mulib\muform\element\autocompletemany;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+use tool_mutenancy\muform\autocompletemany\tenant_managers as managers_source;
 
 /**
  * Tenant managers form.
@@ -28,46 +34,19 @@ use tool_mutenancy\external\form_autocomplete\tenant_managers_userids;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_managers extends \tool_mulib\local\ajax_form {
+final class tenant_managers extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $tenant = $this->_customdata['tenant'];
-        $context = $this->_customdata['context'];
-        $userids = $this->_customdata['userids'];
+        $tenant = $this->get_extra_data()['tenant'];
 
         $info = '<div class="alert alert-info">' . markdown_to_html(get_string('member_managers_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        tenant_managers_userids::add_element(
-            $mform,
-            ['tenantid' => $tenant->id],
-            'userids',
-            get_string('tenant_managers', 'tool_mutenancy'),
-            $context
-        );
-        $mform->setDefault('userids', $userids);
+        $source = new managers_source($tenant->id);
+        $this->add(new autocompletemany('userids', get_string('tenant_managers', 'tool_mutenancy'), $source));
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setConstant('id', $tenant->id);
-
-        $this->add_action_buttons(true, get_string('update'));
-    }
-
-    #[\Override]
-    public function validation($data, $files): array {
-        $errors = parent::validation($data, $files);
-        $tenant = $this->_customdata['tenant'];
-        $context = $this->_customdata['context'];
-        foreach ($data['userids'] as $userid) {
-            $error = tenant_managers_userids::validate_value($userid, ['tenantid' => $tenant->id], $context);
-            if ($error !== null) {
-                $errors['userids'] = $error;
-                break;
-            }
-        }
-
-        return $errors;
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('update')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

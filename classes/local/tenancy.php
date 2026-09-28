@@ -269,7 +269,7 @@ final class tenancy {
      * @return void
      */
     public static function switch(?int $tenantid): void {
-        global $SESSION, $USER;
+        global $SESSION, $USER, $CFG;
 
         // Purge switching cache just in case.
         unset($SESSION->tool_mutenancy_can_switch);

@@ -45,7 +45,7 @@ $PAGE->set_heading(tenancy::get_tenants_string('tenants'));
 if (!tenancy::is_active()) {
     echo $OUTPUT->header();
     $url = new \core\url('/admin/tool/mutenancy/management/tenancy_activate.php');
-    $button = new \tool_mulib\output\ajax_form\button($url, get_string('tenancy_activate', 'tool_mutenancy'), true);
+    $button = new \tool_mulib\output\muform\dialog\button($url, get_string('tenancy_activate', 'tool_mutenancy'), true);
     $button->set_form_size('sm');
     echo '<div class="buttons">' . $OUTPUT->render($button) . '</div>';
     echo $OUTPUT->footer();
@@ -59,12 +59,12 @@ if (has_capability('tool/mutenancy:admin', $syscontext)) {
     $notenantsyet = !$DB->record_exists('tool_mutenancy_tenant', []);
     if (!$tenantlimit || $tenantlimit > $DB->count_records('tool_mutenancy_tenant', [])) {
         $url = new \core\url('/admin/tool/mutenancy/management/tenant_create.php');
-        $button = new \tool_mulib\output\ajax_form\button(
+        $button = new \tool_mulib\output\muform\dialog\button(
             $url,
             tenancy::get_tenant_string('tenant_create'),
             $notenantsyet
         );
-        $button->set_submitted_action($button::SUBMITTED_ACTION_REDIRECT);
+        $button->set_submitted_action(\tool_mulib\muform\handler\dialog::ACTION_REDIRECT);
         $PAGE->add_header_action($OUTPUT->render($button));
     }
 }
@@ -81,7 +81,7 @@ $buttons = [];
 
 if (!$tenantcount && has_capability('moodle/site:config', $syscontext)) {
     $url = new \core\url('/admin/tool/mutenancy/management/tenancy_deactivate.php');
-    $button = new \tool_mulib\output\ajax_form\button($url, get_string('tenancy_deactivate', 'tool_mutenancy'));
+    $button = new \tool_mulib\output\muform\dialog\button($url, get_string('tenancy_deactivate', 'tool_mutenancy'));
     $button->set_form_size('sm');
     $buttons[] = $OUTPUT->render($button);
 }

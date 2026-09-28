@@ -27,14 +27,13 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var moodle_database $DB */
 /** @var stdClass $USER */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -51,6 +50,11 @@ require_capability('tool/mutenancy:memberupdate', $personalcontext);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/member_delete.php', ['id' => $userid]);
 $PAGE->set_context($personalcontext);
+$title = get_string('deleteuser', 'admin');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $user = $DB->get_record('user', ['id' => $userid]);
 
@@ -67,15 +71,15 @@ if ($user->deleted) {
     redirect($returnurl);
 }
 
-$form = new \tool_mutenancy\local\form\member_delete(null, ['user' => $user]);
+$form = new \tool_mutenancy\local\form\member_delete($PAGE->url, [], ['user' => $user]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     \tool_mutenancy\local\member::delete($user->id);
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

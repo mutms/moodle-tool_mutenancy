@@ -25,11 +25,10 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -45,16 +44,21 @@ if (tenancy::is_active()) {
 
 $PAGE->set_url('/admin/tool/mutenancy/management/tenancy_activate.php');
 $PAGE->set_context($syscontext);
+$title = get_string('tenancy_activate', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-$form = new \tool_mutenancy\local\form\tenancy_activate();
+$handler = handler::from_request();
+
+$form = new \tool_mutenancy\local\form\tenancy_activate($PAGE->url, []);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     tenancy::activate();
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

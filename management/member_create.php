@@ -33,8 +33,6 @@ use tool_mutenancy\local\tenancy;
 /** @var moodle_database $DB */
 /** @var stdClass $USER */
 
-define('AJAX_SCRIPT', true);
-
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir . '/gdlib.php');
 require_once($CFG->libdir . '/adminlib.php');
@@ -92,7 +90,7 @@ $userform = new \tool_mutenancy\local\form\member_edit(null, [
 ]);
 
 if ($userform->is_cancelled()) {
-    $userform->ajax_form_cancelled($returnurl);
+    redirect($returnurl);
 } else if ($usernew = $userform->get_data()) {
     unset($usernew->id);
     $usernew->auth = 'manual';
@@ -148,7 +146,16 @@ if ($userform->is_cancelled()) {
     // Trigger create event, after all fields are stored.
     \core\event\user_created::create_from_userid($user->id)->trigger();
 
-    $userform->ajax_form_submitted($returnurl);
+    redirect($returnurl);
 }
 
-$userform->ajax_form_render(get_string('member_create', 'tool_mutenancy'));
+$title = get_string('member_create', 'tool_mutenancy');
+$PAGE->set_title($title);
+if (!$PAGE->heading) {
+    $PAGE->set_heading($title);
+}
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading($title);
+$userform->display();
+echo $OUTPUT->footer();

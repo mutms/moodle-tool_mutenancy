@@ -19,6 +19,17 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\editor;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\select;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\text;
+use tool_mulib\muform\form;
 use tool_mutenancy\local\config;
 
 /**
@@ -28,176 +39,90 @@ use tool_mutenancy\local\config;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class auth_edit extends \tool_mulib\local\ajax_form {
+final class auth_edit extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $tenant = $this->_customdata['tenant'];
-
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setDefault('id', $tenant->id);
-
+        $tenant = $this->get_extra_data()['tenant'];
         $syscontext = \context_system::instance();
 
+        $disabled = get_string('disabled', 'core_admin');
         if (has_capability('moodle/site:config', $syscontext)) {
             // Adding random new accounts cannot be allowed by tenant managers!
             $default = get_config('core', 'registerauth');
-            if ($default) {
-                $defaultstr = get_string('pluginname', 'auth_' . $default);
-            } else {
-                $defaultstr = get_string('disabled', 'core_admin');
-            }
-            $options = [];
-            $options[''] = get_string('disabled', 'core_admin');
+            $defaultstr = $default ? get_string('pluginname', 'auth_' . $default) : $disabled;
+            $options = ['' => $disabled];
             if (is_enabled_auth('email')) {
                 $options['email'] = get_string('pluginname', 'auth_email');
             }
-            $group = [];
-            $group[] = $mform->createElement('advcheckbox', 'registerauth_override', get_string('config_override_value', 'tool_mutenancy', $defaultstr));
-            $group[] = $mform->createElement('select', 'registerauth', get_string('selfregistration', 'core_auth'), $options);
-            $mform->addGroup(
-                $group,
-                'registerauth_group',
-                '<div>' . get_string('selfregistration', 'core_auth') . '<div class="small text-muted">registerauth</div></div>',
-                '<div style="width: 100%"/>',
-                false
-            );
-            if (config::is_overridden($tenant->id, 'core', 'registerauth')) {
-                $mform->setDefault('registerauth_override', '1');
-                $mform->setDefault('registerauth', config::get($tenant->id, 'core', 'registerauth'));
-            } else {
-                $mform->setDefault('registerauth_override', '0');
-                if (isset($options[$default])) {
-                    $mform->setDefault('registerauth', $default);
-                }
-            }
-            $mform->hideIf('registerauth', 'registerauth_override', 'eq', '0');
-            $mform->addElement('static', 'registerauth_desc', '', markdown_to_html(get_string('selfregistration_help', 'auth')));
+            $element = new select('registerauth', get_string('selfregistration', 'core_auth'), $options);
+            $default = isset($options[$default]) ? $default : '';
+            $this->add_override($tenant, $element, get_string('selfregistration', 'core_auth'), $defaultstr, $default, get_string('selfregistration_help', 'auth'));
         } else {
             if (config::is_overridden($tenant->id, 'core', 'registerauth')) {
                 $auth = config::get($tenant->id, 'core', 'registerauth');
+                $auth = $auth ? get_string('pluginname', 'auth_' . $auth) : $disabled;
             } else {
                 $default = get_config('core', 'registerauth');
-                if ($default) {
-                    $defaultstr = get_string('pluginname', 'auth_' . $default);
-                } else {
-                    $defaultstr = get_string('disabled', 'core_admin');
-                }
+                $defaultstr = $default ? get_string('pluginname', 'auth_' . $default) : $disabled;
                 $auth = get_string('config_default_value', 'tool_mutenancy', $defaultstr);
             }
-            $mform->addElement('static', 'registerauth_static', get_string('selfregistration', 'core_auth'), $auth);
+            $this->add(new info('registerauth_static', get_string('selfregistration', 'core_auth'), $auth, info::PLAIN));
         }
 
         $default = get_config('core', 'showloginform');
-        if ($default) {
-            $defaultstr = get_string('yes');
-        } else {
-            $defaultstr = get_string('no');
-        }
-        $options = [];
-        $options['1'] = get_string('yes');
-        $options['0'] = get_string('no');
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'showloginform_override', get_string('config_override_value', 'tool_mutenancy', $defaultstr));
-        $group[] = $mform->createElement('select', 'showloginform', get_string('showloginform', 'core_auth'), $options);
-        $mform->addGroup(
-            $group,
-            'showloginform_group',
-            '<div>' . get_string('showloginform', 'core_auth') . '<div class="small text-muted">showloginform</div></div>',
-            '<div style="width: 100%"/>',
-            false
-        );
-        if (config::is_overridden($tenant->id, 'core', 'showloginform')) {
-            $mform->setDefault('showloginform_override', '1');
-            $mform->setDefault('showloginform', config::get($tenant->id, 'core', 'showloginform'));
-        } else {
-            $mform->setDefault('showloginform', $default);
-            $mform->setDefault('showloginform_override', '0');
-        }
-        $mform->hideIf('showloginform', 'showloginform_override', 'eq', '0');
-        $mform->addElement('static', 'showloginform_desc', '', markdown_to_html(get_string('showloginform_desc', 'auth')));
+        $options = ['1' => get_string('yes'), '0' => get_string('no')];
+        $element = new select('showloginform', get_string('showloginform', 'core_auth'), $options);
+        $defaultstr = $default ? get_string('yes') : get_string('no');
+        $this->add_override($tenant, $element, get_string('showloginform', 'core_auth'), $defaultstr, (string)(int)$default, get_string('showloginform_desc', 'auth'));
 
-        $default = get_config('core', 'allowemailaddresses');
-        if ($default === '') {
-            $defaultstr = get_string('emptysettingvalue', 'core_admin');
-        } else {
-            $defaultstr = s($default);
+        foreach (['allowemailaddresses', 'denyemailaddresses'] as $name) {
+            $default = (string)get_config('core', $name);
+            $defaultstr = ($default === '') ? get_string('emptysettingvalue', 'core_admin') : $default;
+            $element = new text($name, get_string($name, 'core_admin'), ['width' => 'full']);
+            $this->add_override($tenant, $element, get_string($name, 'core_admin'), $defaultstr, $default, get_string('config' . $name, 'core_admin'));
         }
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'allowemailaddresses_override', get_string('config_override_value', 'tool_mutenancy', $defaultstr));
-        $group[] = $mform->createElement('text', 'allowemailaddresses', get_string('allowemailaddresses', 'core_admin'), ['size' => 60], PARAM_NOTAGS);
-        $mform->addGroup(
-            $group,
-            'allowemailaddresses_group',
-            '<div>' . get_string('allowemailaddresses', 'core_admin') . '<div class="small text-muted">allowemailaddresses</div></div>',
-            '<div style="width: 100%"/>',
-            false
-        );
-        $mform->setType('allowemailaddresses', PARAM_NOTAGS);
-        if (config::is_overridden($tenant->id, 'core', 'allowemailaddresses')) {
-            $mform->setDefault('allowemailaddresses_override', '1');
-            $mform->setDefault('allowemailaddresses', config::get($tenant->id, 'core', 'allowemailaddresses'));
-        } else {
-            $mform->setDefault('allowemailaddresses', $default);
-            $mform->setDefault('allowemailaddresses_override', '0');
-        }
-        $mform->hideIf('allowemailaddresses', 'allowemailaddresses_override', 'eq', '0');
-        $mform->addElement('static', 'allowemailaddresses_desc', '', markdown_to_html(get_string('configallowemailaddresses', 'core_admin')));
 
-        $default = get_config('core', 'denyemailaddresses');
-        if ($default === '') {
-            $defaultstr = get_string('emptysettingvalue', 'core_admin');
-        } else {
-            $defaultstr = s($default);
-        }
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'denyemailaddresses_override', get_string('config_override_value', 'tool_mutenancy', $defaultstr));
-        $group[] = $mform->createElement('text', 'denyemailaddresses', get_string('denyemailaddresses', 'core_admin'), ['size' => 60]);
-        $mform->addGroup(
-            $group,
-            'denyemailaddresses_group',
-            '<div>' . get_string('denyemailaddresses', 'core_admin') . '<div class="small text-muted">denyemailaddresses</div></div>',
-            '<div style="width: 100%"/>',
-            false
-        );
-        $mform->setType('denyemailaddresses', PARAM_NOTAGS);
-        if (config::is_overridden($tenant->id, 'core', 'denyemailaddresses')) {
-            $mform->setDefault('denyemailaddresses_override', '1');
-            $mform->setDefault('denyemailaddresses', config::get($tenant->id, 'core', 'denyemailaddresses'));
-        } else {
-            $mform->setDefault('denyemailaddresses', $default);
-            $mform->setDefault('denyemailaddresses_override', '0');
-        }
-        $mform->hideIf('denyemailaddresses', 'denyemailaddresses_override', 'eq', '0');
-        $mform->addElement('static', 'denyemailaddresses_desc', '', markdown_to_html(get_string('configdenyemailaddresses', 'core_admin')));
+        $default = (string)get_config('core', 'auth_instructions');
+        $defaultstr = ($default === '') ? get_string('emptysettingvalue', 'core_admin') : shorten_text(html_to_text($default), 20);
+        $element = new editor('auth_instructions', get_string('instructions', 'core_auth'), 0, false, ['rows' => 6]);
+        $this->add_override($tenant, $element, get_string('instructions', 'core_auth'), $defaultstr, $default, get_string('authinstructions', 'core_auth'));
 
-        $default = get_config('core', 'denyemailaddresses');
-        if ($default === '') {
-            $defaultstr = get_string('emptysettingvalue', 'core_admin');
-        } else {
-            $defaultstr = s(shorten_text($default, 20));
-        }
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'auth_instructions_override', get_string('config_override_value', 'tool_mutenancy', $defaultstr));
-        $group[] = $mform->createElement('editor', 'auth_instructions', get_string('instructions', 'core_auth'), ['rows' => 6, 'autosave' => false]);
-        $mform->addGroup(
-            $group,
-            'auth_instructions_group',
-            '<div>' . get_string('instructions', 'core_auth') . '<div class="small text-muted">auth_instructions</div></div>',
-            '<div style="width: 100%"/>',
-            false
-        );
-        if (config::is_overridden($tenant->id, 'core', 'auth_instructions')) {
-            $mform->setDefault('auth_instructions_override', '1');
-            $mform->setDefault('auth_instructions', ['text' => config::get($tenant->id, 'core', 'auth_instructions'), 'format' => FORMAT_HTML]);
-        } else {
-            $mform->setDefault('auth_instructions', ['text' => get_config('core', 'auth_instructions'), 'format' => FORMAT_HTML]);
-            $mform->setDefault('auth_instructions_override', '0');
-        }
-        $mform->hideIf('auth_instructions', 'auth_instructions_override', 'eq', '0');
-        $mform->addElement('static', 'auth_instructions_desc', '', markdown_to_html(get_string('authinstructions', 'core_auth')));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('update')), 'buttons');
+        $this->add(new cancel(), 'buttons');
+    }
 
-        $this->add_action_buttons(true, get_string('update'));
+    /**
+     * Add override checkbox, the value element shown only when overriding and the setting description.
+     *
+     * @param \stdClass $tenant
+     * @param element $element value element named after the core setting
+     * @param string $label setting name shown to users
+     * @param string $defaultstr site default shown to users
+     * @param string $default site default value
+     * @param string $description setting description in Markdown
+     */
+    private function add_override(
+        \stdClass $tenant,
+        element $element,
+        string $label,
+        string $defaultstr,
+        string $default,
+        string $description
+    ): void {
+        $name = $element->get_name();
+        $overridden = config::is_overridden($tenant->id, 'core', $name);
+
+        $override = new checkbox($name . '_override', $label, get_string('config_override_value', 'tool_mutenancy', $defaultstr));
+        $override->set_default($overridden ? 1 : 0);
+        $this->add($override);
+
+        $element->set_default($overridden ? (string)config::get($tenant->id, 'core', $name) : $default);
+        $this->add($element);
+
+        $html = markdown_to_html($description) . \html_writer::div(s($name), 'small text-muted');
+        $this->add(new inforawhtml($name . '_desc', '', $html));
+
+        $this->get_display_manager()->hide_if($name, $name . '_override', 'notchecked');
     }
 }

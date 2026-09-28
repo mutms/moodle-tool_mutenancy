@@ -85,20 +85,21 @@ Feature: Multi-tenancy features of user profile page
     And I am on the profile page of user "student0"
 
     When I click on "Allocate user" "link"
-    And I set the following fields in the ".modal-dialog" "css_element" to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant | Tenant 1 |
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then I should see "Tenant 1" in the "Tenant member" definition list item
 
     When I click on "Allocate user" "link"
-    And I set the following fields in the ".modal-dialog" "css_element" to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant | Tenant 2 |
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then I should see "Tenant 2" in the "Tenant member" definition list item
 
     When I click on "Allocate user" "link"
-    And I click on "Tenant 2" "text" in the ".modal-dialog" "css_element"
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Tenant | |
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then I should see "No" in the "Tenant member" definition list item
 
   Scenario: Admin may see custom tenant membership name and association on user profile page

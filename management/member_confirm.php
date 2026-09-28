@@ -27,14 +27,13 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var moodle_database $DB */
 /** @var stdClass $USER */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -49,8 +48,13 @@ if (!tenancy::is_active()) {
 $personalcontext = context_user::instance($userid);
 require_capability('tool/mutenancy:memberupdate', $personalcontext);
 
-$PAGE->set_url('/admin/tool/mutenancy/management/member_cofirm.php', ['id' => $userid]);
+$PAGE->set_url('/admin/tool/mutenancy/management/member_confirm.php', ['id' => $userid]);
 $PAGE->set_context($personalcontext);
+$title = get_string('confirmaccount', 'core');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $user = $DB->get_record('user', ['id' => $userid]);
 
@@ -67,23 +71,23 @@ if ($user->confirmed) {
     redirect($returnurl);
 }
 
-$form = new \tool_mutenancy\local\form\member_confirm(null, ['user' => $user]);
+$form = new \tool_mutenancy\local\form\member_confirm($PAGE->url, [], ['user' => $user]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     $success = \tool_mutenancy\local\member::confirm($user->id);
     if ($success) {
-        $form->ajax_form_submitted($returnurl);
+        $handler->submitted($returnurl);
     } else {
         \core\notification::add(
             get_string('usernotconfirmed', '', fullname($user, true)),
             \core\output\notification::NOTIFY_ERROR
         );
-        $form->ajax_form_submitted($returnurl);
+        $handler->submitted($returnurl);
     }
 }
 
-$form->ajax_form_render();
+$handler->render($form);

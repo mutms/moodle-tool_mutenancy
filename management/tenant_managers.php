@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 use tool_mutenancy\local\manager;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -50,23 +49,25 @@ require_capability('tool/mutenancy:admin', $context);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/tenant_managers.php', ['id' => $tenant->id]);
 $PAGE->set_context($context);
+$title = get_string('tenant_managers', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $returnurl = new \core\url('/admin/tool/mutenancy/tenant.php', ['id' => $tenant->id]);
 
 $managers = \tool_mutenancy\local\manager::get_manager_users($tenant->id);
-$form = new \tool_mutenancy\local\form\tenant_managers(null, [
-    'tenant' => $tenant,
-    'userids' => array_keys($managers),
-    'context' => $context,
-]);
+$current = ['userids' => array_map('strval', array_keys($managers))];
+$form = new \tool_mutenancy\local\form\tenant_managers($PAGE->url, $current, ['tenant' => $tenant]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     manager::set_userids($tenant->id, $data->userids);
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

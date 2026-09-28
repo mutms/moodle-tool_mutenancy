@@ -19,7 +19,12 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mutenancy\external\form_associate_remove_userids;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
 
 /**
  * Disassociate user form.
@@ -28,40 +33,26 @@ use tool_mutenancy\external\form_associate_remove_userids;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class associate_remove extends \tool_mulib\local\ajax_form {
+final class associate_remove extends form {
     #[\Override]
     protected function definition(): void {
         global $DB;
 
-        $mform = $this->_form;
-        $tenant = $this->_customdata['tenant'];
-        $cohort = $this->_customdata['cohort'];
-        $user = $this->_customdata['user'];
+        $cohort = $this->get_extra_data()['cohort'];
+        $user = $this->get_extra_data()['user'];
 
         $info = '<div class="alert alert-warning">' . markdown_to_html(get_string('associate_remove_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
         $tenants = $DB->get_records_menu('tool_mutenancy_tenant', ['assoccohortid' => $cohort->id], 'name ASC', 'id, name');
         $tenants = array_map('format_string', $tenants);
-        $mform->addElement(
-            'static',
-            'tenants',
-            (count($tenants) > 1) ? get_string('tenants', 'tool_mutenancy') : get_string('tenant', 'tool_mutenancy'),
-            implode(', ', $tenants)
-        );
+        $label = (count($tenants) > 1) ? get_string('tenants', 'tool_mutenancy') : get_string('tenant', 'tool_mutenancy');
+        $this->add(new info('tenants', $label, implode(', ', $tenants), info::PLAIN));
+        $this->add(new info('cohortname', get_string('associate_cohort', 'tool_mutenancy'), format_string($cohort->name), info::PLAIN));
+        $this->add(new info('fullname', get_string('user'), fullname($user), info::PLAIN));
 
-        $mform->addElement('static', 'cohortname', get_string('associate_cohort', 'tool_mutenancy'), format_string($cohort->name));
-
-        $mform->addElement('static', 'fullname', get_string('user'), fullname($user));
-
-        $mform->addElement('hidden', 'tenantid');
-        $mform->setType('tenantid', PARAM_INT);
-        $mform->setConstant('tenantid', $tenant->id);
-
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setConstant('id', $user->id);
-
-        $this->add_action_buttons(true, get_string('associate_remove', 'tool_mutenancy'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('associate_remove', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

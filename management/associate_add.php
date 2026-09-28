@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/cohort/lib.php');
@@ -61,20 +60,25 @@ require_capability('moodle/cohort:assign', $cohortcontext);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/associate_add.php', ['tenantid' => $tenant->id]);
 $PAGE->set_context($context);
+$title = get_string('associate_add', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $returnurl = new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $tenant->id]);
 
-$form = new \tool_mutenancy\local\form\associate_add(null, ['tenant' => $tenant, 'cohort' => $cohort, 'context' => $context]);
+$form = new \tool_mutenancy\local\form\associate_add($PAGE->url, [], ['tenant' => $tenant, 'cohort' => $cohort]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     foreach ($data->userids as $userid) {
         cohort_add_member($cohort->id, $userid);
     }
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

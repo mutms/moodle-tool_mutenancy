@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 use tool_mutenancy\local\tenant;
 
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var moodle_database $DB */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -46,6 +45,11 @@ if (!tenancy::is_active()) {
 
 $PAGE->set_url('/admin/tool/mutenancy/management/tenant_create.php');
 $PAGE->set_context($context);
+$title = tenancy::get_tenant_string('tenant_create');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $returnurl = new \core\url('/admin/tool/mutenancy/index.php');
 
@@ -54,16 +58,16 @@ if ($tenantlimit && $tenantlimit <= $DB->count_records('tool_mutenancy_tenant', 
     throw new \core\exception\invalid_parameter_exception('Tenant limit reached');
 }
 
-$form = new \tool_mutenancy\local\form\tenant_create(null, ['context' => $context]);
+$form = new \tool_mutenancy\local\form\tenant_create($PAGE->url, [], ['context' => $context]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     $tenant = tenant::create($data);
     $returnurl = new \core\url('/admin/tool/mutenancy/tenant.php', ['id' => $tenant->id]);
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

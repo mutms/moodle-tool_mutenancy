@@ -19,6 +19,13 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\filemanager;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
 use tool_mutenancy\local\config;
 
 /**
@@ -28,75 +35,29 @@ use tool_mutenancy\local\config;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class logos_edit extends \tool_mulib\local\ajax_form {
+final class logos_edit extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $currentdata = $this->_customdata['currentdata'];
-        $tenant = $this->_customdata['tenant'];
+        $tenant = $this->get_extra_data()['tenant'];
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setDefault('id', $tenant->id);
+        foreach (['logo', 'logocompact', 'favicon'] as $name) {
+            $options = ($name === 'favicon') ? self::get_favicon_options() : self::get_logo_options();
 
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'logo_override', get_string('config_override', 'tool_mutenancy'));
-        $mform->addGroup(
-            $group,
-            'logo_group',
-            '<div>' . get_string('logo', 'core_admin') . '<div class="small text-muted">core_admin | logo</div></div>',
-            ' ',
-            false
-        );
-        $mform->addElement('filemanager', 'logo', '<span class="accesshide">' . get_string('logo', 'core_admin') . '</span>', null, self::get_logo_options());
-        if (config::is_overridden($tenant->id, 'core_admin', 'logo')) {
-            $mform->setDefault('logo_override', '1');
-        } else {
-            $mform->setDefault('logo_override', '0');
+            $override = new checkbox($name . '_override', get_string($name, 'core_admin'), get_string('config_override', 'tool_mutenancy'));
+            $override->set_default(config::is_overridden($tenant->id, 'core_admin', $name) ? 1 : 0);
+            $this->add($override);
+
+            $this->add(new filemanager($name, get_string($name, 'core_admin'), 1, $options['accepted_types']));
+
+            $html = markdown_to_html(get_string($name . '_desc', 'core_admin')) . \html_writer::div('core_admin | ' . $name, 'small text-muted');
+            $this->add(new inforawhtml($name . '_desc', '', $html));
+
+            $this->get_display_manager()->hide_if($name, $name . '_override', 'notchecked');
         }
-        $mform->hideIf('logo', 'logo_override', 'eq', '0');
-        $mform->setDefault('logo', $currentdata->logo);
-        $mform->addElement('static', 'logo_desc', '', markdown_to_html(get_string('logo_desc', 'core_admin')));
 
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'logocompact_override', get_string('config_override', 'tool_mutenancy'));
-        $mform->addGroup(
-            $group,
-            'logocompact_group',
-            '<div>' . get_string('logocompact', 'core_admin') . '<div class="small text-muted">core_admin | logocompact</div></div>',
-            ' ',
-            false
-        );
-        $mform->addElement('filemanager', 'logocompact', '<span class="accesshide">' . get_string('logocompact', 'core_admin') . '</span>', null, self::get_logo_options());
-        if (config::is_overridden($tenant->id, 'core_admin', 'logocompact')) {
-            $mform->setDefault('logocompact_override', '1');
-        } else {
-            $mform->setDefault('logocompact_override', '0');
-        }
-        $mform->hideIf('logocompact', 'logocompact_override', 'eq', '0');
-        $mform->setDefault('logocompact', $currentdata->logocompact);
-        $mform->addElement('static', 'logocompact_desc', '', markdown_to_html(get_string('logocompact_desc', 'core_admin')));
-
-        $group = [];
-        $group[] = $mform->createElement('advcheckbox', 'favicon_override', get_string('config_override', 'tool_mutenancy'));
-        $mform->addGroup(
-            $group,
-            'favicon_group',
-            '<div>' . get_string('favicon', 'core_admin') . '<div class="small text-muted">core_admin | favicon</div></div>',
-            ' ',
-            false
-        );
-        $mform->addElement('filemanager', 'favicon', '<span class="accesshide">' . get_string('favicon', 'core_admin') . '</span>', null, self::get_favicon_options());
-        if (config::is_overridden($tenant->id, 'core_admin', 'favicon')) {
-            $mform->setDefault('favicon_override', '1');
-        } else {
-            $mform->setDefault('favicon_override', '0');
-        }
-        $mform->hideIf('favicon', 'favicon_override', 'eq', '0');
-        $mform->setDefault('favicon', $currentdata->favicon);
-        $mform->addElement('static', 'favicon_desc', '', markdown_to_html(get_string('favicon_desc', 'core_admin')));
-
-        $this->add_action_buttons(true, get_string('update'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('update')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     /**

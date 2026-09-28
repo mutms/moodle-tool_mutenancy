@@ -106,26 +106,27 @@ Feature: Multi-tenancy features of browse users page
 
     When I click on "Actions" "link" in the "Nulty Student" "table_row"
     And I click on "Allocate user" "link" in the "Nulty Student" "table_row"
-    And I set the following fields in the ".modal-dialog" "css_element" to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant | Tenant 1 |
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
       | First name     | Email address        | Tenant   |
       | Nulty Student  | student0@example.com | Tenant 1 |
 
     When I click on "Actions" "link" in the "Nulty Student" "table_row"
     And I click on "Allocate user" "link" in the "Nulty Student" "table_row"
-    And I set the following fields in the ".modal-dialog" "css_element" to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant | Tenant 2 |
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then the following should exist in the "reportbuilder-table" table:
       | First name     | Email address        | Tenant   |
       | Nulty Student  | student0@example.com | Tenant 2 |
 
     When I click on "Actions" "link" in the "Nulty Student" "table_row"
     And I click on "Allocate user" "link" in the "Nulty Student" "table_row"
-    And I click on "Tenant 2" "text" in the ".modal-dialog" "css_element"
-    And I click on "Allocate user" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Tenant | |
+    And I click on "Allocate user" "button" in the "dialog[open]" "css_element"
     Then I should not see "Tenant" in the "Nulty Student" "table_row"
 
   Scenario: Site admin may bulk allocate tenant members
@@ -136,7 +137,7 @@ Feature: Multi-tenancy features of browse users page
     And I click on "Druhy Student" "checkbox"
     And the "Bulk user actions" select box should contain "Allocate users to tenant"
     And I set the field "Bulk user actions" to "Allocate users to tenant"
-    And I set the following fields to these values:
+    And I set the following muform fields:
       | Tenant | Tenant 1 |
     And I press "Allocate users to tenant"
     Then the following should exist in the "reportbuilder-table" table:

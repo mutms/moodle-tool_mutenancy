@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/cohort/lib.php');
@@ -64,6 +63,11 @@ $user = $DB->get_record('user', ['id' => $userid, 'tenantid' => null]);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/associate_remove.php', ['tenantid' => $tenant->id, 'id' => $user->id]);
 $PAGE->set_context($context);
+$title = get_string('associate_remove', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $returnurl = new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $tenant->id]);
 
@@ -71,15 +75,16 @@ if (!$DB->record_exists('cohort_members', ['cohortid' => $cohort->id, 'userid' =
     redirect($returnurl);
 }
 
-$form = new \tool_mutenancy\local\form\associate_remove(null, ['tenant' => $tenant, 'cohort' => $cohort, 'user' => $user]);
+$extra = ['tenant' => $tenant, 'cohort' => $cohort, 'user' => $user];
+$form = new \tool_mutenancy\local\form\associate_remove($PAGE->url, [], $extra);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     cohort_remove_member($cohort->id, $user->id);
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

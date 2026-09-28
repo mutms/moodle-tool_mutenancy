@@ -32,27 +32,33 @@ Feature: Tenant appearance logos
 
     When I am on the "TEN1" "tool_mutenancy > Tenant appearance" page
     And I press "Edit logos"
-    And I set the field "logo_override" to "1"
-    And I upload "admin/tool/mutenancy/tests/fixtures/logo_red.png" file to "Logo" filemanager
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | logo_override | 1 |
+    And I upload "admin/tool/mutenancy/tests/fixtures/logo_red.png" file to "Logo" muform filemanager
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     And I press "Edit logos"
-    And I set the field "logocompact_override" to "1"
-    And I upload "admin/tool/mutenancy/tests/fixtures/logo_green.png" file to "Compact logo" filemanager
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | logocompact_override | 1 |
+    And I upload "admin/tool/mutenancy/tests/fixtures/logo_green.png" file to "Compact logo" muform filemanager
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     And I press "Edit logos"
-    And I set the field "favicon_override" to "1"
-    And I upload "admin/tool/mutenancy/tests/fixtures/logo_blue.png" file to "Favicon" filemanager
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | favicon_override | 1 |
+    And I upload "admin/tool/mutenancy/tests/fixtures/logo_blue.png" file to "Favicon" muform filemanager
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should not see "Default" in the "Logo" definition list item
     And I should not see "Default" in the "Compact logo" definition list item
     And I should not see "Default" in the "Favicon" definition list item
 
     When I am on the "TEN2" "tool_mutenancy > Tenant appearance" page
     And I press "Edit logos"
-    And I set the field "logo_override" to "1"
-    And I set the field "logocompact_override" to "1"
-    And I set the field "favicon_override" to "1"
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | logo_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | logocompact_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | favicon_override | 1 |
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should see "None" in the "Logo" definition list item
     And I should see "None" in the "Compact logo" definition list item
     And I should not see "Default" in the "Logo" definition list item
@@ -121,21 +127,21 @@ Feature: Tenant appearance logos
     Then I perform a visual check "I should see Yellow logo in navbar and Cyan favicon"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 1         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Green logo in navbar and Blue favicon"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 2         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see not see logo in navbar and favicon is standard hat"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 3         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Yellow logo in navbar and Cyan favicon"
 
     And I log out

@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $USER */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -49,6 +48,11 @@ $user = $DB->get_record('user', ['id' => $userid, 'deleted' => 0], '*', MUST_EXI
 
 $PAGE->set_url('/admin/tool/mutenancy/management/user_allocate.php', ['id' => $user->id]);
 $PAGE->set_context($syscontext);
+$title = get_string('user_allocate', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 if (isguestuser($user) || is_siteadmin($user)) {
     throw new \core\exception\invalid_parameter_exception('guests and admins cannot be allocated');
@@ -57,26 +61,27 @@ if ($USER->id == $user->id) {
     throw new \core\exception\invalid_parameter_exception('cannot allocate own account');
 }
 
-$form = new \tool_mutenancy\local\form\user_allocate(null, ['user' => $user, 'context' => $syscontext]);
+$current = ['tenantid' => $user->tenantid ? (string)$user->tenantid : null];
+$form = new \tool_mutenancy\local\form\user_allocate($PAGE->url, $current, ['user' => $user]);
 
 if ($form->is_cancelled()) {
     if ($user->tenantid) {
-        $returnurl = new \core\url('/admin/tool/mutenancy/tenant_members', ['id' => $user->tenantid]);
+        $returnurl = new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $user->tenantid]);
     } else {
         $returnurl = new \core\url('/admin/tool/user.php');
     }
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     $user = \tool_mutenancy\local\user::allocate($user->id, (int)$data->tenantid);
 
     if ($user->tenantid) {
-        $returnurl = new \core\url('/admin/tool/mutenancy/tenant_members', ['id' => $user->tenantid]);
+        $returnurl = new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $user->tenantid]);
     } else {
         $returnurl = new \core\url('/admin/tool/user.php');
     }
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

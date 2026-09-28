@@ -19,6 +19,12 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Bulk user deallocation form.
  *
@@ -26,11 +32,10 @@ namespace tool_mutenancy\local\form;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class bulk_deallocate extends \tool_mulib\local\ajax_form {
+final class bulk_deallocate extends form {
     #[\Override]
     protected function definition(): void {
         global $DB, $SESSION;
-        $mform = $this->_form;
 
         [$in, $params] = $DB->get_in_or_equal($SESSION->bulk_users);
         $userlist = $DB->get_records_select_menu('user', "id $in", $params, 'fullname', 'id,' . $DB->sql_fullname() . ' AS fullname', 0, 2000);
@@ -42,12 +47,10 @@ final class bulk_deallocate extends \tool_mulib\local\ajax_form {
         $info = '<div class="alert alert-warning">'
             . clean_text(markdown_to_html(get_string('bulk_deallocate_info', 'tool_mutenancy', $usernames)))
             . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        $mform->addElement('hidden', 'returnurl');
-        $mform->setType('returnurl', PARAM_LOCALURL);
-        $mform->setDefault('returnurl', $this->_customdata['returnurl']);
-
-        $this->add_action_buttons(true, get_string('bulk_deallocate', 'tool_mutenancy'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('bulk_deallocate', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

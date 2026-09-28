@@ -33,7 +33,7 @@ use webservice;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class member_edit extends \tool_mulib\local\ajax_form {
+final class member_edit extends \moodleform {
     #[\Override]
     public function definition() {
         global $CFG;
@@ -85,7 +85,7 @@ final class member_edit extends \tool_mulib\local\ajax_form {
             }
         }
 
-        $purpose = user_edit_map_field_purpose($userid, 'username');
+        $purpose = \core\user::edit_map_field_purpose($userid, 'username');
         $mform->addElement('text', 'username', get_string('username'), 'size="20"' . $purpose);
         $mform->addHelpButton('username', 'username', 'auth');
         $mform->setType('username', PARAM_RAW);
@@ -108,7 +108,7 @@ final class member_edit extends \tool_mulib\local\ajax_form {
             $mform->addElement('static', 'passwordpolicyinfo', '', print_password_policy());
         }
 
-        $purpose = user_edit_map_field_purpose($userid, 'password');
+        $purpose = \core\user::edit_map_field_purpose($userid, 'password');
         $mform->addElement('passwordunmask', 'newpassword', get_string('newpassword'),
             'maxlength="'.MAX_PASSWORD_CHARACTERS.'" size="20"' . $purpose);
         $mform->addRule('newpassword', get_string('maximumchars', '', MAX_PASSWORD_CHARACTERS),
@@ -149,7 +149,7 @@ final class member_edit extends \tool_mulib\local\ajax_form {
             $mform->removeElement('imagealt');
             $mform->removeElement('moodle_picture');
         } else {
-            $mform->setExpanded('moodle_picture', false); // Do not expand anything to fit ajax form.
+            $mform->setExpanded('moodle_picture', false);
         }
 
         // Next the customisable profile fields.

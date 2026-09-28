@@ -26,15 +26,14 @@
  */
 
 use tool_mutenancy\local\tenancy;
-use tool_mutenancy\local\appearance;
 use tool_mutenancy\local\config;
+use tool_mulib\muform\handler;
+use tool_mulib\muform\util\file_area;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -56,24 +55,24 @@ $syscontext = context_system::instance();
 
 $PAGE->set_url('/admin/tool/mutenancy/management/theme_boost_edit.php', ['id' => $tenant->id]);
 $PAGE->set_context($context);
+$title = get_string('boost_edit', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-$returnurl = new \core\url('/admin/tool/tenant_appearance.php', ['id' => $tenant->id]);
+$handler = handler::from_request();
 
-$currentdata = (object)[
-    'id' => $tenant->id,
-    'backgroundimage' => file_get_submitted_draft_itemid('backgroundimage'),
-    'loginbackgroundimage' => file_get_submitted_draft_itemid('loginbackgroundimage'),
-];
+$returnurl = new \core\url('/admin/tool/mutenancy/tenant_appearance.php', ['id' => $tenant->id]);
 
 $logooptions = \tool_mutenancy\local\form\theme_boost_edit::get_logo_options();
 
-file_prepare_draft_area($currentdata->backgroundimage, $context->id, 'theme_boost', 'backgroundimage', 0, $logooptions);
-file_prepare_draft_area($currentdata->loginbackgroundimage, $context->id, 'theme_boost', 'loginbackgroundimage', 0, $logooptions);
-
-$form = new \tool_mutenancy\local\form\theme_boost_edit(null, ['currentdata' => $currentdata, 'tenant' => $tenant]);
+$currentdata = [
+    'backgroundimage' => new file_area($context, 'theme_boost', 'backgroundimage', 0),
+    'loginbackgroundimage' => new file_area($context, 'theme_boost', 'loginbackgroundimage', 0),
+];
+$form = new \tool_mutenancy\local\form\theme_boost_edit($PAGE->url, $currentdata, ['tenant' => $tenant]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
@@ -81,7 +80,7 @@ if ($data = $form->get_data()) {
 
     if (isset($data->preset_override)) {
         if ($data->preset_override) {
-            config::override($tenant->id, 'preset', $data->preset, 'theme_boost');
+            config::override($tenant->id, 'preset', (string)$data->preset, 'theme_boost');
         } else {
             config::override($tenant->id, 'preset', null, 'theme_boost');
         }
@@ -145,13 +144,12 @@ if ($data = $form->get_data()) {
         }
     }
 
-    if (appearance::has_custom_css($tenant->id, 'boost')) {
-        theme_reset_all_caches();
-    }
+    // Removed overrides must reset the theme caches too.
+    theme_reset_all_caches();
 
     \tool_mutenancy\event\appearance_updated::create_from_tenant($tenant)->trigger();
 
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

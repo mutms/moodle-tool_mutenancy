@@ -19,6 +19,12 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Multi-tenancy deactivation form.
  *
@@ -26,14 +32,15 @@ namespace tool_mutenancy\local\form;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenancy_deactivate extends \tool_mulib\local\ajax_form {
+final class tenancy_deactivate extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
 
         $info = '<div class="alert alert-info">' . markdown_to_html(get_string('tenancy_deactivate_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        $this->add_action_buttons(true, get_string('tenancy_deactivate', 'tool_mutenancy'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('tenancy_deactivate', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

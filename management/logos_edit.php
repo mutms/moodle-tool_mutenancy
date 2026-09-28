@@ -26,13 +26,13 @@
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\config;
+use tool_mulib\muform\util\file_area;
+use tool_mulib\muform\handler;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var stdClass $CFG */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -52,27 +52,26 @@ require_capability('tool/mutenancy:configappearance', $context);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/logos_edit.php', ['id' => $tenant->id]);
 $PAGE->set_context($context);
+$title = get_string('logos_edit', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
 
-$returnurl = new \core\url('/admin/tool/tenant_appearance.php', ['id' => $tenant->id]);
+$handler = handler::from_request();
 
-$currentdata = (object)[
-    'id' => $tenant->id,
-    'logo' => file_get_submitted_draft_itemid('logo'),
-    'logocompact' => file_get_submitted_draft_itemid('logocompact'),
-    'favicon' => file_get_submitted_draft_itemid('favicon'),
-];
+$returnurl = new \core\url('/admin/tool/mutenancy/tenant_appearance.php', ['id' => $tenant->id]);
 
 $logooptions = \tool_mutenancy\local\form\logos_edit::get_logo_options();
 $faviconoptions = \tool_mutenancy\local\form\logos_edit::get_favicon_options();
 
-file_prepare_draft_area($currentdata->logo, $context->id, 'core_admin', 'logo', 0, $logooptions);
-file_prepare_draft_area($currentdata->logocompact, $context->id, 'core_admin', 'logocompact', 0, $logooptions);
-file_prepare_draft_area($currentdata->favicon, $context->id, 'core_admin', 'favicon', 0, $faviconoptions);
-
-$form = new \tool_mutenancy\local\form\logos_edit(null, ['currentdata' => $currentdata, 'tenant' => $tenant]);
+$currentdata = [
+    'logo' => new file_area($context, 'core_admin', 'logo', 0),
+    'logocompact' => new file_area($context, 'core_admin', 'logocompact', 0),
+    'favicon' => new file_area($context, 'core_admin', 'favicon', 0),
+];
+$form = new \tool_mutenancy\local\form\logos_edit($PAGE->url, $currentdata, ['tenant' => $tenant]);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
@@ -126,17 +125,12 @@ if ($data = $form->get_data()) {
         }
     }
 
-    if (
-        config::is_overridden($tenant->id, 'core_admin', 'logo')
-        || config::is_overridden($tenant->id, 'logocompact', 'core_admin')
-        || config::is_overridden($tenant->id, 'favicon', 'core_admin')
-    ) {
-        theme_reset_all_caches();
-    }
+    // Logos are cached in themes, removed overrides included.
+    theme_reset_all_caches();
 
     \tool_mutenancy\event\appearance_updated::create_from_tenant($tenant)->trigger();
 
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

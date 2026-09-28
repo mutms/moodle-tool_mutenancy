@@ -14,18 +14,18 @@ Feature: Tenant authentication setting registerauth
     And I am on the "TEN2" "tool_mutenancy > Tenant authentication" page
     And I should see "Default value (Email-based self-registration)" in the "Self registration" definition list item
     And I press "Update authentication"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | registerauth_override   | 1                   |
       | registerauth            | Disabled            |
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     And I should see "Disabled" in the "Self registration" definition list item
     And I am on the "TEN3" "tool_mutenancy > Tenant authentication" page
     And I should see "Default value (Email-based self-registration)" in the "Self registration" definition list item
     And I press "Update authentication"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | registerauth_override   | 1                   |
       | registerauth            | email               |
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     And I should see "Email-based self-registration" in the "Self registration" definition list item
     And I log out
 

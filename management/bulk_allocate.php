@@ -51,17 +51,17 @@ $syscontext = context_system::instance();
 require_login();
 require_capability('tool/mutenancy:allocate', $syscontext);
 
-$PAGE->set_url('/admin/tool/mutenancy/management/bulk_allocate.php');
+$PAGE->set_url('/admin/tool/mutenancy/management/bulk_allocate.php', ['returnurl' => $returnurl->out_as_local_url(false)]);
 $PAGE->set_context($syscontext);
 
-$form = new \tool_mutenancy\local\form\bulk_allocate(null, ['returnurl' => $returnurl->out_as_local_url(false)]);
+$form = new \tool_mutenancy\local\form\bulk_allocate($PAGE->url, []);
 
 if ($form->is_cancelled()) {
     redirect($returnurl);
 }
 
 if ($data = $form->get_data()) {
-    $tenantid = $data->tenantid;
+    $tenantid = (int)$data->tenantid;
     foreach ($SESSION->bulk_users as $userid) {
         if (is_siteadmin($userid)) {
             continue;
@@ -80,6 +80,6 @@ if ($data = $form->get_data()) {
 
 echo $OUTPUT->header();
 
-$form->display();
+echo $form->render($OUTPUT);
 
 echo $OUTPUT->footer();

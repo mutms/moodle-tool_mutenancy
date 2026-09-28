@@ -24,14 +24,12 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use tool_mulib\muform\handler;
 use tool_mutenancy\local\tenancy;
-use tool_mutenancy\local\tenant;
 
 /** @var moodle_database $DB */
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../config.php');
 
@@ -51,15 +49,22 @@ if (!tenancy::can_switch()) {
     redirect($returnurl);
 }
 
-$form = new \tool_mutenancy\local\form\tenant_switch(null, []);
+$title = tenancy::get_tenant_string('tenant_switch');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
+
+$current = ['tenantid' => (string)(int)tenancy::get_current_tenantid()];
+$form = new \tool_mutenancy\local\form\tenant_switch($PAGE->url, $current);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
-    tenancy::switch($data->tenantid);
-    $form->ajax_form_submitted($returnurl);
+    tenancy::switch((int)$data->tenantid);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);

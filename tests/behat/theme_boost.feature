@@ -32,17 +32,23 @@ Feature: Tenant Boost theme settings
 
     When I am on the "TEN1" "tool_mutenancy > Tenant appearance" page
     And I press "Edit Boost"
-    And I set the field "preset_override" to "1"
-    And I set the field "preset" to "plain.scss"
-    And I set the field "backgroundimage_override" to "1"
-    And I upload "admin/tool/mutenancy/tests/fixtures/logo_red.png" file to "Background image" filemanager
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | preset_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | preset | plain.scss |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | backgroundimage_override | 1 |
+    And I upload "admin/tool/mutenancy/tests/fixtures/logo_red.png" file to "Background image" muform filemanager
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     And I press "Edit Boost"
-    And I set the field "loginbackgroundimage_override" to "1"
-    And I upload "admin/tool/mutenancy/tests/fixtures/logo_green.png" file to "Login page background image" filemanager
-    And I set the field "brandcolor_override" to "1"
-    And I set the field "brandcolor" to "blue"
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | loginbackgroundimage_override | 1 |
+    And I upload "admin/tool/mutenancy/tests/fixtures/logo_green.png" file to "Login page background image" muform filemanager
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | brandcolor_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | brandcolor | blue |
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should see "plain.scss" in the "Theme preset" definition list item
     And I should not see "Default" in the "Theme preset" definition list item
     And I should see "blue" in the "Brand colour" definition list item
@@ -52,11 +58,15 @@ Feature: Tenant Boost theme settings
 
     When I am on the "TEN2" "tool_mutenancy > Tenant appearance" page
     And I press "Edit Boost"
-    And I set the field "preset_override" to "1"
-    And I set the field "backgroundimage_override" to "1"
-    And I set the field "loginbackgroundimage_override" to "1"
-    And I set the field "brandcolor_override" to "1"
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | preset_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | backgroundimage_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | loginbackgroundimage_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | brandcolor_override | 1 |
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should see "default.scss" in the "Theme preset" definition list item
     And I should not see "Default" in the "Theme preset" definition list item
     And I should see "None" in the "Background image" definition list item
@@ -127,21 +137,21 @@ Feature: Tenant Boost theme settings
     Then I perform a visual check "I should see Magenta background, Cyan brand colour and plain preset"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 1         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Red background, Blue brand colour and plain preset"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 2         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see no background, no brand colour and standard preset"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 3         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Magenta background, Cyan brand colour and plain preset"
 
     And I log out
@@ -164,11 +174,15 @@ Feature: Tenant Boost theme settings
 
     When I am on the "TEN1" "tool_mutenancy > Tenant appearance" page
     And I press "Edit Boost"
-    And I set the field "scsspre_override" to "1"
-    And I set the field "Raw initial SCSS" to "$body-color: pink;"
-    And I set the field "scss_override" to "1"
-    And I set the field "Raw SCSS" to "body {background-color: red}"
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scsspre_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scsspre | $body-color: pink; |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scss_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scss | body {background-color: red} |
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should see "$body-color: pink;" in the "Raw initial SCSS" definition list item
     And I should not see "Default" in the "Raw initial SCSS" definition list item
     And I should see "body {background-color: red}" in the "Raw SCSS" definition list item
@@ -176,9 +190,11 @@ Feature: Tenant Boost theme settings
 
     When I am on the "TEN2" "tool_mutenancy > Tenant appearance" page
     And I press "Edit Boost"
-    And I set the field "scsspre_override" to "1"
-    And I set the field "scss_override" to "1"
-    And I click on "Update" "button" in the ".modal-dialog" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scsspre_override | 1 |
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | scss_override | 1 |
+    And I click on "Update" "button" in the "dialog[open]" "css_element"
     Then I should see "None" in the "Raw initial SCSS" definition list item
     And I should not see "Default" in the "Raw initial SCSS" definition list item
     And I should see "None" in the "Raw SCSS" definition list item
@@ -215,19 +231,19 @@ Feature: Tenant Boost theme settings
     Then I perform a visual check "I should see Green background and Orange text"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 1         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Red background and Pink text"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 2         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see no background, and normal text"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 3         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I perform a visual check "I should see Green background and Orange text"

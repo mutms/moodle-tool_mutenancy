@@ -33,8 +33,6 @@ use tool_mutenancy\local\tenancy;
 /** @var moodle_database $DB */
 /** @var stdClass $USER */
 
-define('AJAX_SCRIPT', true);
-
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir . '/gdlib.php');
 require_once($CFG->libdir . '/filelib.php');
@@ -113,7 +111,7 @@ $userform = new \tool_mutenancy\local\form\member_edit(null, [
 $returnurl = new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $user->tenantid]);
 
 if ($userform->is_cancelled()) {
-    $userform->ajax_form_cancelled($returnurl);
+    redirect($returnurl);
 } else if ($usernew = $userform->get_data()) {
     $user = $DB->get_record('user', ['id' => $user->id, 'deleted' => 0], '*', MUST_EXIST);
 
@@ -192,9 +190,18 @@ if ($userform->is_cancelled()) {
     // Trigger update event, after all fields are stored.
     \core\event\user_updated::create_from_userid($user->id)->trigger();
 
-    $userform->ajax_form_submitted($returnurl);
+    redirect($returnurl);
 }
 
 $PAGE->set_heading(fullname($user, true));
 
-$userform->ajax_form_render(get_string('member_update', 'tool_mutenancy'));
+$title = get_string('member_update', 'tool_mutenancy');
+$PAGE->set_title($title);
+if (!$PAGE->heading) {
+    $PAGE->set_heading($title);
+}
+
+echo $OUTPUT->header();
+echo $OUTPUT->heading($title);
+$userform->display();
+echo $OUTPUT->footer();

@@ -62,7 +62,7 @@ if ($tenant->assoccohortid) {
         $acohortcontext = context::instance_by_id($acohort->contextid);
         if (has_capability('moodle/cohort:assign', $acohortcontext)) {
             $url = new \core\url('/admin/tool/mutenancy/management/associate_add.php', ['tenantid' => $tenant->id]);
-            $button = new tool_mulib\output\ajax_form\button($url, get_string('associate_add', 'tool_mutenancy'));
+            $button = new tool_mulib\output\muform\dialog\button($url, get_string('associate_add', 'tool_mutenancy'));
             $buttons[] = $OUTPUT->render($button);
         }
     }
@@ -79,9 +79,8 @@ if (has_capability('tool/mutenancy:membercreate', $context)) {
 
     if (!$limitreached) {
         $url = new \core\url('/admin/tool/mutenancy/management/member_create.php', ['tenantid' => $tenant->id]);
-        $button = new tool_mulib\output\ajax_form\button($url, get_string('member_create', 'tool_mutenancy'));
-        $button->set_form_size('xl');
-        $buttons[] = $OUTPUT->render($button);
+        // Full page, the form is extended with user profile fields.
+        $buttons[] = $OUTPUT->single_button($url, get_string('member_create', 'tool_mutenancy'), 'get');
     }
 }
 

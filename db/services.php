@@ -83,37 +83,4 @@ $functions = [
         'capabilities'  => 'tool/mutenancy:allocate',
     ],
 
-    // Form autocomplete ajax stuff.
-
-    'tool_mutenancy_form_autocomplete_tenant_assoccohortid' => [
-        'classname' => tool_mutenancy\external\form_autocomplete\tenant_assoccohortid::class,
-        'description' => 'Return list of cohorts for tenant associated users.',
-        'type' => 'read',
-        'ajax' => true,
-        'loginrequired' => true,
-    ],
-
-    'tool_mutenancy_form_autocomplete_tenant_managers_userids' => [
-        'classname' => tool_mutenancy\external\form_autocomplete\tenant_managers_userids::class,
-        'description' => 'Return list of candidate users for tenant managers.',
-        'type' => 'read',
-        'ajax' => true,
-        'loginrequired' => true,
-    ],
-
-    'tool_mutenancy_form_autocomplete_associate_add_userids' => [
-        'classname' => tool_mutenancy\external\form_autocomplete\associate_add_userids::class,
-        'description' => 'Return list of candidate users for tenant association.',
-        'type' => 'read',
-        'ajax' => true,
-        'loginrequired' => true,
-    ],
-
-    'tool_mutenancy_form_autocomplete_user_allocate_tenantid' => [
-        'classname' => tool_mutenancy\external\form_autocomplete\user_allocate_tenantid::class,
-        'description' => 'Return list of tenant candidates for tenant managers.',
-        'type' => 'read',
-        'ajax' => true,
-        'loginrequired' => true,
-    ],
 ];

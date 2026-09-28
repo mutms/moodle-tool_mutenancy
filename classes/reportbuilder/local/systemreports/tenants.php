@@ -146,7 +146,7 @@ final class tenants extends system_report {
         }
 
         $url = new \core\url('/admin/tool/mutenancy/management/tenant_update.php', ['id' => ':id']);
-        $link = new \tool_mulib\output\ajax_form\link($url, new lang_string('edit', 'moodle'), 't/edit');
+        $link = new \tool_mulib\output\muform\dialog\link($url, new lang_string('edit', 'moodle'), 't/edit');
         $link->set_modal_title(tenancy::get_tenant_string('tenant_update'));
         $link->set_form_size('lg');
         $this->add_action($link->create_report_action()

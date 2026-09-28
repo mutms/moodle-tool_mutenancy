@@ -19,9 +19,17 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mutenancy\external\form_autocomplete\tenant_assoccohortid;
-use tool_mutenancy\local\tenant;
+use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\checkbox;
+use tool_mulib\muform\element\number;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\text;
+use tool_mulib\muform\form;
 use tool_mutenancy\local\tenancy;
+use tool_mutenancy\local\tenant;
+use tool_mutenancy\muform\autocomplete\tenant_assoccohortid;
 
 /**
  * Create a new tenant form.
@@ -30,100 +38,73 @@ use tool_mutenancy\local\tenancy;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_create extends \tool_mulib\local\ajax_form {
+final class tenant_create extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $context = $this->_customdata['context'];
+        $context = $this->get_extra_data()['context'];
 
-        $mform->addElement('text', 'name', get_string('tenant_name', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', get_string('required'), 'required', null, 'client');
+        $name = new text('name', get_string('tenant_name', 'tool_mutenancy'), ['maxlength' => 255]);
+        $name->set_required(true);
+        $this->add($name);
 
-        $mform->addElement('text', 'idnumber', get_string('tenant_idnumber', 'tool_mutenancy'), ['maxlength' => 50]);
-        $mform->setType('idnumber', PARAM_RAW);
-        $mform->addRule('idnumber', get_string('required'), 'required', null, 'client');
+        $idnumber = new text('idnumber', get_string('tenant_idnumber', 'tool_mutenancy'), ['type' => 'rawtext', 'maxlength' => 50]);
+        $idnumber->set_required(true);
+        $this->add($idnumber);
 
-        $mform->addElement('advcheckbox', 'loginshow', get_string('tenant_loginshow', 'tool_mutenancy'));
+        $this->add(new checkbox('loginshow', get_string('tenant_loginshow', 'tool_mutenancy')));
 
-        $mform->addElement('text', 'memberlimit', get_string('tenant_memberlimit', 'tool_mutenancy'), ['size' => 5]);
-        $mform->setType('memberlimit', PARAM_INT);
-        $mform->addHelpButton('memberlimit', 'tenant_memberlimit', 'tool_mutenancy');
+        $memberlimit = new number('memberlimit', get_string('tenant_memberlimit', 'tool_mutenancy'), ['min' => 0, 'width' => 'small']);
+        $memberlimit->add_help_button('tenant_memberlimit', 'tool_mutenancy');
+        $this->add($memberlimit);
 
-        tenant_assoccohortid::add_element(
-            $mform,
-            ['tenantid' => 0],
-            'assoccohortid',
-            get_string('associate_cohort', 'tool_mutenancy'),
-            $context
-        );
-        $mform->setType('assoccohortid', PARAM_INT);
-        $mform->addHelpButton('assoccohortid', 'associate_cohort', 'tool_mutenancy');
+        $source = new tenant_assoccohortid(0);
+        $assoccohortid = new autocomplete('assoccohortid', get_string('associate_cohort', 'tool_mutenancy'), $source);
+        $assoccohortid->add_help_button('associate_cohort', 'tool_mutenancy');
+        $this->add($assoccohortid);
 
         if (has_capability('moodle/cohort:manage', $context)) {
-            $mform->addElement('advcheckbox', 'assoccohortcreate', get_string('associate_cohort_create', 'tool_mutenancy'));
-            $mform->addHelpButton('assoccohortcreate', 'associate_cohort_create', 'tool_mutenancy');
-            $mform->hideIf('assoccohortid', 'assoccohortcreate', 'eq', 1);
+            $create = new checkbox('assoccohortcreate', get_string('associate_cohort_create', 'tool_mutenancy'));
+            $create->add_help_button('associate_cohort_create', 'tool_mutenancy');
+            $this->add($create);
+            $this->get_display_manager()->hide_if('assoccohortid', 'assoccohortcreate', 'checked');
         }
 
-        $mform->addElement('text', 'sitefullname', get_string('tenant_sitefullname', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('sitefullname', PARAM_TEXT);
+        $this->add(new text('sitefullname', get_string('tenant_sitefullname', 'tool_mutenancy'), ['maxlength' => 255]));
+        $this->add(new text('siteshortname', get_string('tenant_siteshortname', 'tool_mutenancy'), ['maxlength' => 255]));
 
-        $mform->addElement('text', 'siteshortname', get_string('tenant_siteshortname', 'tool_mutenancy'), ['maxlength' => 255]);
-        $mform->setType('siteshortname', PARAM_TEXT);
+        $categoryname = new text('categoryname', get_string('tenant_categoryname', 'tool_mutenancy'), ['maxlength' => 255]);
+        $this->add($categoryname);
+        $this->add(new text('categoryidnumber', get_string('tenant_categoryidnumber', 'tool_mutenancy'), ['maxlength' => 255]));
 
-        $mform->addElement('text', 'categoryname', get_string('tenant_categoryname', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('categoryname', PARAM_TEXT);
+        $cohortname = new text('cohortname', get_string('tenant_cohortname', 'tool_mutenancy'), ['maxlength' => 255]);
+        $this->add($cohortname);
+        $this->add(new text('cohortidnumber', get_string('tenant_cohortidnumber', 'tool_mutenancy'), ['maxlength' => 255]));
 
-        $mform->addElement('text', 'categoryidnumber', get_string('tenant_categoryidnumber', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('categoryidnumber', PARAM_TEXT);
-
-        $mform->addElement('text', 'cohortname', get_string('tenant_cohortname', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('cohortname', PARAM_TEXT);
-
-        $mform->addElement('text', 'cohortidnumber', get_string('tenant_cohortidnumber', 'tool_mutenancy'), ['size' => 40, 'maxlength' => 255]);
-        $mform->setType('cohortidnumber', PARAM_TEXT);
-
-        $this->add_action_buttons(true, tenancy::get_tenant_string('tenant_create'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', tenancy::get_tenant_string('tenant_create')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     #[\Override]
-    public function validation($data, $files): array {
+    protected function validation(array $data, array &$allerrors): void {
         global $DB;
-        $errors = parent::validation($data, $files);
-        $context = $this->_customdata['context'];
 
-        if (trim($data['name']) === '') {
-            $errors['name'] = get_string('required');
-        }
-
-        if (trim($data['idnumber']) === '') {
-            $errors['idnumber'] = get_string('required');
-        } else if (!preg_match(tenant::IDNUMBER_REGEX, $data['idnumber'])) {
-            $errors['idnumber'] = get_string('error');
+        if (!preg_match(tenant::IDNUMBER_REGEX, $data['idnumber'])) {
+            $allerrors['idnumber'][] = get_string('error');
         } else if ($DB->record_exists_select('tool_mutenancy_tenant', 'LOWER(idnumber) = LOWER(?)', [$data['idnumber']])) {
-            $errors['idnumber'] = get_string('duplicate');
+            $allerrors['idnumber'][] = get_string('duplicate');
         }
 
         if (trim($data['categoryidnumber']) !== '') {
             if ($DB->record_exists_select('course_categories', 'LOWER(idnumber) = LOWER(?)', [$data['categoryidnumber']])) {
-                $errors['categoryidnumber'] = get_string('duplicate');
+                $allerrors['categoryidnumber'][] = get_string('duplicate');
             }
         }
 
         if (trim($data['cohortidnumber']) !== '') {
             if ($DB->record_exists_select('cohort', 'LOWER(idnumber) = LOWER(?)', [$data['cohortidnumber']])) {
-                $errors['cohortidnumber'] = get_string('duplicate');
+                $allerrors['cohortidnumber'][] = get_string('duplicate');
             }
         }
-
-        if ($data['assoccohortid']) {
-            $error = tenant_assoccohortid::validate_value($data['assoccohortid'], ['tenantid' => 0], $context);
-            if ($error !== null) {
-                $errors['assoccohortid'] = $error;
-            }
-        }
-
-        return $errors;
     }
 }

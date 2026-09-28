@@ -20,9 +20,9 @@ Feature: Tenant management primary menu
     And I should not see "Tenant management" in the ".primary-navigation" "css_element"
 
     When I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 1         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I should see "Tenant management" in the ".primary-navigation" "css_element"
 
     When I click on "Tenant management" "link" in the ".primary-navigation" "css_element"
@@ -40,9 +40,9 @@ Feature: Tenant management primary menu
     And I log in as "admin"
     And I should not see "Tenant management" in the ".primary-navigation" "css_element"
     And I click on "Switch tenant" "link" in the ".navbar" "css_element"
-    And I set the following fields to these values:
+    And I set the following muform fields in the "dialog[open]" "css_element":
       | Tenant      | Tenant 1         |
-    And I click on "Switch tenant" "button" in the ".modal-dialog" "css_element"
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I should not see "Tenant management" in the ".primary-navigation" "css_element"
 
   Scenario: Tenant manager may see Tenant management menu

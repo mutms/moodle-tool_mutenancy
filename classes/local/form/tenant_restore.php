@@ -20,6 +20,12 @@
 namespace tool_mutenancy\local\form;
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
 
 /**
  * Restore tenant form.
@@ -28,21 +34,18 @@ use tool_mutenancy\local\tenancy;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_restore extends \tool_mulib\local\ajax_form {
+final class tenant_restore extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $tenant = $this->_customdata['tenant'];
+        $tenant = $this->get_extra_data()['tenant'];
 
         $info = '<div class="alert alert-info">' . markdown_to_html(get_string('tenant_restore_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        $mform->addElement('static', 'statictenant', get_string('tenant', 'tool_mutenancy'), format_string($tenant->name));
+        $this->add(new info('statictenant', get_string('tenant', 'tool_mutenancy'), format_string($tenant->name), info::PLAIN));
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setConstant('id', $tenant->id);
-
-        $this->add_action_buttons(true, tenancy::get_tenant_string('tenant_restore'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', tenancy::get_tenant_string('tenant_restore')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

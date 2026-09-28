@@ -19,6 +19,13 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\select;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+
 /**
  * Bulk user allocation form.
  *
@@ -26,11 +33,10 @@ namespace tool_mutenancy\local\form;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class bulk_allocate extends \tool_mulib\local\ajax_form {
+final class bulk_allocate extends form {
     #[\Override]
     protected function definition(): void {
         global $DB, $SESSION;
-        $mform = $this->_form;
 
         [$in, $params] = $DB->get_in_or_equal($SESSION->bulk_users);
         $userlist = $DB->get_records_select_menu('user', "id $in", $params, 'fullname', 'id,' . $DB->sql_fullname() . ' AS fullname', 0, 2000);
@@ -42,19 +48,18 @@ final class bulk_allocate extends \tool_mulib\local\ajax_form {
         $info = '<div class="alert alert-warning">'
             . clean_text(markdown_to_html(get_string('bulk_allocate_info', 'tool_mutenancy', $usernames)))
             . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
         $tenants = $DB->get_records_menu('tool_mutenancy_tenant', ['archived' => 0], 'name ASC', 'id, name');
         $tenants = array_map('format_string', $tenants);
         $tenants = ['' => get_string('choosedots')] + $tenants;
 
-        $mform->addElement('select', 'tenantid', get_string('tenant', 'tool_mutenancy'), $tenants);
-        $mform->addRule('tenantid', get_string('required'), 'required', null, 'client');
+        $tenant = new select('tenantid', get_string('tenant', 'tool_mutenancy'), $tenants);
+        $tenant->set_required(true);
+        $this->add($tenant);
 
-        $mform->addElement('hidden', 'returnurl');
-        $mform->setType('returnurl', PARAM_LOCALURL);
-        $mform->setDefault('returnurl', $this->_customdata['returnurl']);
-
-        $this->add_action_buttons(true, get_string('bulk_allocate', 'tool_mutenancy'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('bulk_allocate', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

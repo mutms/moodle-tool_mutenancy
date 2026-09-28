@@ -19,7 +19,14 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mutenancy\external\form_autocomplete\user_allocate_tenantid;
+use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+use tool_mutenancy\muform\autocomplete\user_allocate as allocate_source;
+
 /**
  * User allocation form.
  *
@@ -27,59 +34,42 @@ use tool_mutenancy\external\form_autocomplete\user_allocate_tenantid;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class user_allocate extends \tool_mulib\local\ajax_form {
+final class user_allocate extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-        $user = $this->_customdata['user'];
-        $context = $this->_customdata['context'];
+        $user = $this->get_extra_data()['user'];
 
         $info = '<div class="alert alert-warning">' . markdown_to_html(get_string('user_allocate_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
-        user_allocate_tenantid::add_element(
-            $mform,
-            ['userid' => $user->id],
-            'tenantid',
-            get_string('tenant', 'tool_mutenancy'),
-            $context
-        );
-        $mform->setType('tenantid', PARAM_INT);
-        if ($user->tenantid) {
-            $mform->setDefault('tenantid', $user->tenantid);
-        }
+        $this->add(new autocomplete('tenantid', get_string('tenant', 'tool_mutenancy'), new allocate_source($user->id)));
 
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
-        $mform->setConstant('id', $user->id);
-
-        $this->add_action_buttons(true, get_string('user_allocate', 'tool_mutenancy'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('user_allocate', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     #[\Override]
-    public function validation($data, $files) {
+    protected function validation(array $data, array &$allerrors): void {
         global $DB;
-        $errors = parent::validation($data, $files);
-        $user = $this->_customdata['user'];
+        $user = $this->get_extra_data()['user'];
 
         if ($data['tenantid']) {
             $tenant = $DB->get_record('tool_mutenancy_tenant', ['id' => $data['tenantid']]);
             if (!$tenant) {
-                $errors['tenantid'] = get_string('error');
+                $allerrors['tenantid'][] = get_string('error');
             } else if ($tenant->id == $user->tenantid) {
-                $errors['tenantid'] = get_string('error:changerequired', 'tool_mutenancy');
+                $allerrors['tenantid'][] = get_string('error:changerequired', 'tool_mutenancy');
             } else if ($tenant->memberlimit) {
                 $count = $DB->count_records('user', ['tenantid' => $tenant->id, 'deleted' => 0]);
                 if ($count >= $tenant->memberlimit) {
-                    $errors['tenantid'] = get_string('error:memberlimitreached', 'tool_mutenancy');
+                    $allerrors['tenantid'][] = get_string('error:memberlimitreached', 'tool_mutenancy');
                 }
             }
         } else {
             if (!$user->tenantid) {
-                $errors['tenantid'] = get_string('required');
+                $allerrors['tenantid'][] = get_string('required');
             }
         }
-
-        return $errors;
     }
 }

@@ -13,7 +13,7 @@ Feature: Tenant roles
 
     When I navigate to "Multi-tenancy > Tenants" in site administration
     And I press "Activate multi-tenancy"
-    And I click on "Activate multi-tenancy" "button" in the ".modal-dialog" "css_element"
+    And I click on "Activate multi-tenancy" "button" in the "dialog[open]" "css_element"
     And I navigate to "Users > Permissions > Define roles" in site administration
     Then the following should exist in the "roles" table:
       | Role           | Description                       | Short name    |

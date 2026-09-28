@@ -19,6 +19,12 @@
 
 namespace tool_mutenancy\local\form;
 
+use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
 use tool_mutenancy\local\tenancy;
 
 /**
@@ -28,34 +34,31 @@ use tool_mutenancy\local\tenancy;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_switch extends \tool_mulib\local\ajax_form {
+final class tenant_switch extends form {
     #[\Override]
     protected function definition(): void {
-        $mform = $this->_form;
-
         if (has_capability('tool/mutenancy:admin', \context_system::instance())) {
             $info = '<div class="alert alert-info">' . markdown_to_html(get_string('tenant_switch_info', 'tool_mutenancy')) . '</div>';
-            $mform->addElement('html', $info);
+            $this->add(new inforawhtml('info', '', $info));
         }
 
-        $options = self::get_options();
-        $mform->addElement('selectgroups', 'tenantid', tenancy::get_tenant_string('tenant'), $options);
-        $mform->setDefault('tenantid', (int)\tool_mutenancy\local\tenancy::get_current_tenantid());
+        $source = new \tool_mutenancy\muform\autocomplete\tenant_switch();
+        $tenant = new autocomplete('tenantid', tenancy::get_tenant_string('tenant'), $source);
+        $tenant->set_required(true);
+        $this->add($tenant);
 
-        $this->add_action_buttons(true, tenancy::get_tenant_string('tenant_switch'));
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', tenancy::get_tenant_string('tenant_switch')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 
     #[\Override]
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
+    protected function validation(array $data, array &$allerrors): void {
+        $tenantid = (int)tenancy::get_current_tenantid();
 
-        $tenantid = (int)\tool_mutenancy\local\tenancy::get_current_tenantid();
-
-        if ($data['tenantid'] == $tenantid) {
-            $errors['tenantid'] = get_string('error:changerequired', 'tool_mutenancy');
+        if ((int)$data['tenantid'] === $tenantid) {
+            $allerrors['tenantid'][] = get_string('error:changerequired', 'tool_mutenancy');
         }
-
-        return $errors;
     }
 
     /**

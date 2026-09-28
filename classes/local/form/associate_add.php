@@ -18,7 +18,14 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mutenancy\external\form_autocomplete\associate_add_userids;
+use tool_mulib\muform\element\autocompletemany;
+use tool_mulib\muform\element\buttons;
+use tool_mulib\muform\element\cancel;
+use tool_mulib\muform\element\info;
+use tool_mulib\muform\element\inforawhtml;
+use tool_mulib\muform\element\submit;
+use tool_mulib\muform\form;
+use tool_mutenancy\muform\autocompletemany\associate_add as associate_source;
 
 /**
  * Associate users form.
@@ -27,60 +34,30 @@ use tool_mutenancy\external\form_autocomplete\associate_add_userids;
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class associate_add extends \tool_mulib\local\ajax_form {
+final class associate_add extends form {
     #[\Override]
     protected function definition(): void {
         global $DB;
 
-        $mform = $this->_form;
-        $tenant = $this->_customdata['tenant'];
-        $context = $this->_customdata['context'];
-        $cohort = $this->_customdata['cohort'];
+        $tenant = $this->get_extra_data()['tenant'];
+        $cohort = $this->get_extra_data()['cohort'];
 
         $info = '<div class="alert alert-info">' . markdown_to_html(get_string('associate_add_info', 'tool_mutenancy')) . '</div>';
-        $mform->addElement('html', $info);
+        $this->add(new inforawhtml('info', '', $info));
 
         $tenants = $DB->get_records_menu('tool_mutenancy_tenant', ['assoccohortid' => $cohort->id], 'name ASC', 'id, name');
         $tenants = array_map('format_string', $tenants);
-        $mform->addElement(
-            'static',
-            'tenants',
-            (count($tenants) > 1) ? get_string('tenants', 'tool_mutenancy') : get_string('tenant', 'tool_mutenancy'),
-            implode(', ', $tenants)
-        );
+        $label = (count($tenants) > 1) ? get_string('tenants', 'tool_mutenancy') : get_string('tenant', 'tool_mutenancy');
+        $this->add(new info('tenants', $label, implode(', ', $tenants), info::PLAIN));
+        $cohortname = format_string($cohort->name);
+        $this->add(new info('cohortname', get_string('associate_cohort', 'tool_mutenancy'), $cohortname, info::PLAIN));
 
-        $mform->addElement('static', 'cohortname', get_string('associate_cohort', 'tool_mutenancy'), format_string($cohort->name));
+        $userids = new autocompletemany('userids', get_string('users'), new associate_source($tenant->id));
+        $userids->set_required(true);
+        $this->add($userids);
 
-        associate_add_userids::add_element(
-            $mform,
-            ['tenantid' => $tenant->id],
-            'userids',
-            get_string('users'),
-            $context
-        );
-        $mform->addRule('userids', get_string('required'), 'required', null, 'client');
-
-        $mform->addElement('hidden', 'tenantid');
-        $mform->setType('tenantid', PARAM_INT);
-        $mform->setConstant('tenantid', $tenant->id);
-
-        $this->add_action_buttons(true, get_string('associate_add', 'tool_mutenancy'));
-    }
-
-    #[\Override]
-    public function validation($data, $files): array {
-        $errors = parent::validation($data, $files);
-        $tenant = $this->_customdata['tenant'];
-        $context = $this->_customdata['context'];
-
-        foreach ($data['userids'] as $userid) {
-            $error = associate_add_userids::validate_value($userid, ['tenantid' => $tenant->id], $context);
-            if ($error !== null) {
-                $errors['userids'] = $error;
-                break;
-            }
-        }
-
-        return $errors;
+        $this->add(new buttons('buttons'));
+        $this->add(new submit('submit', get_string('associate_add', 'tool_mutenancy')), 'buttons');
+        $this->add(new cancel(), 'buttons');
     }
 }

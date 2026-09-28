@@ -25,13 +25,12 @@
  */
 
 use tool_mutenancy\local\tenancy;
+use tool_mulib\muform\handler;
 
 /** @var moodle_page $PAGE */
 /** @var core_renderer $OUTPUT */
 /** @var moodle_database $DB */
 
-
-define('AJAX_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 
@@ -41,6 +40,11 @@ require_capability('moodle/site:config', $syscontext);
 
 $PAGE->set_url('/admin/tool/mutenancy/management/tenancy_deactivate.php');
 $PAGE->set_context($syscontext);
+$title = get_string('tenancy_deactivate', 'tool_mutenancy');
+$PAGE->set_title($title);
+$PAGE->set_heading($title);
+
+$handler = handler::from_request();
 
 $returnurl = new \core\url('/admin/tool/mutenancy/index.php');
 
@@ -50,15 +54,15 @@ if (!tenancy::is_active() || $tenantcount) {
     throw new \core\exception\invalid_parameter_exception('Multi-tenancy is not active');
 }
 
-$form = new \tool_mutenancy\local\form\tenancy_deactivate();
+$form = new \tool_mutenancy\local\form\tenancy_deactivate($PAGE->url, []);
 
 if ($form->is_cancelled()) {
-    $form->ajax_form_cancelled($returnurl);
+    $handler->cancelled($returnurl);
 }
 
 if ($data = $form->get_data()) {
     tenancy::deactivate();
-    $form->ajax_form_submitted($returnurl);
+    $handler->submitted($returnurl);
 }
 
-$form->ajax_form_render();
+$handler->render($form);
