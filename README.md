@@ -46,6 +46,12 @@ For manual installation:
 See the [online documentation](https://docs.mutms.org/mutenancy/) for installation
 instructions and configuration reference.
 
+## AI disclosure
+
+Parts of this plugin were written with the help of Claude (Anthropic). A human
+maintainer reviewed, corrected and accepted everything before it was committed.
+The design decisions and the final code are the maintainer's own.
+
 ---
 
 > MuTMS is an independent open-source project, not affiliated with Moodle HQ.
