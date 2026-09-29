@@ -29,6 +29,7 @@ use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\select;
 use tool_mulib\muform\element\submit;
 use tool_mulib\muform\element\text;
+use tool_mulib\muform\element\yesno;
 use tool_mulib\muform\form;
 use tool_mutenancy\local\config;
 
@@ -70,8 +71,7 @@ final class auth_edit extends form {
         }
 
         $default = get_config('core', 'showloginform');
-        $options = ['1' => get_string('yes'), '0' => get_string('no')];
-        $element = new select('showloginform', get_string('showloginform', 'core_auth'), $options);
+        $element = new yesno('showloginform', get_string('showloginform', 'core_auth'));
         $defaultstr = $default ? get_string('yes') : get_string('no');
         $this->add_override($tenant, $element, get_string('showloginform', 'core_auth'), $defaultstr, (string)(int)$default, get_string('showloginform_desc', 'auth'));
 
