@@ -217,4 +217,3 @@ Feature: Tenant switching
       | Tenant | Extra 07 |
     And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I should see "ES07" in the ".navbar" "css_element"
-
