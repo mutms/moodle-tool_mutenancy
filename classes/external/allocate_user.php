@@ -41,7 +41,7 @@ final class allocate_user extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
-            'userid' => new external_value(PARAM_INT, 'user id'),
+            'userid' => new external_value(PARAM_INT, 'user id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
             'tenantid' => new external_value(PARAM_INT, 'tenant id'),
         ]);
     }

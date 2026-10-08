@@ -41,8 +41,8 @@ final class remove_manager extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
-            'tenantid' => new external_value(PARAM_INT, 'tenant id'),
-            'userid' => new external_value(PARAM_INT, 'user id'),
+            'tenantid' => new external_value(PARAM_INT, 'tenant id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
+            'userid' => new external_value(PARAM_INT, 'user id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
         ]);
     }
 
