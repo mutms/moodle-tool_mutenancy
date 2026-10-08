@@ -6,7 +6,9 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.0.11.01...MOODLE_500_STABLE)
 
-- No changes
+### Fixed
+
+- _tool_mutenancy_allocate_user_ web service received user id and tenant id swapped
 
 ## [v5.0.11.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.0.10.03...v5.0.11.01) - 2026-09-20
 
