@@ -58,6 +58,7 @@ final class associate_add_test extends \advanced_testcase {
         $user1 = $this->getDataGenerator()->create_user(['firstname' => 'First', 'lastname' => 'User']);
         $user2 = $this->getDataGenerator()->create_user(['firstname' => 'Second', 'lastname' => 'User']);
         $user3 = $this->getDataGenerator()->create_user(['tenantid' => $tenant1->id, 'firstname' => 'Third', 'lastname' => 'User']);
+        $suspended = $this->getDataGenerator()->create_user(['firstname' => 'Suspended', 'lastname' => 'User', 'suspended' => 1]);
         cohort_add_member($cohort1->id, $user2->id);
 
         $this->setUser($manager);
@@ -68,6 +69,11 @@ final class associate_add_test extends \advanced_testcase {
         $this->assertArrayNotHasKey((string)$user3->id, $result);
         $labels = $source->labels([(string)$user1->id, (string)$user2->id, (string)$user3->id]);
         $this->assertSame([(string)$user1->id], array_map('strval', array_keys($labels)));
+
+        // Suspended users are allowed, the same as in 4.5.
+        $this->assertArrayHasKey((string)$suspended->id, $result);
+        $this->assertArrayHasKey((string)$suspended->id, $source->labels([(string)$suspended->id]));
+        $this->assertSame([], $source->validate([(string)$suspended->id]));
 
         // Component cohorts and tenants without associated cohort are refused.
         $this->setAdminUser();

@@ -65,8 +65,9 @@ final class tenant_managers_test extends \advanced_testcase {
 
         $labels = $source->labels([(string)$user1->id, (string)$user2->id, (string)$suspended->id]);
         $this->assertSame([(string)$user1->id, (string)$suspended->id], array_map('strval', array_keys($labels)));
-        // Suspended managers stay allowed, as before.
+        // Suspended managers stay allowed, the same as in 4.5.
         $this->assertSame([], $source->validate([(string)$suspended->id]));
+        $this->assertArrayHasKey((string)$suspended->id, $source->search('Suspended', 50, []));
 
         $this->setUser($user0);
         $this->expectException(\required_capability_exception::class);
