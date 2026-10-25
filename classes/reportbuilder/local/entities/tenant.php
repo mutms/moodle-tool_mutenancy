@@ -212,10 +212,7 @@ final class tenant extends base {
                     return '';
                 }
 
-                // Report builder download script is missing NO_DEBUG_DISPLAY
-                // and template rendering is changing session after it is closed,
-                // add a hacky workaround for now.
-                if ($SCRIPT === '/reportbuilder/download.php') {
+                if (\tool_mulib\local\reportbuilder_util::is_downloading()) {
                     return \html_writer::link($loginurl, $loginurl);
                 }
 

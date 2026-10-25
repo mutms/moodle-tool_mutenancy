@@ -136,12 +136,7 @@ final class tenants extends system_report {
      * Note the use of ":id" placeholder which will be substituted according to actual values in the row
      */
     protected function add_actions(): void {
-        global $SCRIPT;
-
-        // Report builder download script is missing NO_DEBUG_DISPLAY
-        // and template rendering is changing session after it is closed,
-        // add a hacky workaround for now.
-        if ($SCRIPT === '/reportbuilder/download.php') {
+        if (\tool_mulib\local\reportbuilder_util::is_downloading()) {
             return;
         }
 
