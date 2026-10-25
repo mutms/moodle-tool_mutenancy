@@ -700,4 +700,34 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame($cohort2->id, $tenant2->assoccohortid);
         $this->assertNull($tenant3->assoccohortid);
     }
+
+    /**
+     * @covers ::callback_mucohort_cohort_owner
+     */
+    public function test_callback_mucohort_cohort_owner(): void {
+        if (!\tool_mulib\local\mulib::is_mucohort_available()) {
+            $this->markTestSkipped('tool_mucohort not installed');
+        }
+        tenancy::activate();
+        $tenant = tenant::create((object)['name' => 'Tenant <b>A</b>', 'idnumber' => 'ta']);
+        $cohort = \core\di::get(\moodle_database::class)->get_record('cohort', ['id' => $tenant->cohortid], '*', MUST_EXIST);
+        $other = $this->getDataGenerator()->create_cohort();
+
+        // The callback is registered in db/hooks.php.
+        $this->setAdminUser();
+        $hook = new \tool_mucohort\hook\cohort_owner($cohort);
+        \core\di::get(\core\hook\manager::class)->dispatch($hook);
+        $this->assertSame('Tenant cohort of Tenant A', $hook->get_description());
+        $this->assertStringContainsString('/admin/tool/mutenancy/tenant.php?id=' . $tenant->id, $hook->get_url()->out(false));
+
+        $this->setUser($this->getDataGenerator()->create_user());
+        $hook = new \tool_mucohort\hook\cohort_owner($cohort);
+        tenant::callback_mucohort_cohort_owner($hook);
+        $this->assertSame('Tenant cohort of Tenant A', $hook->get_description());
+        $this->assertNull($hook->get_url());
+
+        $hook = new \tool_mucohort\hook\cohort_owner($other);
+        tenant::callback_mucohort_cohort_owner($hook);
+        $this->assertNull($hook->get_description());
+    }
 }

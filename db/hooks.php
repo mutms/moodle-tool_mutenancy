@@ -37,4 +37,8 @@ $callbacks = [
         'callback' => [\tool_mutenancy\local\user::class, 'hook_extend_bulk_user_actions'],
         'priority' => 0,
     ],
+    [
+        'hook' => \tool_mucohort\hook\cohort_owner::class,
+        'callback' => [\tool_mutenancy\local\tenant::class, 'callback_mucohort_cohort_owner'],
+    ],
 ];

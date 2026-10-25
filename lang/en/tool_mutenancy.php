@@ -161,6 +161,7 @@ $string['tenant_category'] = 'Tenant category';
 $string['tenant_categoryidnumber'] = 'Tenant category ID number';
 $string['tenant_categoryname'] = 'Tenant category name';
 $string['tenant_cohort'] = 'Tenant cohort';
+$string['tenant_cohort_owner'] = 'Tenant cohort of {$a}';
 $string['tenant_cohortidnumber'] = 'Tenant cohort ID number';
 $string['tenant_cohortname'] = 'Tenant cohort name';
 $string['tenant_create'] = 'Add tenant';

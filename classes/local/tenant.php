@@ -673,4 +673,31 @@ final class tenant {
             user::sync($tenant->id, null);
         }
     }
+
+    /**
+     * Hook callback describing tenant cohorts in advanced cohort management.
+     *
+     * @param \tool_mucohort\hook\cohort_owner $hook
+     */
+    public static function callback_mucohort_cohort_owner(\tool_mucohort\hook\cohort_owner $hook): void {
+        global $DB;
+
+        $cohort = $hook->get_cohort();
+        if ($cohort->component !== 'tool_mutenancy') {
+            return;
+        }
+        $tenant = $DB->get_record('tool_mutenancy_tenant', ['cohortid' => $cohort->id]);
+        if (!$tenant) {
+            return;
+        }
+        $url = null;
+        if (tenancy::is_active()) {
+            $context = \context_tenant::instance($tenant->id);
+            if (has_capability('tool/mutenancy:view', $context)) {
+                $url = new \core\url('/admin/tool/mutenancy/tenant.php', ['id' => $tenant->id]);
+            }
+        }
+        $name = format_string($tenant->name, true, ['context' => \context_system::instance(), 'escape' => false]);
+        $hook->set_description(get_string('tenant_cohort_owner', 'tool_mutenancy', $name), $url);
+    }
 }

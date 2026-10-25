@@ -78,15 +78,7 @@ final class renderer extends \tool_mutenancy\output\tenant_renderer_base {
 
         $cohort = $DB->get_record('cohort', ['id' => $tenant->cohortid]);
         if ($cohort) {
-            $context = \context::instance_by_id($cohort->contextid);
-            $name = format_string($cohort->name);
-            $url = null;
-            if (has_capability('moodle/cohort:view', $context)) {
-                $url = new \core\url('/cohort/index.php', ['contextid' => $context->id]);
-            }
-            if ($url) {
-                $name = \html_writer::link($url, $name);
-            }
+            $name = \tool_mulib\local\cohort_util::format_cohort_name($cohort);
         } else {
             $name = get_string('error');
         }
@@ -95,15 +87,7 @@ final class renderer extends \tool_mutenancy\output\tenant_renderer_base {
         if ($tenant->assoccohortid) {
             $cohort = $DB->get_record('cohort', ['id' => $tenant->assoccohortid]);
             if ($cohort) {
-                $context = \context::instance_by_id($cohort->contextid);
-                $name = format_string($cohort->name);
-                $url = null;
-                if (has_capability('moodle/cohort:view', $context)) {
-                    $url = new \core\url('/cohort/index.php', ['contextid' => $context->id]);
-                }
-                if ($url) {
-                    $name = \html_writer::link($url, $name);
-                }
+                $name = \tool_mulib\local\cohort_util::format_cohort_name($cohort);
             } else {
                 $name = get_string('error');
             }
