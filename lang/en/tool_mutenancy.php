@@ -51,6 +51,8 @@ $string['bulk_deallocate_info'] = 'Following users will be deallocated from tena
 {$a}';
 $string['cachedef_config'] = 'Tenant config cache';
 $string['cachedef_tenant'] = 'Tenant record cache';
+$string['cohort_usage_associate'] = 'Associated users cohort of tenants';
+$string['cohort_usage_tenant'] = 'Tenant cohort of tenants';
 $string['config_default'] = 'Default value';
 $string['config_default_value'] = 'Default value ({$a})';
 $string['config_override'] = 'Override';

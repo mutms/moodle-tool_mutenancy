@@ -8,7 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Added
 
-- tenant cohorts are described in advanced cohort management
+- tenant cohorts are described and cohort usage in tenants is listed in advanced cohort management
 
 ### Changed
 

@@ -39,6 +39,10 @@ $callbacks = [
     ],
     [
         'hook' => \tool_mucohort\hook\cohort_owner::class,
-        'callback' => [\tool_mutenancy\local\tenant::class, 'callback_mucohort_cohort_owner'],
+        'callback' => [\tool_mutenancy\callback\tool_mucohort::class, 'cohort_owner'],
+    ],
+    [
+        'hook' => \tool_mucohort\hook\cohort_usage::class,
+        'callback' => [\tool_mutenancy\callback\tool_mucohort::class, 'cohort_usage'],
     ],
 ];
