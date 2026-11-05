@@ -21,7 +21,9 @@ namespace tool_mutenancy\local\form;
 
 use core\exception\coding_exception;
 use context_user;
-use core_component, core_text, core_user;
+use core_component;
+use core_text;
+use core_user;
 use webservice;
 
 /**
