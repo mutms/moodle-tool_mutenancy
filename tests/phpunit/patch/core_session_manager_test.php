@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core\session\manager
  */
+#[CoversClass(\core\session\manager::class)]
+#[Group('MuTMS')]
 final class core_session_manager_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::set_user
-     */
     public function test_set_user(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

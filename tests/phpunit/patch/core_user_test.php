@@ -21,24 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for \core\user modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(\core\user::class)]
+#[Group('MuTMS')]
 final class core_user_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers \core\user::create_user
-     */
     public function test_create_user(): void {
         global $DB;
 
@@ -116,9 +116,6 @@ final class core_user_test extends \advanced_testcase {
         $this->assertSame('0', $user->suspended);
     }
 
-    /**
-     * @covers \core\user::update_user
-     */
     public function test_user_update_user(): void {
         global $DB;
 

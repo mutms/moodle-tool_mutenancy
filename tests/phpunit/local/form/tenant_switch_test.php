@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\local\form;
 
 use tool_mutenancy\local\form\tenant_switch as form;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy switching form tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\form\tenant_switch
  */
+#[CoversClass(\tool_mutenancy\local\form\tenant_switch::class)]
+#[Group('MuTMS')]
 final class tenant_switch_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_options
-     */
     public function test_get_options(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

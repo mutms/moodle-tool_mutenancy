@@ -21,17 +21,18 @@
 namespace tool_mutenancy\phpunit\external;
 
 use tool_mutenancy\external\get_tenants;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy external function tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\external\get_tenants
  */
+#[CoversClass(\tool_mutenancy\external\get_tenants::class)]
+#[Group('MuTMS')]
 final class get_tenants_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

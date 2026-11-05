@@ -22,17 +22,18 @@ namespace tool_mutenancy\phpunit\hook;
 
 use tool_mutenancy\hook\tenant_manager_capabilities;
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenant manager capabilities hook tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\hook\tenant_manager_capabilities
  */
+#[CoversClass(\tool_mutenancy\hook\tenant_manager_capabilities::class)]
+#[Group('MuTMS')]
 final class tenant_manager_capabilities_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

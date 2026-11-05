@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core\context_helper
  */
+#[CoversClass(\core\context_helper::class)]
+#[Group('MuTMS')]
 final class core_context_helper_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_preload_record_columns
-     */
     public function test_get_preload_record_columns(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();
@@ -72,9 +70,6 @@ final class core_context_helper_test extends \advanced_testcase {
         $this->assertSame($expected, $columns);
     }
 
-    /**
-     * @covers ::get_preload_record_columns_sql
-     */
     public function test_get_preload_record_columns_sql(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();

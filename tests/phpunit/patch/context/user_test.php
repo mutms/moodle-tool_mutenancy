@@ -24,26 +24,24 @@ use tool_mutenancy\local\tenancy;
 use core\context\tenant;
 use core\context\system;
 use core\context\user;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy core modifications tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core\context\user
  */
+#[CoversClass(\core\context\user::class)]
+#[Group('MuTMS')]
 final class user_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_possible_parent_levels
-     */
     public function test_get_possible_parent_levels(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();
@@ -55,9 +53,6 @@ final class user_test extends \advanced_testcase {
         $this->assertSame([system::LEVEL, tenant::LEVEL], user::get_possible_parent_levels());
     }
 
-    /**
-     * @covers ::instance
-     */
     public function test_instance(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();
@@ -79,9 +74,6 @@ final class user_test extends \advanced_testcase {
         $this->assertSame((int)$tenant1->id, $context->tenantid);
     }
 
-    /**
-     * @covers ::build_paths
-     */
     public function test_build_paths(): void {
         global $DB;
         /** @var \tool_mutenancy_generator $generator */

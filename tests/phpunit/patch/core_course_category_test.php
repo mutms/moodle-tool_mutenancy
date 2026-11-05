@@ -22,26 +22,24 @@ namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
 use core_course_category;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core_course_category
  */
+#[CoversClass(\core_course_category::class)]
+#[Group('MuTMS')]
 final class core_course_category_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::can_delete
-     */
     public function test_can_delete(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -58,9 +56,6 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertTrue($cat->can_delete());
     }
 
-    /**
-     * @covers ::can_delete_full
-     */
     public function test_can_delete_full(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -77,9 +72,6 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertTrue($cat->can_delete_full());
     }
 
-    /**
-     * @covers ::can_move_content_to
-     */
     public function test_can_move_content_to(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -97,9 +89,6 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertTrue($cat->can_move_content_to($category->id));
     }
 
-    /**
-     * @covers ::delete_full
-     */
     public function test_delete_full(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -122,9 +111,6 @@ final class core_course_category_test extends \advanced_testcase {
         $cat->delete_full(false);
     }
 
-    /**
-     * @covers ::delete_move
-     */
     public function test_delete_move(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -148,9 +134,6 @@ final class core_course_category_test extends \advanced_testcase {
         $cat->delete_move($category->id, false);
     }
 
-    /**
-     * @covers ::change_parent_raw
-     */
     public function test_change_parent_raw(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -173,9 +156,6 @@ final class core_course_category_test extends \advanced_testcase {
         $cat->change_parent($category);
     }
 
-    /**
-     * @covers ::prepare_to_cache
-     */
     public function test_prepare_to_cache(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -202,9 +182,6 @@ final class core_course_category_test extends \advanced_testcase {
         $this->assertSame((int)$tenant->id, $result['xt']);
     }
 
-    /**
-     * @covers ::wake_from_cache
-     */
     public function test_wake_from_cache(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -231,9 +208,6 @@ final class core_course_category_test extends \advanced_testcase {
         $cat = \core_course_category::wake_from_cache($cache);
     }
 
-    /**
-     * @covers ::user_top
-     */
     public function test_user_top(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -265,8 +239,6 @@ final class core_course_category_test extends \advanced_testcase {
 
     /**
      * Test get_nearest_editable_subcategory() method.
-     *
-     * @covers \core_course_category::get_nearest_editable_subcategory
      */
     public function test_get_nearest_editable_subcategory(): void {
         global $DB;

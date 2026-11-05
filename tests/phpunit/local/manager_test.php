@@ -23,33 +23,30 @@ namespace tool_mutenancy\phpunit\local;
 use tool_mutenancy\local\manager;
 use tool_mutenancy\local\tenancy;
 use stdClass;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenant manager tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\manager
  */
+#[CoversClass(\tool_mutenancy\local\manager::class)]
+#[Group('MuTMS')]
 final class manager_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @coversNothing
-     */
+    #[CoversNothing]
     public function test_managerarchetype_constant(): void {
         $this->assertSame('tenantmanager', \tool_mutenancy\local\manager::ROLESHORTNAME);
     }
 
-    /**
-     * @covers ::get_default_capabilities
-     */
     public function test_get_default_capabilities(): void {
         $capabilities = manager::get_default_capabilities();
 
@@ -70,9 +67,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertArrayNotHasKey('moodle/user:delete', $capabilities);
     }
 
-    /**
-     * @covers ::create_role
-     */
     public function test_create_role(): void {
         global $DB;
 
@@ -103,9 +97,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertFalse(has_capability('moodle/user:delete', $syscontext, $user));
     }
 
-    /**
-     * @covers ::get_role
-     */
     public function test_get_role(): void {
         global $DB;
 
@@ -132,9 +123,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertNotEquals($role2->id, $role3->id);
     }
 
-    /**
-     * @covers ::delete_role
-     */
     public function test_delete_role(): void {
         global $DB;
 
@@ -146,9 +134,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertFalse($DB->record_exists('role', ['shortname' => manager::ROLESHORTNAME]));
     }
 
-    /**
-     * @covers ::add
-     */
     public function test_add(): void {
         global $DB;
 
@@ -196,9 +181,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertDebuggingCalled('tenant members cannot be added to another tenant as managers');
     }
 
-    /**
-     * @covers ::remove
-     */
     public function test_remove(): void {
         global $DB;
 
@@ -292,9 +274,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertFalse(user_has_role_assignment($userid, $role->id, $categorycontext->id));
     }
 
-    /**
-     * @covers ::set_userids
-     */
     public function test_set_userids(): void {
         global $DB;
 
@@ -346,9 +325,6 @@ final class manager_test extends \advanced_testcase {
         $this->assert_is_manager($user2->id, $tenant2);
     }
 
-    /**
-     * @covers ::sync
-     */
     public function test_sync(): void {
         global $DB;
 
@@ -465,9 +441,6 @@ final class manager_test extends \advanced_testcase {
         $this->assert_is_not_manager($user3->id, $tenant2);
     }
 
-    /**
-     * @covers ::get_manager_users
-     */
     public function test_get_manager_users(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -508,9 +481,6 @@ final class manager_test extends \advanced_testcase {
         $this->assertSame([$user0->id => '0 0', $user1->id => '1 1'], $result);
     }
 
-    /**
-     * @covers ::user_deleted
-     */
     public function test_user_deleted(): void {
         global $DB;
 

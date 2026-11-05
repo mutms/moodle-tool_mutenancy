@@ -22,15 +22,23 @@ namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for lib/moodlelib.php modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversFunction('authenticate_user_login')]
+#[CoversFunction('require_login')]
+#[CoversFunction('require_logout')]
+#[CoversFunction('unset_all_config_for_plugin')]
+#[CoversFunction('email_to_user')]
+#[CoversFunction('email_is_not_allowed')]
+#[Group('MuTMS')]
 final class moodlelib_test extends \advanced_testcase {
     /** @var null|string previous error log target */
     protected $oldlog = null;
@@ -47,9 +55,6 @@ final class moodlelib_test extends \advanced_testcase {
         parent::tearDown();
     }
 
-    /**
-     * @covers ::authenticate_user_login()
-     */
     public function test_authenticate_user_login(): void {
         global $USER, $CFG;
         tenancy::activate();
@@ -87,9 +92,6 @@ final class moodlelib_test extends \advanced_testcase {
         $this->assertStringContainsString('Suspended Login:  username3', $errors);
     }
 
-    /**
-     * @covers ::require_login()
-     */
     public function test_require_login(): void {
         global $DB;
         tenancy::activate();
@@ -238,9 +240,6 @@ final class moodlelib_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::require_logout()
-     */
     public function test_require_logout(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -271,9 +270,6 @@ final class moodlelib_test extends \advanced_testcase {
         $this->assertSame(null, tenancy::get_current_tenantid());
     }
 
-    /**
-     * @covers ::unset_all_config_for_plugin()
-     */
     public function test_unset_all_config_for_plugin(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -304,9 +300,6 @@ final class moodlelib_test extends \advanced_testcase {
         $this->assertSame('x4', config::get($tenant1->id, 'tool_mulib', 'opr'));
     }
 
-    /**
-     * @covers ::email_to_user()
-     */
     public function test_email_to_user(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -349,9 +342,6 @@ final class moodlelib_test extends \advanced_testcase {
         $sink->close();
     }
 
-    /**
-     * @covers ::email_is_not_allowed()
-     */
     public function test_email_is_not_allowed(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

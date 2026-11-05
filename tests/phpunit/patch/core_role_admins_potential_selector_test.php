@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core_role_admins_potential_selector
  */
+#[CoversClass(\core_role_admins_potential_selector::class)]
+#[Group('MuTMS')]
 final class core_role_admins_potential_selector_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::find_users
-     */
     public function test_find_users(): void {
         global $CFG;
         require_once("$CFG->dirroot/admin/roles/classes/admins_potential_selector.php");

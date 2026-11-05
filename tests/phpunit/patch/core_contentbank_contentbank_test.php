@@ -20,25 +20,24 @@
 
 namespace tool_mutenancy\phpunit\patch;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core_contentbank\contentbank
  */
+#[CoversClass(\core_contentbank\contentbank::class)]
+#[Group('MuTMS')]
 final class core_contentbank_contentbank_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_contexts_with_capabilities_by_user
-     */
     public function test_get_contexts_with_capabilities_by_user(): void {
         global $CFG;
         $code = file_get_contents("$CFG->dirroot/contentbank/classes/contentbank.php");

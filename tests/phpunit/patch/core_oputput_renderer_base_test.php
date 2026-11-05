@@ -22,26 +22,24 @@ namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core\output\renderer_base
  */
+#[CoversClass(\core\output\renderer_base::class)]
+#[Group('MuTMS')]
 final class core_oputput_renderer_base_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_logo_url
-     */
     public function test_get_logo_url(): void {
         global $OUTPUT;
 
@@ -104,9 +102,6 @@ final class core_oputput_renderer_base_test extends \advanced_testcase {
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::get_compact_logo_url
-     */
     public function test_get_compact_logo_url(): void {
         global $OUTPUT;
 

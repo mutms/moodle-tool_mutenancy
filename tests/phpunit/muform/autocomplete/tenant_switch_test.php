@@ -20,17 +20,18 @@ namespace tool_mutenancy\phpunit\muform\autocomplete;
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\muform\autocomplete\tenant_switch;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tenant switching autocomplete source tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\muform\autocomplete\tenant_switch
  */
+#[CoversClass(\tool_mutenancy\muform\autocomplete\tenant_switch::class)]
+#[Group('MuTMS')]
 final class tenant_switch_test extends \advanced_testcase {
     public function test_search(): void {
         $this->resetAfterTest();

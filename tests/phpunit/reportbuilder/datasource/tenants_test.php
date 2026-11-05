@@ -21,17 +21,18 @@
 namespace tool_mutenancy\phpunit\reportbuilder\datasource;
 
 use tool_mutenancy\reportbuilder\datasource\tenants as templatesource;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenants datasource tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\reportbuilder\datasource\tenants
  */
+#[CoversClass(\tool_mutenancy\reportbuilder\datasource\tenants::class)]
+#[Group('MuTMS')]
 final class tenants_test extends \core_reportbuilder\tests\core_reportbuilder_testcase {
     public function setUp(): void {
         parent::setUp();

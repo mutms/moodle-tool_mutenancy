@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core_user_external
  */
+#[CoversClass(\core_user_external::class)]
+#[Group('MuTMS')]
 final class core_user_external_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::get_users
-     */
     public function test_get_users(): void {
         global $CFG;
         require_once("$CFG->dirroot/user/externallib.php");
@@ -72,9 +70,6 @@ final class core_user_external_test extends \advanced_testcase {
         $this->assertSame($tenant->id, $user['tenantid']);
     }
 
-    /**
-     * @covers ::get_users_by_field
-     */
     public function test_get_users_by_field(): void {
         global $CFG;
         require_once("$CFG->dirroot/user/externallib.php");
@@ -106,9 +101,6 @@ final class core_user_external_test extends \advanced_testcase {
         $this->assertSame($tenant->id, $user['tenantid']);
     }
 
-    /**
-     * @covers ::create_users
-     */
     public function test_create_users(): void {
         global $CFG, $DB;
         require_once("$CFG->dirroot/user/externallib.php");

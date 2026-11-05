@@ -23,17 +23,18 @@ namespace tool_mutenancy\phpunit\callback;
 use tool_mutenancy\callback\tool_mucohort;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\tenant;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests of tool_mucohort hook callbacks.
  *
- * @group      MuTMS
  * @package    tool_mutenancy
  * @copyright  2026 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\callback\tool_mucohort
  */
+#[CoversClass(\tool_mutenancy\callback\tool_mucohort::class)]
+#[Group('MuTMS')]
 final class tool_mucohort_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

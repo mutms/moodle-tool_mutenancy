@@ -20,25 +20,24 @@
 
 namespace tool_mutenancy\phpunit\patch\context;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Multi-tenancy core modifications tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \core\context\tenant
  */
+#[CoversClass(\core\context\tenant::class)]
+#[Group('MuTMS')]
 final class tenant_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::instance
-     */
     public function test_constructor(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -62,23 +61,14 @@ final class tenant_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::get_short_name
-     */
     public function test_get_short_name(): void {
         $this->assertSame('tenant', \core\context\tenant::get_short_name());
     }
 
-    /**
-     * @covers ::get_level_name
-     */
     public function test_get_level_name(): void {
         $this->assertSame('Tenant', \core\context\tenant::get_level_name());
     }
 
-    /**
-     * @covers ::get_context_name
-     */
     public function test_get_context_name(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -94,9 +84,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame('te1', $context->get_context_name(false, true));
     }
 
-    /**
-     * @covers ::get_url
-     */
     public function test_get_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -111,16 +98,10 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame('https://www.example.com/moodle/admin/tool/mutenancy/tenant.php?id=' . $tenant1->id, $url->out(false));
     }
 
-    /**
-     * @covers ::get_possible_parent_levels
-     */
     public function test_get_possible_parent_levels(): void {
         $this->assertSame([\core\context\system::LEVEL], \core\context\tenant::get_possible_parent_levels());
     }
 
-    /**
-     * @covers ::get_capabilities
-     */
     public function test_get_capabilities(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -136,9 +117,6 @@ final class tenant_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::create_level_instances
-     */
     public function test_create_level_instances(): void {
         global $DB;
 
@@ -166,9 +144,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('context', ['id' => $context3->id, 'contextlevel' => \core\context\tenant::LEVEL]));
     }
 
-    /**
-     * @covers ::get_cleanup_sql
-     */
     public function test_get_cleanup_sql(): void {
         global $DB;
 
@@ -196,9 +171,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('context', ['id' => $context3->id, 'contextlevel' => \core\context\tenant::LEVEL]));
     }
 
-    /**
-     * @covers ::build_paths
-     */
     public function test_build_paths(): void {
         global $DB;
 
@@ -399,9 +371,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame($tenant1->id, $co1->tenantid);
     }
 
-    /**
-     * @covers ::fix_all_tenantids
-     */
     public function test_fix_all_tenantids(): void {
         global $DB;
 
@@ -539,9 +508,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame($tenant1->id, $co1->tenantid);
     }
 
-    /**
-     * @covers ::guess_tenantid
-     */
     public function test_guess_tenantid(): void {
         global $DB;
 

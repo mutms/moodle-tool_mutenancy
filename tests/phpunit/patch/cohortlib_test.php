@@ -20,23 +20,24 @@
 
 namespace tool_mutenancy\phpunit\patch;
 
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Multi-tenancy tests for cohort/lib.php modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversFunction('cohort_delete_cohort')]
+#[Group('MuTMS')]
 final class cohortlib_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::cohort_delete_cohort()
-     */
     public function test_cohort_delete_cohort(): void {
         global $DB;
 

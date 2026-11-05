@@ -22,17 +22,18 @@ namespace tool_mutenancy\phpunit\hook;
 
 use tool_mutenancy\hook\pre_tenant_delete;
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy pre tenant deletion hook tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\hook\pre_tenant_delete
  */
+#[CoversClass(\tool_mutenancy\hook\pre_tenant_delete::class)]
+#[Group('MuTMS')]
 final class pre_tenant_delete_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

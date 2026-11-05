@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\local;
 
 use tool_mutenancy\local\member;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenant member tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\member
  */
+#[CoversClass(\tool_mutenancy\local\member::class)]
+#[Group('MuTMS')]
 final class member_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::confirm
-     */
     public function test_confirm(): void {
         global $DB;
 
@@ -78,9 +76,6 @@ final class member_test extends \advanced_testcase {
         $this->assertSame(null, $user0->tenantid);
     }
 
-    /**
-     * @covers ::resend
-     */
     public function test_resend(): void {
         global $DB;
 
@@ -118,9 +113,6 @@ final class member_test extends \advanced_testcase {
         $sink->close();
     }
 
-    /**
-     * @covers ::suspend
-     */
     public function test_suspend(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -151,9 +143,6 @@ final class member_test extends \advanced_testcase {
         $this->assertSame(null, $user0->tenantid);
     }
 
-    /**
-     * @covers ::unsuspend
-     */
     public function test_unsuspend(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -184,9 +173,6 @@ final class member_test extends \advanced_testcase {
         $this->assertSame(null, $user0->tenantid);
     }
 
-    /**
-     * @covers ::unlock
-     */
     public function test_unlock(): void {
         global $DB;
 
@@ -221,9 +207,6 @@ final class member_test extends \advanced_testcase {
         $this->assertTrue(login_is_lockedout($user0));
     }
 
-    /**
-     * @covers ::delete
-     */
     public function test_delete(): void {
         global $DB;
 
@@ -261,9 +244,6 @@ final class member_test extends \advanced_testcase {
         $this->assertSame(null, $user0->tenantid);
     }
 
-    /**
-     * @covers ::user_created
-     */
     public function test_user_created(): void {
         global $DB;
 

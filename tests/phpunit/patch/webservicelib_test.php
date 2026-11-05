@@ -22,15 +22,18 @@ namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for webservice/lib.php modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(\webservice::class)]
+#[Group('MuTMS')]
 final class webservicelib_test extends \advanced_testcase {
     public function setUp(): void {
         global $CFG;
@@ -44,9 +47,6 @@ final class webservicelib_test extends \advanced_testcase {
         set_config('enablewebservices', '1');
     }
 
-    /**
-     * @covers \webservice::authenticate_user
-     */
     public function test_init_service_class(): void {
         global $DB, $USER;
         tenancy::activate();

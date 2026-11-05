@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy upstream patch test.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \enrol_manual_potential_participant
  */
+#[CoversClass(\enrol_manual_potential_participant::class)]
+#[Group('MuTMS')]
 final class enrol_manual_potential_participant_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::find_users
-     */
     public function test_find_users(): void {
         global $CFG, $DB;
         require_once("$CFG->dirroot/enrol/manual/locallib.php");

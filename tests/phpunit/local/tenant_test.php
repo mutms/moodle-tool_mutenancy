@@ -24,26 +24,26 @@ use tool_mutenancy\local\tenant;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\manager;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenant tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\tenant
  */
+#[CoversClass(\tool_mutenancy\local\tenant::class)]
+#[Group('MuTMS')]
 final class tenant_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @coversNothing
-     */
+    #[CoversNothing]
     public function test_idnumber_regex(): void {
         $this->assertSame(1, preg_match(tenant::IDNUMBER_REGEX, 'abcxyz01234567890'));
         $this->assertSame(1, preg_match(tenant::IDNUMBER_REGEX, 'AbC'));
@@ -54,9 +54,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame(0, preg_match(tenant::IDNUMBER_REGEX, 'a1š'));
     }
 
-    /**
-     * @covers ::create
-     */
     public function test_create(): void {
         global $DB;
         tenancy::activate();
@@ -250,9 +247,6 @@ final class tenant_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::update
-     */
     public function test_update(): void {
         global $DB;
         tenancy::activate();
@@ -416,9 +410,6 @@ final class tenant_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::archive
-     */
     public function test_archive(): void {
         global $DB;
 
@@ -451,9 +442,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame('', config::get($tenant1->id, 'core', 'registerauth'));
     }
 
-    /**
-     * @covers ::restore
-     */
     public function test_restore(): void {
         global $DB;
         tenancy::activate();
@@ -487,9 +475,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame('', config::get($tenant1->id, 'core', 'registerauth'));
     }
 
-    /**
-     * @covers ::delete
-     */
     public function test_delete(): void {
         global $DB;
 
@@ -574,9 +559,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertSame('0', $user2->suspended);
     }
 
-    /**
-     * @covers ::fetch
-     */
     public function test_fetch(): void {
         global $DB;
 
@@ -608,9 +590,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertNull(tenant::fetch($tenant1->id));
     }
 
-    /**
-     * @covers ::fetch_by_idnumber
-     */
     public function test_fetch_by_idnumber(): void {
         global $DB;
 
@@ -642,9 +621,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertNull(tenant::fetch_by_idnumber($tenant1->idnumber));
     }
 
-    /**
-     * @covers ::get_login_url
-     */
     public function test_get_login_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -660,9 +636,6 @@ final class tenant_test extends \advanced_testcase {
         $this->assertNull($result);
     }
 
-    /**
-     * @covers ::cohort_deleted
-     */
     public function test_cohort_deleted(): void {
         global $DB;
 

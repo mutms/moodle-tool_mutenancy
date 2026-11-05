@@ -21,24 +21,28 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for lib/authlib.php modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversFunction('signup_captcha_enabled')]
+#[CoversFunction('signup_validate_data')]
+#[CoversFunction('signup_setup_new_user')]
+#[CoversFunction('signup_get_user_confirmation_authplugin')]
+#[CoversFunction('signup_is_enabled')]
+#[Group('MuTMS')]
 final class authlib_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::signup_captcha_enabled()
-     */
     public function test_signup_captcha_enabled(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -76,9 +80,6 @@ final class authlib_test extends \advanced_testcase {
         $this->assertTrue(signup_captcha_enabled());
     }
 
-    /**
-     * @covers ::signup_validate_data()
-     */
     public function test_signup_validate_data(): void {
         global $CFG;
         require_once($CFG->dirroot . '/user/profile/lib.php');
@@ -132,9 +133,6 @@ final class authlib_test extends \advanced_testcase {
         $this->assertSame([], $errors);
     }
 
-    /**
-     * @covers ::signup_setup_new_user()
-     */
     public function test_signup_setup_new_user(): void {
         global $CFG;
         require_once($CFG->dirroot . '/user/editlib.php');
@@ -162,9 +160,6 @@ final class authlib_test extends \advanced_testcase {
         $this->assertSame('email', $user->auth);
     }
 
-    /**
-     * @covers ::signup_get_user_confirmation_authplugin()
-     */
     public function test_signup_get_user_confirmation_authplugin(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -210,9 +205,6 @@ final class authlib_test extends \advanced_testcase {
         $this->assertInstanceOf(\auth_plugin_email::class, $auth);
     }
 
-    /**
-     * @covers ::signup_is_enabled()
-     */
     public function test_signup_is_enabled(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

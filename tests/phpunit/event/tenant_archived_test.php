@@ -22,17 +22,18 @@ namespace tool_mutenancy\phpunit\event;
 use tool_mutenancy\event\tenant_archived;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\tenant;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tenant archived event tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\event\tenant_archived
  */
+#[CoversClass(\tool_mutenancy\event\tenant_archived::class)]
+#[Group('MuTMS')]
 final class tenant_archived_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();

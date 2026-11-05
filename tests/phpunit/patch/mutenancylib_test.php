@@ -22,24 +22,26 @@ namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for lib/mutenancylib.php core additions.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversFunction('mutenancy_is_active')]
+#[CoversFunction('mutenancy_get_config')]
+#[CoversFunction('mutenancy_is_user_archived')]
+#[Group('MuTMS')]
 final class mutenancylib_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::mutenancy_is_active()
-     */
     public function test_mutenancy_is_active(): void {
         tenancy::deactivate();
         $this->assertFalse(tenancy::is_active());
@@ -47,9 +49,6 @@ final class mutenancylib_test extends \advanced_testcase {
         $this->assertTrue(tenancy::is_active());
     }
 
-    /**
-     * @covers ::mutenancy_get_config()
-     */
     public function test_mutenancy_get_config(): void {
         global $CFG;
 
@@ -250,9 +249,6 @@ final class mutenancylib_test extends \advanced_testcase {
         tenancy::unforce_current_tenantid();
     }
 
-    /**
-     * @covers ::mutenancy_is_user_archived()
-     */
     public function test_mutenancy_is_user_archived(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();

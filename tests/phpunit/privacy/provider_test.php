@@ -22,17 +22,18 @@ namespace tool_mutenancy\phpunit\privacy;
 
 use tool_mutenancy\privacy\provider;
 use core_privacy\local\request\writer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Privacy provider tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\privacy\provider
  */
+#[CoversClass(\tool_mutenancy\privacy\provider::class)]
+#[Group('MuTMS')]
 final class provider_test extends \core_privacy\tests\provider_testcase {
     protected function setUp(): void {
         parent::setUp();

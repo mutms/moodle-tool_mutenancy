@@ -19,17 +19,18 @@
 namespace tool_mutenancy\phpunit\muform\autocompletemany;
 
 use tool_mutenancy\muform\autocompletemany\associate_add;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Associate users autocomplete source tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\muform\autocompletemany\associate_add
  */
+#[CoversClass(\tool_mutenancy\muform\autocompletemany\associate_add::class)]
+#[Group('MuTMS')]
 final class associate_add_test extends \advanced_testcase {
     public function test_source(): void {
         $this->resetAfterTest();

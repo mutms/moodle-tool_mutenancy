@@ -22,26 +22,24 @@ namespace tool_mutenancy\phpunit\local;
 
 use tool_mutenancy\local\config;
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy config tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\config
  */
+#[CoversClass(\tool_mutenancy\local\config::class)]
+#[Group('MuTMS')]
 final class config_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::is_value_forced
-     */
     public function test_is_value_forced(): void {
         global $CFG;
 
@@ -72,9 +70,6 @@ final class config_test extends \advanced_testcase {
         $this->assertSame('abc', get_config('tool_mutenancy', 'xyz'));
     }
 
-    /**
-     * @covers ::override
-     */
     public function test_override(): void {
         global $DB;
 
@@ -128,9 +123,6 @@ final class config_test extends \advanced_testcase {
         $this->assertSame('123', $record->value);
     }
 
-    /**
-     * @covers ::is_overridden
-     */
     public function test_is_overridden(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -154,9 +146,6 @@ final class config_test extends \advanced_testcase {
         $this->assertFalse(config::is_overridden($tenant2->id, 'tool_mutenancy', 'xyz'));
     }
 
-    /**
-     * @covers ::fetch_overrides
-     */
     public function test_fetch_overrides(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -178,9 +167,6 @@ final class config_test extends \advanced_testcase {
         $this->assertSame(['xyz' => '123'], config::fetch_overrides($tenant2->id, 'tool_mutenancy'));
     }
 
-    /**
-     * @covers ::get
-     */
     public function test_get(): void {
         global $CFG;
 
@@ -379,9 +365,6 @@ final class config_test extends \advanced_testcase {
         $this->assertSame($expected1, (array)config::get(-1, 'tool_xnothing'));
     }
 
-    /**
-     * @covers ::purge_plugin_overrides
-     */
     public function test_purge_plugin_overrides(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

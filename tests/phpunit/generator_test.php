@@ -20,25 +20,25 @@
 
 namespace tool_mutenancy\phpunit;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Multi-tenancy generator tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy_generator
  */
+#[CoversClass(\tool_mutenancy_generator::class)]
+#[CoversClass(\testing_data_generator::class)]
+#[Group('MuTMS')]
 final class generator_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::create_tenant
-     */
     public function test_create_tenant(): void {
         global $DB;
 
@@ -116,9 +116,6 @@ final class generator_test extends \advanced_testcase {
         $this->assertSame($category5->id, $tenant5->categoryid);
     }
 
-    /**
-     * @covers ::create_tenant_manager
-     */
     public function test_create_tenant_manager(): void {
         global $DB;
 
@@ -132,9 +129,6 @@ final class generator_test extends \advanced_testcase {
         $this->assertTrue($DB->record_exists('tool_mutenancy_manager', ['tenantid' => $tenant->id, 'userid' => $user->id]));
     }
 
-    /**
-     * @covers \testing_data_generator::create_user
-     */
     public function test_create_user(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

@@ -22,24 +22,34 @@
 namespace tool_mutenancy\phpunit\patch;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tests for lib/accesslib.php modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(\context_tenant::class)]
+#[CoversFunction('has_capability')]
+#[CoversFunction('get_role_archetypes')]
+#[CoversFunction('get_default_capabilities')]
+#[CoversFunction('get_default_role_archetype_allows')]
+#[CoversFunction('get_users_by_capability')]
+#[CoversFunction('get_with_capability_sql')]
+#[CoversFunction('role_get_name')]
+#[CoversFunction('role_get_description')]
+#[CoversFunction('get_sorted_contexts')]
+#[Group('MuTMS')]
 final class accesslib_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers \context_tenant
-     */
     public function test_context_tenant(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -52,9 +62,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertSame(CONTEXT_TENANT, $context2->contextlevel);
     }
 
-    /**
-     * @covers ::has_capability()
-     */
     public function test_has_capability(): void {
         global $DB, $CFG;
         tenancy::activate();
@@ -275,9 +282,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertfalse(has_capability('moodle/course:update', $coursecontext1, $user2));
     }
 
-    /**
-     * @covers ::get_role_archetypes()
-     */
     public function test_get_role_archetypes(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();
@@ -311,9 +315,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertSame($expected, get_role_archetypes());
     }
 
-    /**
-     * @covers ::get_default_capabilities()
-     */
     public function test_get_default_capabilities(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();
@@ -340,9 +341,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertSame(['moodle/category:viewcourselist' => CAP_ALLOW], $result);
     }
 
-    /**
-     * @covers ::get_default_role_archetype_allows()
-     */
     public function test_get_default_role_archetype_allows(): void {
         global $DB;
         tenancy::activate();
@@ -428,9 +426,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertSame([], $result);
     }
 
-    /**
-     * @covers ::get_users_by_capability()
-     */
     public function test_get_users_by_capability(): void {
         global $DB;
         tenancy::activate();
@@ -498,9 +493,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertEquals($expected, array_keys($result));
     }
 
-    /**
-     * @covers ::get_with_capability_sql()
-     */
     public function test_get_with_capability_sql(): void {
         global $DB;
         tenancy::activate();
@@ -562,9 +554,6 @@ final class accesslib_test extends \advanced_testcase {
         );
     }
 
-    /**
-     * @covers ::role_get_name()
-     */
     public function test_role_get_name(): void {
         tenancy::activate();
 
@@ -573,9 +562,6 @@ final class accesslib_test extends \advanced_testcase {
         $this->assertSame('Tenant manager', role_get_name($role));
     }
 
-    /**
-     * @covers ::role_get_description()
-     */
     public function test_role_get_description(): void {
         tenancy::activate();
 
@@ -587,9 +573,6 @@ final class accesslib_test extends \advanced_testcase {
         );
     }
 
-    /**
-     * @covers ::get_sorted_contexts()
-     */
     public function test_get_sorted_contexts(): void {
         if (tenancy::is_active()) {
             tenancy::deactivate();

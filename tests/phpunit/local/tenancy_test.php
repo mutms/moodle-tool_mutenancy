@@ -21,26 +21,24 @@
 namespace tool_mutenancy\phpunit\local;
 
 use tool_mutenancy\local\tenancy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenancy tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\tenancy
  */
+#[CoversClass(\tool_mutenancy\local\tenancy::class)]
+#[Group('MuTMS')]
 final class tenancy_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::activate
-     */
     public function test_activate(): void {
         global $DB;
 
@@ -54,9 +52,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame('tenantuser', $role->archetype);
     }
 
-    /**
-     * @covers ::deactivate
-     */
     public function test_deactivate(): void {
         global $DB;
         tenancy::activate();
@@ -69,9 +64,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame(false, $role);
     }
 
-    /**
-     * @covers ::is_active
-     */
     public function test_is_active(): void {
         if (defined('TEST_MUTENANCY_INIT_ACTIVATE') && constant('TEST_MUTENANCY_INIT_ACTIVATE')) {
             $this->assertTrue(tenancy::is_active());
@@ -86,9 +78,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertFalse(tenancy::is_active());
     }
 
-    /**
-     * @covers ::get_user_tenantid
-     */
     public function test_get_user_tenantid(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -104,9 +93,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame((int)$tenant1->id, tenancy::get_user_tenantid($user1->id));
     }
 
-    /**
-     * @covers ::get_current_tenantid, ::force_current_tenantid, ::unforce_current_tenantid
-     */
     public function test_get_current_tenantid(): void {
         global $SESSION;
 
@@ -161,9 +147,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame((int)$tenant1->id, tenancy::get_current_tenantid());
     }
 
-    /**
-     * @covers ::can_switch
-     */
     public function test_can_switch(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -234,9 +217,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertTrue(tenancy::can_switch());
     }
 
-    /**
-     * @covers ::switch
-     */
     public function test_switch(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -333,9 +313,6 @@ final class tenancy_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::fix_site
-     */
     public function test_fix_site(): void {
         global $SITE, $DB;
 
@@ -400,9 +377,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame($site->shortname, $SITE->shortname);
     }
 
-    /**
-     * @covers ::set_cookie
-     */
     public function test_set_cookie(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -441,9 +415,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame((int)$tenant2->id, tenancy::get_current_tenantid());
     }
 
-    /**
-     * @covers ::get_related_users_exists
-     */
     public function test_get_related_users_exists(): void {
         global $DB;
 
@@ -526,9 +497,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame([$user2x1->id], $result);
     }
 
-    /**
-     * @covers ::get_tenant_string
-     */
     public function test_get_tenant_string(): void {
         $this->assertSame('Tenant', tenancy::get_tenant_string('tenant'));
         $this->assertSame('Add tenant', tenancy::get_tenant_string('tenant_create'));
@@ -538,9 +506,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame('Add Fakulta', tenancy::get_tenant_string('tenant_create'));
     }
 
-    /**
-     * @covers ::get_tenants_string
-     */
     public function test_get_tenants_string(): void {
         $this->assertSame('Tenants', tenancy::get_tenants_string('tenants'));
         $this->assertSame('Other tenants', tenancy::get_tenants_string('tenant_switch_other'));
@@ -550,9 +515,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame('Other Fakulty', tenancy::get_tenants_string('tenant_switch_other'));
     }
 
-    /**
-     * @covers ::callback_lib_setup
-     */
     public function test_callback_lib_setup(): void {
         global $SESSION, $SITE, $DB;
 
@@ -661,9 +623,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame($tenant2->idnumber, $SITE->shortname);
     }
 
-    /**
-     * @covers ::callback_session_set_user
-     */
     public function test_callback_session_set_user(): void {
         global $SESSION, $SITE, $DB, $CFG;
 
@@ -744,9 +703,6 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame($tenant2->idnumber, $SITE->shortname);
     }
 
-    /**
-     * @covers ::callback_login_page
-     */
     public function test_callback_login_page(): void {
         global $SESSION, $SITE, $DB;
 

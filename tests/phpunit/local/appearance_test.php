@@ -22,26 +22,24 @@ namespace tool_mutenancy\phpunit\local;
 
 use tool_mutenancy\local\appearance;
 use tool_mutenancy\local\config;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy appearance tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\appearance
  */
+#[CoversClass(\tool_mutenancy\local\appearance::class)]
+#[Group('MuTMS')]
 final class appearance_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers ::has_custom_css
-     */
     public function test_has_custom_css(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -62,9 +60,6 @@ final class appearance_test extends \advanced_testcase {
         $this->assertFalse(appearance::has_custom_css($tenant2->id, 'xyz'));
     }
 
-    /**
-     * @covers ::get_logo_url
-     */
     public function test_get_logo_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -120,9 +115,6 @@ final class appearance_test extends \advanced_testcase {
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::get_compact_logo_url
-     */
     public function test_get_compact_logo_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -178,9 +170,6 @@ final class appearance_test extends \advanced_testcase {
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::get_favicon_url
-     */
     public function test_get_favicon_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -236,9 +225,6 @@ final class appearance_test extends \advanced_testcase {
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::get_boost_setting_image_url
-     */
     public function test_get_boost_setting_image_url(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -294,9 +280,6 @@ final class appearance_test extends \advanced_testcase {
         $this->assertFalse($result);
     }
 
-    /**
-     * @covers ::is_valid_color
-     */
     public function test_is_valid_color(): void {
         $this->assertTrue(appearance::is_valid_color('#abc'));
         $this->assertTrue(appearance::is_valid_color('#11aaFF'));

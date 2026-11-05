@@ -20,23 +20,24 @@
 
 namespace tool_mutenancy\phpunit\patch;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Multi-tenancy tests for upstream modifications.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(\profile_field_base::class)]
+#[Group('MuTMS')]
 final class user_profile_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @covers \profile_field_base::is_visible
-     */
     public function test_profile_field_base_is_visible(): void {
         global $CFG;
         require_once("$CFG->dirroot/user/profile/lib.php");
@@ -102,9 +103,6 @@ final class user_profile_test extends \advanced_testcase {
         $this->assertFalse($text2->is_visible());
     }
 
-    /**
-     * @covers \profile_field_base::is_editable
-     */
     public function test_profile_field_base_is_editable(): void {
         global $CFG;
         require_once("$CFG->dirroot/user/profile/lib.php");

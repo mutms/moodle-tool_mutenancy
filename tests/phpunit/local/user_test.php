@@ -24,42 +24,36 @@ use tool_mutenancy\local\user;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\tenant;
 use tool_mutenancy\local\manager;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Multi-tenancy tenant user tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2025 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @coversDefaultClass \tool_mutenancy\local\user
  */
+#[CoversClass(\tool_mutenancy\local\user::class)]
+#[Group('MuTMS')]
 final class user_test extends \advanced_testcase {
     public function setUp(): void {
         parent::setUp();
         $this->resetAfterTest();
     }
 
-    /**
-     * @coversNothing
-     */
+    #[CoversNothing]
     public function test_userarchetype_constant(): void {
         $this->assertSame('tenantuser', user::ROLESHORTNAME);
     }
 
-    /**
-     * @covers ::get_default_capabilities
-     */
     public function test_get_default_capabilities(): void {
         $capabilities = user::get_default_capabilities();
 
         $this->assertSame(['moodle/category:viewcourselist' => CAP_ALLOW], $capabilities);
     }
 
-    /**
-     * @covers ::create_role
-     */
     public function test_create_role(): void {
         global $DB;
 
@@ -91,9 +85,6 @@ final class user_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::get_role
-     */
     public function test_get_role(): void {
         global $DB;
 
@@ -120,9 +111,6 @@ final class user_test extends \advanced_testcase {
         $this->assertNotEquals($role2->id, $role3->id);
     }
 
-    /**
-     * @covers ::delete_role
-     */
     public function test_delete_role(): void {
         global $DB;
 
@@ -166,9 +154,6 @@ final class user_test extends \advanced_testcase {
         $this->assertFalse(user_has_role_assignment($userid, $role->id, $categorycontext->id));
     }
 
-    /**
-     * @covers ::sync
-     */
     public function test_sync(): void {
         global $DB;
 
@@ -379,9 +364,6 @@ final class user_test extends \advanced_testcase {
         $this->assert_is_user($user3->id, $tenant3);
     }
 
-    /**
-     * @covers ::cohort_member_added
-     */
     public function test_cohort_member_added(): void {
         global $DB;
 
@@ -412,9 +394,6 @@ final class user_test extends \advanced_testcase {
         $this->assertTrue(user_has_role_assignment($user1->id, $role->id, $categorycontext1->id));
     }
 
-    /**
-     * @covers ::cohort_member_removed
-     */
     public function test_cohort_member_removed(): void {
         global $DB;
 
@@ -446,9 +425,6 @@ final class user_test extends \advanced_testcase {
         $this->assertTrue(user_has_role_assignment($user1->id, $role->id, $categorycontext1->id));
     }
 
-    /**
-     * @covers ::allocate_user
-     */
     public function test_allocate_user(): void {
         global $DB;
 
@@ -546,9 +522,6 @@ final class user_test extends \advanced_testcase {
         }
     }
 
-    /**
-     * @covers ::count_users
-     */
     public function test_count_users(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -572,9 +545,6 @@ final class user_test extends \advanced_testcase {
         $this->assertSame(0, user::count_users(0));
     }
 
-    /**
-     * @covers ::count_members
-     */
     public function test_count_members(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
@@ -598,9 +568,6 @@ final class user_test extends \advanced_testcase {
         $this->assertSame(0, user::count_members(0));
     }
 
-    /**
-     * @covers ::get_associated_tenants
-     */
     public function test_get_associated_tenants(): void {
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');

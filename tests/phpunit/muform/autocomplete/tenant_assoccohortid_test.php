@@ -19,17 +19,18 @@
 namespace tool_mutenancy\phpunit\muform\autocomplete;
 
 use tool_mutenancy\muform\autocomplete\tenant_assoccohortid;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Associated cohort autocomplete source tests.
  *
- * @group       MuTMS
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @covers \tool_mutenancy\muform\autocomplete\tenant_assoccohortid
  */
+#[CoversClass(\tool_mutenancy\muform\autocomplete\tenant_assoccohortid::class)]
+#[Group('MuTMS')]
 final class tenant_assoccohortid_test extends \advanced_testcase {
     public function test_source(): void {
         $this->resetAfterTest();
