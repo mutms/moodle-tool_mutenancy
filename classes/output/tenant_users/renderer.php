@@ -34,6 +34,6 @@ final class renderer extends \tool_mutenancy\output\tenant_renderer_base {
             \tool_mutenancy\reportbuilder\local\systemreports\users::class,
             $context
         );
-        return $report->output();
+        return $this->output->render(new \tool_mulib\output\report_filter_bar($report)) . $report->output();
     }
 }

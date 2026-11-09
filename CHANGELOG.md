@@ -15,6 +15,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - migration to new forms library
 - tenant switching searches tenants instead of listing all of them
 - cohort names link to cohort management, the advanced cohort management page is used when installed
+- reports have an always visible filter bar, the standard filters form is available as Advanced filtering
 
 ### Fixed
 
