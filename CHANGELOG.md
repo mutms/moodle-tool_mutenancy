@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Added
 
+- Czech translation and AI-produced previews of German, French, Italian, Portuguese and Spanish translations
 - tenant cohorts are described and cohort usage in tenants is listed in advanced cohort management
 
 ### Changed
