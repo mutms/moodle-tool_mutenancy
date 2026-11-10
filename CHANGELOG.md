@@ -6,6 +6,10 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ## [Unreleased](https://github.com/mutms/moodle-tool_mutenancy/compare/v4.5.15.01...MOODLE_405_STABLE)
 
+### Added
+
+- Czech translation and AI-produced previews of German, French, Italian, Portuguese and Spanish translations
+
 ### Fixed
 
 - _tool_mutenancy_allocate_user_ web service received user id and tenant id swapped
