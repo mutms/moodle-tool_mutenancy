@@ -131,9 +131,9 @@ $string['setting_allowguests'] = 'Allow guest access to tenants';
 $string['setting_allowguests_desc'] = 'Enable this setting if you want to allow guest access to tenant courses.
 
 Note that this feature requires site‑level guest access to be enabled. In addition, tenant courses must have guest access enabled, and users should be associated with tenants rather than being tenant members.';
-$string['setting_tenantentities'] = 'Tenant entity plural';
+$string['setting_tenantentities'] = 'Tenant entity name (plural)';
 $string['setting_tenantentities_desc'] = 'If provided the plural "Tenants" word will be replaced with given custom name. For example: Units, Faculties or Events';
-$string['setting_tenantentity'] = 'Tenant entity singular';
+$string['setting_tenantentity'] = 'Tenant entity name';
 $string['setting_tenantentity_desc'] = 'If provided the singular "Tenant" word will be replaced with given custom name. For example: Unit, Faculty or Event';
 $string['setting_tenantlimit'] = 'Tenant limit';
 $string['setting_tenantlimit_desc'] = 'Specifies how many tenants can be created. Note that sites with more than 100 tenants may encounter performance and usability problems.';
