@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Added
 
+- Backported security patches from Moodle 5.1.9
 - Compatible with Moodle 5.0.12
 - Czech translation and AI-produced previews of German, French, Italian, Portuguese and Spanish translations
 
