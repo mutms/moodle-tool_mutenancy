@@ -4,7 +4,7 @@ Plugin versioning is derived from Moodle releases, it does not comply with the s
 
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
-## [v5.2.5.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.4.01...v5.2.5.01) - 2026-09-22
+## [v5.2.5.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.4.01...v5.2.5.01) - 2026-11-12
 
 ### Added
 
@@ -15,11 +15,11 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 - _tool_mutenancy_allocate_user_ web service received user id and tenant id swapped
 
-## [v5.2.4.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.3.03...v5.2.4.01) - 2026-09-22
+## [v5.2.4.01](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.3.03...v5.2.4.01) - 2026-10-04
 
 - Compatible with Moodle 5.2.4
 
-## [v5.2.3.03](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.3.02...v5.2.3.03) - 2026-09-22
+## [v5.2.3.03](https://github.com/mutms/moodle-tool_mutenancy/compare/v5.2.3.02...v5.2.3.03) - 2026-09-19
 
 - version pinned to 20260922xx
 
