@@ -8,6 +8,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Added
 
+- Compatible with Moodle 4.5.16
 - Czech translation and AI-produced previews of German, French, Italian, Portuguese and Spanish translations
 
 ### Fixed
