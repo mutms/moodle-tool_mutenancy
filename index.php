@@ -75,8 +75,14 @@ $report = \core_reportbuilder\system_report_factory::create(
     \tool_mutenancy\reportbuilder\local\systemreports\tenants::class,
     context_system::instance()
 );
-echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report));
+echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
+    'tenant:name' => null,
+    'tenant:archived' => null,
+], defaults: [
+    'tenant:archived' => ['operator' => \core_reportbuilder\local\filters\boolean_select::NOT_CHECKED],
+]));
 echo $report->output();
+echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
 
 $buttons = [];
 

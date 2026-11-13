@@ -34,6 +34,13 @@ final class renderer extends \tool_mutenancy\output\tenant_renderer_base {
             \tool_mutenancy\reportbuilder\local\systemreports\users::class,
             $context
         );
-        return $this->output->render(new \tool_mulib\output\report_filter_bar($report)) . $report->output();
+        $result = $this->output->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
+            'user:fullname' => null,
+            'user:tenantmember' => null,
+            'user:suspended' => null,
+        ]));
+        $result .= $report->output();
+        $result .= $this->output->render(new \tool_mulib\output\report_pager($report));
+        return $result;
     }
 }
