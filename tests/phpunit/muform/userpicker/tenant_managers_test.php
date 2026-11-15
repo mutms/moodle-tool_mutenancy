@@ -16,22 +16,35 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\autocomplete;
+namespace tool_mutenancy\phpunit\muform\userpicker;
 
-use tool_mutenancy\muform\autocomplete\tenant_managers;
+use tool_mutenancy\muform\userpicker\tenant_managers;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Tenant managers autocomplete source tests.
+ * Tenant managers users picker source tests.
  *
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\autocomplete\tenant_managers::class)]
+#[CoversClass(\tool_mutenancy\muform\userpicker\tenant_managers::class)]
 #[Group('MuTMS')]
 final class tenant_managers_test extends \advanced_testcase {
+    /**
+     * Users on the first page of the panel.
+     *
+     * @param \tool_mulib\muform\userpicker\base $source
+     * @param string $query
+     * @param string[] $exclude
+     * @return array user id => label html
+     */
+    private function search(\tool_mulib\muform\userpicker\base $source, string $query, array $exclude = []): array {
+        $result = $source->search($query, $exclude, 0);
+        return array_combine(array_column($result['rows'], 'id'), array_column($result['rows'], 'label'));
+    }
+
     public function test_source(): void {
         $this->resetAfterTest();
 
@@ -57,18 +70,18 @@ final class tenant_managers_test extends \advanced_testcase {
         $source = new tenant_managers((int)$tenant1->id);
         $this->assertSame([(int)$tenant1->id], $source->get_args());
 
-        $result = $source->search('', 50, []);
+        $result = $this->search($source, '');
         $this->assertArrayHasKey((string)$user0->id, $result);
         $this->assertArrayHasKey((string)$user1->id, $result);
         $this->assertArrayNotHasKey((string)$user2->id, $result);
-        $this->assertSame([(string)$user1->id], array_map('strval', array_keys($source->search('First', 50, []))));
-        $this->assertSame([], $source->search('First', 50, [(string)$user1->id]));
+        $this->assertSame([(string)$user1->id], array_map('strval', array_keys($this->search($source, 'First'))));
+        $this->assertSame([], $this->search($source, 'First', [(string)$user1->id]));
 
         $labels = $source->labels([(string)$user1->id, (string)$user2->id, (string)$suspended->id]);
         $this->assertSame([(string)$user1->id, (string)$suspended->id], array_map('strval', array_keys($labels)));
         // Suspended managers stay allowed, the same as in 4.5.
         $this->assertSame([], $source->validate([(string)$suspended->id]));
-        $this->assertArrayHasKey((string)$suspended->id, $source->search('Suspended', 50, []));
+        $this->assertArrayHasKey((string)$suspended->id, $this->search($source, 'Suspended'));
 
         $this->setUser($user0);
         $this->expectException(\required_capability_exception::class);

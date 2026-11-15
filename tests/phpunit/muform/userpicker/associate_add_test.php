@@ -16,22 +16,35 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\autocomplete;
+namespace tool_mutenancy\phpunit\muform\userpicker;
 
-use tool_mutenancy\muform\autocomplete\associate_add;
+use tool_mutenancy\muform\userpicker\associate_add;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Associate users autocomplete source tests.
+ * Associate users users picker source tests.
  *
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\autocomplete\associate_add::class)]
+#[CoversClass(\tool_mutenancy\muform\userpicker\associate_add::class)]
 #[Group('MuTMS')]
 final class associate_add_test extends \advanced_testcase {
+    /**
+     * Users on the first page of the panel.
+     *
+     * @param \tool_mulib\muform\userpicker\base $source
+     * @param string $query
+     * @param string[] $exclude
+     * @return array user id => label html
+     */
+    private function search(\tool_mulib\muform\userpicker\base $source, string $query, array $exclude = []): array {
+        $result = $source->search($query, $exclude, 0);
+        return array_combine(array_column($result['rows'], 'id'), array_column($result['rows'], 'label'));
+    }
+
     public function test_source(): void {
         $this->resetAfterTest();
 
@@ -64,7 +77,7 @@ final class associate_add_test extends \advanced_testcase {
 
         $this->setUser($manager);
         $source = new associate_add((int)$tenant1->id);
-        $result = $source->search('User', 50, []);
+        $result = $this->search($source, 'User');
         $this->assertArrayHasKey((string)$user1->id, $result);
         $this->assertArrayNotHasKey((string)$user2->id, $result);
         $this->assertArrayNotHasKey((string)$user3->id, $result);

@@ -13,6 +13,7 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
 ### Changed
 
+- tenant managers and associated users are selected in a users picker panel with identity columns and paging instead of an autocomplete
 - migration to new forms library
 - tenant switching searches tenants instead of listing all of them
 - cohort names link to cohort management, the advanced cohort management page is used when installed

@@ -18,14 +18,14 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mulib\muform\element\autocompletemany;
 use tool_mulib\muform\element\buttons;
 use tool_mulib\muform\element\cancel;
 use tool_mulib\muform\element\info;
 use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\userpickermany;
 use tool_mulib\muform\form;
-use tool_mutenancy\muform\autocomplete\associate_add as associate_source;
+use tool_mutenancy\muform\userpicker\associate_add as associate_source;
 
 /**
  * Associate users form.
@@ -52,7 +52,7 @@ final class associate_add extends form {
         $cohortname = format_string($cohort->name);
         $this->add(new info('cohortname', get_string('associate_cohort', 'tool_mutenancy'), $cohortname, info::PLAIN));
 
-        $userids = new autocompletemany('userids', get_string('users'), new associate_source($tenant->id));
+        $userids = new userpickermany('userids', get_string('users'), new associate_source($tenant->id));
         $userids->set_required(true);
         $this->add($userids);
 

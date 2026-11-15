@@ -97,3 +97,59 @@ Feature: Tenant members and associated users section
     And I click on "Unlock account" "button" in the "dialog[open]" "css_element"
     And I click on "Actions" "link" in the "Zamceny Clen" "table_row"
     Then I should not see "Unlock account" in the "Zamceny Clen" "table_row"
+
+  Scenario: Global users may be associated with tenant and disassociated
+    Given the following "cohorts" exist:
+      | name     | idnumber |
+      | Cohort 1 | COH1     |
+    And the following "tool_mutenancy > tenants" exist:
+      | name     | idnumber | assoccohort |
+      | Tenant 3 | TEN3     | COH1        |
+    And the following "users" exist:
+      | username | firstname | lastname | email               | tenant |
+      | global1  | Globalni  | Prvni    | global1@example.com |        |
+      | global2  | Globalni  | Druhy    | global2@example.com |        |
+      | global3  | Globalni  | Treti    | global3@example.com |        |
+      | member2  | Cizi      | Clen     | member2@example.com | TEN2   |
+      | member3  | Vlastni   | Clen     | member3@example.com | TEN3   |
+    And the following "cohort members" exist:
+      | user    | cohort |
+      | global3 | COH1   |
+    And I log in as "admin"
+
+    # Tenants without associated users cohort cannot have associated users.
+    When I am on the "TEN1" "tool_mutenancy > Tenant users" page
+    Then "Associate users" "button" should not exist
+
+    When I am on the "TEN3" "tool_mutenancy > Tenant users" page
+    Then the following should exist in the "reportbuilder-table" table:
+      | First name     | Email address       | Tenant member |
+      | Vlastni Clen   | member3@example.com | Yes           |
+      | Globalni Treti | global3@example.com | No            |
+    And I should not see "Globalni Prvni"
+
+    # Only global users that are not associated yet are candidates.
+    When I press "Associate users"
+    Then I should see "Cohort 1" in the "dialog[open]" "css_element"
+    And I type "Clen" into the "userids" muform search field
+    And I should see "No results" in the "dialog.tool_mulib-picker-panel" "css_element"
+    And I type "Treti" into the "userids" muform search field
+    And I should see "No results" in the "dialog.tool_mulib-picker-panel" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Users | Globalni Prvni, global2@example.com |
+    And I click on "Associate users" "button" in the "dialog[open]" "css_element"
+    Then the following should exist in the "reportbuilder-table" table:
+      | First name     | Email address       | Tenant member |
+      | Vlastni Clen   | member3@example.com | Yes           |
+      | Globalni Prvni | global1@example.com | No            |
+      | Globalni Druhy | global2@example.com | No            |
+      | Globalni Treti | global3@example.com | No            |
+    And I should not see "Cizi Clen"
+
+    When I click on "Actions" "link" in the "Globalni Druhy" "table_row"
+    And I click on "Disassociate user" "link" in the "Globalni Druhy" "table_row"
+    Then I should see "Globalni Druhy" in the "dialog[open]" "css_element"
+    And I click on "Disassociate user" "button" in the "dialog[open]" "css_element"
+    Then I should not see "Globalni Druhy"
+    And I should see "Globalni Prvni"
+    And I should see "Globalni Treti"

@@ -16,10 +16,9 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\muform\autocomplete;
+namespace tool_mutenancy\muform\userpicker;
 
 use tool_mulib\local\sql;
-use tool_mulib\muform\util\autocomplete\user_trait;
 
 /**
  * Tenant manager candidates: global users and members of the tenant.
@@ -28,9 +27,7 @@ use tool_mulib\muform\util\autocomplete\user_trait;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_managers extends \tool_mulib\muform\autocomplete\base {
-    use user_trait;
-
+final class tenant_managers extends \tool_mulib\muform\userpicker\base {
     /** @var \context tenant context */
     private \context $context;
 
@@ -53,22 +50,18 @@ final class tenant_managers extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function search(string $query, int $maxitems, array $exclude): ?array {
+    protected function get_context(): \core\context {
         // Global users are candidates too, tenant member restrictions do not apply here.
-        return $this->search_users(\context_system::instance(), $query, $maxitems, $exclude, $this->get_where());
-    }
-
-    #[\Override]
-    public function labels(array $values): array {
-        return $this->user_labels(\context_system::instance(), $values, $this->get_where());
+        return \core\context\system::instance();
     }
 
     /**
      * Only global users and tenant members may manage the tenant.
      *
-     * @return sql
+     * @return sql|null
      */
-    private function get_where(): sql {
+    #[\Override]
+    protected function get_candidates_sql(): ?sql {
         return new sql('(u.tenantid IS NULL OR u.tenantid = :managertenantid)', ['managertenantid' => $this->tenantid]);
     }
 }

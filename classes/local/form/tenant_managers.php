@@ -19,13 +19,13 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mulib\muform\element\autocompletemany;
 use tool_mulib\muform\element\buttons;
 use tool_mulib\muform\element\cancel;
 use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\submit;
+use tool_mulib\muform\element\userpickermany;
 use tool_mulib\muform\form;
-use tool_mutenancy\muform\autocomplete\tenant_managers as managers_source;
+use tool_mutenancy\muform\userpicker\tenant_managers as managers_source;
 
 /**
  * Tenant managers form.
@@ -43,7 +43,7 @@ final class tenant_managers extends form {
         $this->add(new inforawhtml('info', '', $info));
 
         $source = new managers_source($tenant->id);
-        $this->add(new autocompletemany('userids', get_string('tenant_managers', 'tool_mutenancy'), $source));
+        $this->add(new userpickermany('userids', get_string('tenant_managers', 'tool_mutenancy'), $source));
 
         $this->add(new buttons('buttons'));
         $this->add(new submit('submit', get_string('update')), 'buttons');
