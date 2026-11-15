@@ -49,7 +49,7 @@ final class tenant_switch extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function search(string $query, int $maxitems): ?array {
+    public function search(string $query, int $maxitems, array $exclude): ?array {
         $query = \core_text::strtolower(trim($query));
         $result = [];
         foreach ($this->get_targets() as $tenantid => $name) {
@@ -65,7 +65,7 @@ final class tenant_switch extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function label(string $value): ?string {
+    protected function label_value(string $value): ?string {
         return $this->get_targets()[$value] ?? null;
     }
 

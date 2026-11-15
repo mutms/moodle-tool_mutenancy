@@ -25,7 +25,7 @@ use tool_mulib\muform\element\info;
 use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\submit;
 use tool_mulib\muform\form;
-use tool_mutenancy\muform\autocompletemany\associate_add as associate_source;
+use tool_mutenancy\muform\autocomplete\associate_add as associate_source;
 
 /**
  * Associate users form.

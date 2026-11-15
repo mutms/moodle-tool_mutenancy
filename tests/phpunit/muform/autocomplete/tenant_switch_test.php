@@ -55,20 +55,23 @@ final class tenant_switch_test extends \advanced_testcase {
         $this->assertSame([], $source->get_args());
 
         // No tenant first, then own tenants, then the others.
-        $result = $source->search('', 50);
+        $result = $source->search('', 50, []);
         $this->assertSame([0, (int)$mine->id, (int)$alpha->id], array_slice(array_keys($result), 0, 3));
         $this->assertSame('No tenant', $result[0]);
         $this->assertArrayNotHasKey($archived->id, $result);
         $this->assertCount(8, $result);
 
-        $this->assertSame([(int)$alpha->id => 'Alpha'], $source->search('ALP', 50));
-        $this->assertCount(5, $source->search('faculty', 50));
-        $this->assertNull($source->search('faculty', 4));
+        $this->assertSame([(int)$alpha->id => 'Alpha'], $source->search('ALP', 50, []));
+        $this->assertCount(5, $source->search('faculty', 50, []));
+        $this->assertNull($source->search('faculty', 4, []));
 
-        $this->assertSame('Zulu mine', $source->label((string)$mine->id));
-        $this->assertSame('No tenant', $source->label('0'));
-        $this->assertNull($source->label((string)$archived->id));
-        $this->assertNull($source->validate((string)$alpha->id));
+        $value = (string)$mine->id;
+        $this->assertSame('Zulu mine', $source->labels([$value])[$value] ?? null);
+        $this->assertSame('No tenant', $source->labels(['0'])['0'] ?? null);
+        $value = (string)$archived->id;
+        $this->assertNull($source->labels([$value])[$value] ?? null);
+        $value = (string)$alpha->id;
+        $this->assertNull($source->validate([$value])[$value] ?? null);
     }
 
     public function test_access(): void {

@@ -16,26 +16,23 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\muform\autocompletemany;
+namespace tool_mutenancy\muform\autocomplete;
 
-use core\exception\invalid_parameter_exception;
 use tool_mulib\local\sql;
 use tool_mulib\muform\util\autocomplete\user_trait;
 
 /**
- * Global users that may be added to the associated cohort of a tenant.
+ * Tenant manager candidates: global users and members of the tenant.
  *
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class associate_add extends \tool_mulib\muform\autocompletemany\base {
+final class tenant_managers extends \tool_mulib\muform\autocomplete\base {
     use user_trait;
 
     /** @var \context tenant context */
     private \context $context;
-    /** @var int associated cohort id */
-    private int $cohortid;
 
     /**
      * Constructor.
@@ -46,21 +43,8 @@ final class associate_add extends \tool_mulib\muform\autocompletemany\base {
         /** @var int tenant id */
         private readonly int $tenantid
     ) {
-        global $DB;
-
         $this->context = \context_tenant::instance($tenantid);
-        require_capability('tool/mutenancy:view', $this->context);
-
-        $tenant = $DB->get_record('tool_mutenancy_tenant', ['id' => $tenantid], '*', MUST_EXIST);
-        if (!$tenant->assoccohortid) {
-            throw new invalid_parameter_exception('tenant does not have associated cohort');
-        }
-        $cohort = $DB->get_record('cohort', ['id' => $tenant->assoccohortid], '*', MUST_EXIST);
-        if ($cohort->component) {
-            throw new invalid_parameter_exception('Associate cohort cannot belong to any component');
-        }
-        require_capability('moodle/cohort:assign', \context::instance_by_id($cohort->contextid));
-        $this->cohortid = (int)$cohort->id;
+        require_capability('tool/mutenancy:admin', $this->context);
     }
 
     #[\Override]
@@ -80,15 +64,11 @@ final class associate_add extends \tool_mulib\muform\autocompletemany\base {
     }
 
     /**
-     * Only global users that are not members yet.
+     * Only global users and tenant members may manage the tenant.
      *
      * @return sql
      */
     private function get_where(): sql {
-        return new sql(
-            "u.tenantid IS NULL
-             AND NOT EXISTS (SELECT 'x' FROM {cohort_members} cm WHERE cm.userid = u.id AND cm.cohortid = :assoccohortid)",
-            ['assoccohortid' => $this->cohortid]
-        );
+        return new sql('(u.tenantid IS NULL OR u.tenantid = :managertenantid)', ['managertenantid' => $this->tenantid]);
     }
 }

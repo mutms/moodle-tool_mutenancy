@@ -16,9 +16,9 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\autocompletemany;
+namespace tool_mutenancy\phpunit\muform\autocomplete;
 
-use tool_mutenancy\muform\autocompletemany\associate_add;
+use tool_mutenancy\muform\autocomplete\associate_add;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -29,7 +29,7 @@ use PHPUnit\Framework\Attributes\Group;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\autocompletemany\associate_add::class)]
+#[CoversClass(\tool_mutenancy\muform\autocomplete\associate_add::class)]
 #[Group('MuTMS')]
 final class associate_add_test extends \advanced_testcase {
     public function test_source(): void {

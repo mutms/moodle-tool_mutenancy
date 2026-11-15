@@ -53,16 +53,17 @@ final class user_allocate_test extends \advanced_testcase {
         $source = new user_allocate((int)$user0->id);
         $this->assertSame([(int)$user0->id], $source->get_args());
         $expected = [$tenant1->id => 'First tenant', $tenant2->id => 'Second tenant', $tenant3->id => 'Third tenant'];
-        $this->assertSame($expected, $source->search('', 50));
+        $this->assertSame($expected, $source->search('', 50, []));
 
         $source = new user_allocate((int)$user1->id);
-        $this->assertSame([$tenant2->id => 'Second tenant', $tenant3->id => 'Third tenant'], $source->search('', 50));
-        $this->assertSame([$tenant2->id => 'Second tenant'], $source->search('Second', 50));
-        $this->assertSame([$tenant2->id => 'Second tenant'], $source->search('2', 50));
-        $this->assertNull($source->search('', 1));
+        $this->assertSame([$tenant2->id => 'Second tenant', $tenant3->id => 'Third tenant'], $source->search('', 50, []));
+        $this->assertSame([$tenant2->id => 'Second tenant'], $source->search('Second', 50, []));
+        $this->assertSame([$tenant2->id => 'Second tenant'], $source->search('2', 50, []));
+        $this->assertNull($source->search('', 1, []));
         // The current tenant is a valid value.
-        $this->assertSame('First tenant', $source->label((string)$tenant1->id));
-        $this->assertNull($source->label('-1'));
+        $value = (string)$tenant1->id;
+        $this->assertSame('First tenant', $source->labels([$value])[$value] ?? null);
+        $this->assertNull($source->labels(['-1'])['-1'] ?? null);
 
         $this->setUser($user0);
         $this->expectException(\required_capability_exception::class);

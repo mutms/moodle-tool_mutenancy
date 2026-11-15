@@ -25,7 +25,7 @@ use tool_mulib\muform\element\cancel;
 use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\submit;
 use tool_mulib\muform\form;
-use tool_mutenancy\muform\autocompletemany\tenant_managers as managers_source;
+use tool_mutenancy\muform\autocomplete\tenant_managers as managers_source;
 
 /**
  * Tenant managers form.

@@ -53,7 +53,7 @@ final class user_allocate extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function search(string $query, int $maxitems): ?array {
+    public function search(string $query, int $maxitems, array $exclude): ?array {
         global $DB;
 
         $sql = (new sql(
@@ -73,7 +73,7 @@ final class user_allocate extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function label(string $value): ?string {
+    protected function label_value(string $value): ?string {
         global $DB;
         // Any existing tenant, the current tenant of the user is a valid value too.
         $name = $DB->get_field('tool_mutenancy_tenant', 'name', ['id' => (int)$value]);

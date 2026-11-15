@@ -56,26 +56,34 @@ final class tenant_assoccohortid_test extends \advanced_testcase {
         $this->setUser($manager);
         $source = new tenant_assoccohortid((int)$tenant1->id);
         $this->assertSame([(int)$tenant1->id], $source->get_args());
-        $this->assertSame([$cohort1->id => 'First kohort', $cohort2->id => 'Second kohort'], $source->search('', 50));
-        $this->assertSame([$cohort1->id => 'First kohort'], $source->search('First', 50));
-        $this->assertSame([$cohort2->id => 'Second kohort'], $source->search('koh2', 50));
-        $this->assertNull($source->search('', 1));
-        $this->assertNull($source->validate((string)$cohort1->id));
-        $this->assertSame('Error', $source->validate((string)$cohort3->id));
-        $this->assertSame('Error', $source->validate((string)$cohort4->id));
-        $this->assertSame('First kohort', $source->label((string)$cohort1->id));
-        $this->assertNull($source->label((string)$cohort4->id));
+        $this->assertSame([$cohort1->id => 'First kohort', $cohort2->id => 'Second kohort'], $source->search('', 50, []));
+        $this->assertSame([$cohort1->id => 'First kohort'], $source->search('First', 50, []));
+        $this->assertSame([$cohort2->id => 'Second kohort'], $source->search('koh2', 50, []));
+        $this->assertNull($source->search('', 1, []));
+        $value = (string)$cohort1->id;
+        $this->assertNull($source->validate([$value])[$value] ?? null);
+        $value = (string)$cohort3->id;
+        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
+        $value = (string)$cohort4->id;
+        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
+        $value = (string)$cohort1->id;
+        $this->assertSame('First kohort', $source->labels([$value])[$value] ?? null);
+        $value = (string)$cohort4->id;
+        $this->assertNull($source->labels([$value])[$value] ?? null);
 
         $this->setAdminUser();
         $source = new tenant_assoccohortid(0);
-        $this->assertCount(3, $source->search('', 50));
-        $this->assertNull($source->validate((string)$cohort3->id));
-        $this->assertSame('Error', $source->validate((string)$cohort4->id));
+        $this->assertCount(3, $source->search('', 50, []));
+        $value = (string)$cohort3->id;
+        $this->assertNull($source->validate([$value])[$value] ?? null);
+        $value = (string)$cohort4->id;
+        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
 
         // Existing association is always valid.
         $tenant2 = \tool_mutenancy\local\tenant::update((object)['id' => $tenant2->id, 'assoccohortid' => $cohort4->id]);
         $source = new tenant_assoccohortid((int)$tenant2->id);
-        $this->assertNull($source->validate((string)$cohort4->id));
+        $value = (string)$cohort4->id;
+        $this->assertNull($source->validate([$value])[$value] ?? null);
 
         $this->setUser($this->getDataGenerator()->create_user());
         $this->expectException(\required_capability_exception::class);

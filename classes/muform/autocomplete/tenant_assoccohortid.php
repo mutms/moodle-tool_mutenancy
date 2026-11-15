@@ -52,7 +52,7 @@ final class tenant_assoccohortid extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function search(string $query, int $maxitems): ?array {
+    public function search(string $query, int $maxitems, array $exclude): ?array {
         global $DB, $USER;
 
         $sql = (
@@ -87,9 +87,9 @@ final class tenant_assoccohortid extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function label(string $value): ?string {
+    protected function label_value(string $value): ?string {
         global $DB;
-        if ($this->validate($value) !== null) {
+        if ($this->validate_value($value) !== null) {
             return null;
         }
         $name = $DB->get_field('cohort', 'name', ['id' => (int)$value]);
@@ -97,7 +97,7 @@ final class tenant_assoccohortid extends \tool_mulib\muform\autocomplete\base {
     }
 
     #[\Override]
-    public function validate(string $value): ?string {
+    protected function validate_value(string $value): ?string {
         global $DB;
 
         $cohort = $DB->get_record('cohort', ['id' => (int)$value]);
