@@ -43,8 +43,8 @@ final class tenant_switch extends form {
         }
 
         $source = new \tool_mutenancy\muform\autocomplete\tenant_switch();
+        // No selection means no tenant, it is offered to everybody who can switch.
         $tenant = new autocomplete('tenantid', tenancy::get_tenant_string('tenant'), $source);
-        $tenant->set_required(true);
         $this->add($tenant);
 
         $this->add(new buttons('buttons'));
@@ -56,7 +56,7 @@ final class tenant_switch extends form {
     protected function validation(array $data, array &$allerrors): void {
         $tenantid = (int)tenancy::get_current_tenantid();
 
-        if ((int)$data['tenantid'] === $tenantid) {
+        if ((int)($data['tenantid'] ?? 0) === $tenantid) {
             $allerrors['tenantid'][] = get_string('error:changerequired', 'tool_mutenancy');
         }
     }

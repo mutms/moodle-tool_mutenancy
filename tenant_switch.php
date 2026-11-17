@@ -63,7 +63,8 @@ if ($form->is_cancelled()) {
 }
 
 if ($data = $form->get_data()) {
-    tenancy::switch((int)$data->tenantid);
+    // No selection means no tenant.
+    tenancy::switch((int)($data->tenantid ?? 0));
     $handler->submitted($returnurl);
 }
 

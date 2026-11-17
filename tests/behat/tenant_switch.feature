@@ -40,6 +40,22 @@ Feature: Tenant switching
     And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
     Then I should see "Acceptance test site" in the ".navbar" "css_element"
 
+    # No selection means no tenant.
+    When I click on "Switch tenant" "link" in the ".navbar" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Tenant      |                  |
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
+    Then I should see "Change required" in the "dialog[open]" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Tenant      | Tenant 1         |
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
+    And I should see "TSS1" in the ".navbar" "css_element"
+    And I click on "Switch tenant" "link" in the ".navbar" "css_element"
+    And I set the following muform fields in the "dialog[open]" "css_element":
+      | Tenant      |                  |
+    And I click on "Switch tenant" "button" in the "dialog[open]" "css_element"
+    Then I should see "Acceptance test site" in the ".navbar" "css_element"
+
   Scenario: Tenant switcher may switch to tenants
     Given the following "roles" exist:
       | name            | shortname |
