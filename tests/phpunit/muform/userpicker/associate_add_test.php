@@ -41,7 +41,7 @@ final class associate_add_test extends \advanced_testcase {
      * @return array user id => label html
      */
     private function search(\tool_mulib\muform\userpicker\base $source, string $query, array $exclude = []): array {
-        $result = $source->search($query, $exclude, 0);
+        $result = $source->search($query, $exclude, 0, []);
         return array_combine(array_column($result['rows'], 'id'), array_column($result['rows'], 'label'));
     }
 
