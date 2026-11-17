@@ -34,6 +34,11 @@ Feature: Tenant management primary menu
     And I click on "Tenant category" "link" in the ".primary-navigation" "css_element"
     Then I should see "Manage courses and categories"
 
+    When I click on "Tenant management" "link" in the ".primary-navigation" "css_element"
+    And I click on "Cohort management" "link" in the ".primary-navigation" "css_element"
+    Then the page title should contain "Cohort management"
+    And I should see "Cohorts" in the "#page-header" "css_element"
+
   Scenario: Site admin may disable Tenant management menu
     When the following config values are set as admin:
       | tenantprimarynav | 0 | tool_mutenancy|
@@ -57,3 +62,8 @@ Feature: Tenant management primary menu
     When I click on "Tenant management" "link" in the ".primary-navigation" "css_element"
     And I click on "Tenant category" "link" in the ".primary-navigation" "css_element"
     Then I should see "Manage courses and categories"
+
+    When I click on "Tenant management" "link" in the ".primary-navigation" "css_element"
+    And I click on "Cohort management" "link" in the ".primary-navigation" "css_element"
+    Then the page title should contain "Cohort management"
+    And I should see "Cohorts" in the "#page-header" "css_element"

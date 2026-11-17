@@ -79,6 +79,13 @@ final class navigation {
             $url
         );
 
+        if (\tool_mucohort\local\management::can_view_index($catcontext)) {
+            $tenantnode->add(
+                get_string('management', 'tool_mucohort'),
+                \tool_mucohort\local\management::get_index_url($catcontext)
+            );
+        }
+
         // Let other plugins add more items to "Tenant management" menu.
         $hook = new \tool_mutenancy\hook\tenant_management_menu($tenantnode, $tenant, $tenantcontext, $catcontext);
         \core\di::get(\core\hook\manager::class)->dispatch($hook);
