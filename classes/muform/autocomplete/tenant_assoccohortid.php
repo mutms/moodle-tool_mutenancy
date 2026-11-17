@@ -19,7 +19,7 @@
 namespace tool_mutenancy\muform\autocomplete;
 
 use tool_mulib\local\search_util;
-use tool_mulib\local\context_map;
+use tool_mulib\local\cohort_util;
 use tool_mulib\local\sql;
 
 /**
@@ -60,24 +60,15 @@ final class tenant_assoccohortid extends \tool_mulib\muform\autocomplete\base {
                 "SELECT ch.id, ch.name
                    FROM {cohort} ch
                    JOIN {context} c ON c.id = ch.contextid AND (c.tenantid IS NULL OR c.tenantid = :tenantid)
-                   /* capsubquery */
                   WHERE (ch.component = '' OR ch.component IS NULL)
-                        /* capwhere */
+                        /* use */
                         /* searchsql */
                ORDER BY ch.name ASC",
                 ['tenantid' => $this->tenantid]
             )
         )
             ->replace_comment('searchsql', search_util::get_cohort_search_query($query, 'ch')->wrap('AND ', ''))
-            ->replace_comment(
-                'capsubquery',
-                context_map::get_contexts_by_capability_query(
-                    'moodle/cohort:view',
-                    $USER->id,
-                    new sql("(ctx.contextlevel = ? OR ctx.contextlevel = ?)", [\context_system::LEVEL, \context_coursecat::LEVEL])
-                )->wrap("LEFT JOIN (", ")capctx ON capctx.id = c.id")
-            )
-            ->replace_comment('capwhere', "AND (ch.visible = 1 OR capctx.id IS NOT NULL)");
+            ->replace_comment('use', cohort_util::get_use_sql('ch', (int)$USER->id)->wrap('AND ', ''));
 
         $cohorts = $DB->get_records_sql_menu($sql->sql, $sql->params, 0, $maxitems + 1);
         if (count($cohorts) > $maxitems) {
@@ -132,7 +123,7 @@ final class tenant_assoccohortid extends \tool_mulib\muform\autocomplete\base {
             return get_string('error');
         }
 
-        if (!search_util::is_cohort_visible($cohort)) {
+        if (!cohort_util::can_use($cohort)) {
             return get_string('error');
         }
 
