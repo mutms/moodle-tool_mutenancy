@@ -148,6 +148,8 @@ $string['taskcron'] = 'Tarefa de limpeza de multi-inquilino';
 $string['tenancy_activate'] = 'Ativar multi-inquilino';
 $string['tenancy_activate_info'] = 'Durante a ativação do multi-inquilino serão criados novos papéis para os gestores do inquilino e para os utilizadores do inquilino.
 
+As páginas padrão de grupos globais serão substituídas pela nova gestão avançada de grupos globais. Isto pode ser desativado nas configurações do módulo de gestão de grupos globais, mas as páginas padrão não funcionam bem com inquilinos.
+
 O multi-inquilino só pode ser desativado depois de todos os inquilinos serem apagados.';
 $string['tenancy_deactivate'] = 'Desativar multi-inquilino';
 $string['tenancy_deactivate_info'] = 'O papel de gestor do inquilino será apagado durante a desativação do multi-inquilino.';

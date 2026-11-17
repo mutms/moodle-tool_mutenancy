@@ -148,6 +148,8 @@ $string['taskcron'] = 'Tâche de nettoyage de l’architecture multilocataire';
 $string['tenancy_activate'] = 'Activer l’architecture multilocataire';
 $string['tenancy_activate_info'] = 'De nouveaux rôles pour les gestionnaires du locataire et les utilisateurs du locataire seront créés lors de l’activation de l’architecture multilocataire.
 
+Les pages standard des cohortes seront remplacées par la nouvelle gestion avancée des cohortes. Cela peut être désactivé dans les paramètres du plugin de gestion des cohortes, mais les pages standard ne fonctionnent pas bien avec les locataires.
+
 L’architecture multilocataire ne peut être désactivée qu’après la suppression de tous les locataires.';
 $string['tenancy_deactivate'] = 'Désactiver l’architecture multilocataire';
 $string['tenancy_deactivate_info'] = 'Le rôle de gestionnaire du locataire sera supprimé lors de la désactivation de l’architecture multilocataire.';

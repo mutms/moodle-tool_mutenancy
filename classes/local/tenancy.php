@@ -35,6 +35,11 @@ final class tenancy {
         $oldactive = get_config('tool_mutenancy', 'active');
         set_config('active', '1', 'tool_mutenancy');
         add_to_config_log('active', (int)$oldactive, '1', 'tool_mutenancy');
+
+        $oldtakeover = get_config('tool_mucohort', 'takeover');
+        set_config('takeover', 1, 'tool_mucohort');
+        add_to_config_log('takeover', (int)$oldtakeover, '1', 'tool_mucohort');
+
         \core\context_helper::reset_levels();
 
         user::create_role();

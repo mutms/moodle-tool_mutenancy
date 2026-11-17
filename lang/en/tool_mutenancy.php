@@ -144,6 +144,8 @@ $string['taskcron'] = 'Multi-tenancy cleanup task';
 $string['tenancy_activate'] = 'Activate multi-tenancy';
 $string['tenancy_activate_info'] = 'New roles for Tenant managers and Tenant users will be created during multi-tenancy activation.
 
+Standard cohort pages will be replaced by the new advanced cohort management. This can be turned off in the Cohort management plugin settings, but standard cohort pages do not work well with tenants.
+
 Multi-tenancy can be de-activated only after all tenants are deleted.';
 $string['tenancy_deactivate'] = 'De-activate multi-tenancy';
 $string['tenancy_deactivate_info'] = 'Tenant manager role will be deleted during multi-tenancy de-activation.';

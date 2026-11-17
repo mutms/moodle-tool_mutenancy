@@ -144,6 +144,8 @@ $string['taskcron'] = 'Úloha údržby víceklientského provozu';
 $string['tenancy_activate'] = 'Aktivovat víceklientský provoz';
 $string['tenancy_activate_info'] = 'Při aktivaci víceklientského provozu budou vytvořeny nové role pro správce klienta a uživatele klienta.
 
+Standardní stránky globálních skupin budou nahrazeny novou pokročilou správou globálních skupin. Lze to vypnout v nastavení pluginu pro správu globálních skupin, standardní stránky ale s klienty nefungují dobře.
+
 Víceklientský provoz lze deaktivovat až po odstranění všech klientů.';
 $string['tenancy_deactivate'] = 'Deaktivovat víceklientský provoz';
 $string['tenancy_deactivate_info'] = 'Při deaktivaci víceklientského provozu bude role správce klienta odstraněna.';

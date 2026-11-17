@@ -148,6 +148,8 @@ $string['taskcron'] = 'Pulizia della multi-tenancy';
 $string['tenancy_activate'] = 'Attiva multi-tenancy';
 $string['tenancy_activate_info'] = 'Durante l\'attivazione della multi-tenancy verranno creati nuovi ruoli per i manager del tenant e gli utenti del tenant.
 
+Le pagine standard dei gruppi globali verranno sostituite dalla nuova gestione avanzata dei gruppi globali. Questa opzione può essere disattivata nelle impostazioni del plugin di gestione dei gruppi globali, ma le pagine standard non funzionano bene con i tenant.
+
 La multi-tenancy può essere disattivata solo dopo l\'eliminazione di tutti i tenant.';
 $string['tenancy_deactivate'] = 'Disattiva multi-tenancy';
 $string['tenancy_deactivate_info'] = 'Durante la disattivazione della multi-tenancy il ruolo Manager del tenant verrà eliminato.';

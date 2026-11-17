@@ -52,6 +52,36 @@ final class tenancy_test extends \advanced_testcase {
         $this->assertSame('tenantuser', $role->archetype);
     }
 
+    public function test_activate_cohort_takeover(): void {
+        global $DB;
+
+        tenancy::deactivate();
+        set_config('takeover', 0, 'tool_mucohort');
+        $DB->delete_records('config_log', []);
+        $this->assertNull(\tool_mucohort\callback\core::get_takeover_url('/cohort/index.php'));
+
+        tenancy::activate();
+        $this->assertSame('1', get_config('tool_mucohort', 'takeover'));
+        $this->assertNotNull(\tool_mucohort\callback\core::get_takeover_url('/cohort/index.php'));
+        $log = $DB->get_record('config_log', ['plugin' => 'tool_mucohort', 'name' => 'takeover'], '*', MUST_EXIST);
+        $this->assertSame('0', $log->oldvalue);
+        $this->assertSame('1', $log->value);
+
+        // Takeover is not reverted, standard cohort management is a choice of admin without tenants.
+        tenancy::deactivate();
+        $this->assertSame('1', get_config('tool_mucohort', 'takeover'));
+
+        // Activation with takeover already enabled keeps it enabled.
+        tenancy::activate();
+        $this->assertSame('1', get_config('tool_mucohort', 'takeover'));
+
+        // Takeover setting is enabled even if it was never set.
+        tenancy::deactivate();
+        unset_config('takeover', 'tool_mucohort');
+        tenancy::activate();
+        $this->assertSame('1', get_config('tool_mucohort', 'takeover'));
+    }
+
     public function test_deactivate(): void {
         global $DB;
         tenancy::activate();

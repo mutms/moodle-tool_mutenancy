@@ -148,6 +148,8 @@ $string['taskcron'] = 'Bereinigung der Mehrmandantenfähigkeit';
 $string['tenancy_activate'] = 'Mehrmandantenfähigkeit aktivieren';
 $string['tenancy_activate_info'] = 'Bei der Aktivierung der Mehrmandantenfähigkeit werden neue Rollen für Mandantenmanager/innen und Nutzer/innen des Mandanten angelegt.
 
+Die Standardseiten für globale Gruppen werden durch die neue erweiterte Verwaltung globaler Gruppen ersetzt. Dies kann in den Einstellungen des Plugins „Verwaltung globaler Gruppen“ abgeschaltet werden, die Standardseiten funktionieren mit Mandanten jedoch nicht gut.
+
 Die Mehrmandantenfähigkeit kann erst deaktiviert werden, nachdem alle Mandanten gelöscht wurden.';
 $string['tenancy_deactivate'] = 'Mehrmandantenfähigkeit deaktivieren';
 $string['tenancy_deactivate_info'] = 'Bei der Deaktivierung der Mehrmandantenfähigkeit wird die Rolle Mandantenmanager/in gelöscht.';

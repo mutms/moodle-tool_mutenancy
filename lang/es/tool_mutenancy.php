@@ -148,6 +148,8 @@ $string['taskcron'] = 'Tarea de limpieza de multiinquilino';
 $string['tenancy_activate'] = 'Activar el modo multiinquilino';
 $string['tenancy_activate_info'] = 'Durante la activación del modo multiinquilino se crearán nuevos roles para los gestores del inquilino y los usuarios del inquilino.
 
+Las páginas estándar de cohortes se sustituirán por la nueva gestión avanzada de cohortes. Esto se puede desactivar en los ajustes del plugin de gestión de cohortes, pero las páginas estándar no funcionan bien con inquilinos.
+
 El modo multiinquilino solo se puede desactivar después de eliminar todos los inquilinos.';
 $string['tenancy_deactivate'] = 'Desactivar el modo multiinquilino';
 $string['tenancy_deactivate_info'] = 'El rol de gestor del inquilino se eliminará durante la desactivación del modo multiinquilino.';
