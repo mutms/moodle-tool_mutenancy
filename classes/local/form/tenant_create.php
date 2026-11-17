@@ -19,7 +19,7 @@
 
 namespace tool_mutenancy\local\form;
 
-use tool_mulib\muform\element\autocomplete;
+use tool_mulib\muform\element\cohortpicker;
 use tool_mulib\muform\element\buttons;
 use tool_mulib\muform\element\cancel;
 use tool_mulib\muform\element\checkbox;
@@ -29,7 +29,7 @@ use tool_mulib\muform\element\text;
 use tool_mulib\muform\form;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\tenant;
-use tool_mutenancy\muform\autocomplete\tenant_assoccohortid;
+use tool_mutenancy\muform\cohortpicker\tenant_assoccohortid;
 
 /**
  * Create a new tenant form.
@@ -58,7 +58,7 @@ final class tenant_create extends form {
         $this->add($memberlimit);
 
         $source = new tenant_assoccohortid(0);
-        $assoccohortid = new autocomplete('assoccohortid', get_string('associate_cohort', 'tool_mutenancy'), $source);
+        $assoccohortid = new cohortpicker('assoccohortid', get_string('associate_cohort', 'tool_mutenancy'), $source);
         $assoccohortid->add_help_button('associate_cohort', 'tool_mutenancy');
         $this->add($assoccohortid);
 

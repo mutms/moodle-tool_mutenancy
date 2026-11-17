@@ -16,22 +16,45 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\autocomplete;
+namespace tool_mutenancy\phpunit\muform\cohortpicker;
 
-use tool_mutenancy\muform\autocomplete\tenant_assoccohortid;
+use tool_mutenancy\muform\cohortpicker\tenant_assoccohortid;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
- * Associated cohort autocomplete source tests.
+ * Associated cohort picker source tests.
  *
  * @package     tool_mutenancy
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\autocomplete\tenant_assoccohortid::class)]
+#[CoversClass(\tool_mutenancy\muform\cohortpicker\tenant_assoccohortid::class)]
 #[Group('MuTMS')]
 final class tenant_assoccohortid_test extends \advanced_testcase {
+    /**
+     * Cohorts offered by the source.
+     *
+     * @param \tool_mulib\muform\cohortpicker\base $source
+     * @param string $query
+     * @param string[] $exclude
+     * @return string[] cohort names indexed with cohort ids, in the order of names
+     */
+    private function search(\tool_mulib\muform\cohortpicker\base $source, string $query, array $exclude = []): array {
+        return array_column($source->search($query, $exclude)['cohorts'], 'name', 'id');
+    }
+
+    /**
+     * Values the source does not accept.
+     *
+     * @param \tool_mulib\muform\cohortpicker\base $source
+     * @param string[] $values
+     * @return string[]
+     */
+    private function refused(\tool_mulib\muform\cohortpicker\base $source, array $values): array {
+        return array_values(array_diff($values, array_map('strval', array_keys($source->labels($values)))));
+    }
+
     public function test_source(): void {
         $this->resetAfterTest();
 
@@ -56,16 +79,15 @@ final class tenant_assoccohortid_test extends \advanced_testcase {
         $this->setUser($manager);
         $source = new tenant_assoccohortid((int)$tenant1->id);
         $this->assertSame([(int)$tenant1->id], $source->get_args());
-        $this->assertSame([$cohort1->id => 'First kohort', $cohort2->id => 'Second kohort'], $source->search('', 50, []));
-        $this->assertSame([$cohort1->id => 'First kohort'], $source->search('First', 50, []));
-        $this->assertSame([$cohort2->id => 'Second kohort'], $source->search('koh2', 50, []));
-        $this->assertNull($source->search('', 1, []));
+        $this->assertSame([$cohort1->id => 'First kohort', $cohort2->id => 'Second kohort'], $this->search($source, ''));
+        $this->assertSame([$cohort1->id => 'First kohort'], $this->search($source, 'First'));
+        $this->assertSame([$cohort2->id => 'Second kohort'], $this->search($source, 'koh2'));
         $value = (string)$cohort1->id;
-        $this->assertNull($source->validate([$value])[$value] ?? null);
+        $this->assertSame([], $this->refused($source, [$value]));
         $value = (string)$cohort3->id;
-        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
+        $this->assertSame([$value], $this->refused($source, [$value]));
         $value = (string)$cohort4->id;
-        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
+        $this->assertSame([$value], $this->refused($source, [$value]));
         $value = (string)$cohort1->id;
         $this->assertSame('First kohort', $source->labels([$value])[$value] ?? null);
         $value = (string)$cohort4->id;
@@ -73,17 +95,17 @@ final class tenant_assoccohortid_test extends \advanced_testcase {
 
         $this->setAdminUser();
         $source = new tenant_assoccohortid(0);
-        $this->assertCount(3, $source->search('', 50, []));
+        $this->assertCount(3, $this->search($source, ''));
         $value = (string)$cohort3->id;
-        $this->assertNull($source->validate([$value])[$value] ?? null);
+        $this->assertSame([], $this->refused($source, [$value]));
         $value = (string)$cohort4->id;
-        $this->assertSame('Error', $source->validate([$value])[$value] ?? null);
+        $this->assertSame([$value], $this->refused($source, [$value]));
 
         // Existing association is always valid.
         $tenant2 = \tool_mutenancy\local\tenant::update((object)['id' => $tenant2->id, 'assoccohortid' => $cohort4->id]);
         $source = new tenant_assoccohortid((int)$tenant2->id);
         $value = (string)$cohort4->id;
-        $this->assertNull($source->validate([$value])[$value] ?? null);
+        $this->assertSame([], $this->refused($source, [$value]));
 
         $this->setUser($this->getDataGenerator()->create_user());
         $this->expectException(\required_capability_exception::class);
