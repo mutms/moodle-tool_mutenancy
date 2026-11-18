@@ -19,10 +19,6 @@
 /**
  * Strings for component 'tool_mutenancy', language 'it'.
  *
- * NOTE: This Italian translation was produced automatically by an AI language
- * model and has not yet been reviewed by a human translator. Corrections are
- * welcome.
- *
  * @package    tool_mutenancy
  * @copyright  2026 Petr Skoda
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -168,9 +164,9 @@ $string['tenant_cohort'] = 'Gruppo globale del tenant';
 $string['tenant_cohortidnumber'] = 'Codice identificativo del gruppo globale del tenant';
 $string['tenant_cohortname'] = 'Nome del gruppo globale del tenant';
 $string['tenant_create'] = 'Aggiungi tenant';
-$string['tenant_create_a'] = 'Aggiungi: {$a}';
+$string['tenant_create_a'] = 'Aggiungi {$a}';
 $string['tenant_delete'] = 'Elimina tenant';
-$string['tenant_delete_a'] = 'Elimina: {$a}';
+$string['tenant_delete_a'] = 'Elimina {$a}';
 $string['tenant_delete_info'] = 'Durante l\'eliminazione del tenant:
 
 * le autorizzazioni dei manager del tenant verranno revocate
@@ -211,7 +207,7 @@ $string['tenant_switch_notenant_a'] = 'Senza: {$a}';
 $string['tenant_switch_other'] = 'Altri tenant';
 $string['tenant_switch_other_a'] = 'Altro: {$a}';
 $string['tenant_update'] = 'Modifica tenant';
-$string['tenant_update_a'] = 'Modifica: {$a}';
+$string['tenant_update_a'] = 'Modifica {$a}';
 $string['tenant_users'] = 'Utenti del tenant';
 $string['tenant_users_a'] = 'Utenti: {$a}';
 $string['tenants'] = 'Tenant';
