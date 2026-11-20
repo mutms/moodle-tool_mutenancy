@@ -10,9 +10,7 @@ their own users, roles, courses, appearance, and settings — making it possible
 independent business units or client organisations from one installation.
 
 This plugin requires a small core patch to Moodle™ LMS. The patch and all MuTMS plugins are
-included in the [MuTMS distribution](https://github.com/mutms/mutms) for easy deployment. In the
-[Moodle plugins database](https://moodle.org/plugins/tool_mutenancy) it is listed as Experimental
-solely due to this core patch requirement — it is production ready.
+included in the [MuTMS distribution](https://github.com/mutms/mutms) for easy deployment.
 
 ## Features
 
