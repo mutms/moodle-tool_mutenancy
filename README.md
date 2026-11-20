@@ -18,15 +18,17 @@ included in the [MuTMS distribution](https://github.com/mutms/mutms) for easy de
 * User isolation — users are scoped to their tenant and cannot access other tenants
 * Tenant-specific roles and permissions
 * Tenant-specific appearance and branding
+* Tenant-specific catalogue sections with the [Catalogue plugin](https://github.com/mutms/moodle-tool_mucatalog)
 * Non-intrusive design — standard Moodle features and workflows remain fully functional
 * Fully uninstallable — removing the plugin does not affect the rest of your Moodle installation
 
-## Roadmap
+## Guest access
 
-* Universal catalogue — tenant-specific course catalogue
-* Tenant separation improvements
-* Migration scripts — automated migration from other Moodle-based multi-tenancy systems
-* Moodle Mobile App support improvements
+Tenants are fully separated only for logged in users. Anonymous visitors and guests are not
+members of any tenant, they can open the login page of any tenant and see what that tenant
+shows to guests, such as catalogue sections visible to guests and courses with guest access
+when "Allow guest access to tenants" is enabled. Keep guest access off where the existence or
+content of a tenant must stay private.
 
 ## Requirements
 
@@ -35,8 +37,8 @@ included in the [MuTMS distribution](https://github.com/mutms/mutms) for easy de
 
 For manual installation:
 
-* Moodle™ LMS 5.2.0
-* [MuTMS core patch](https://github.com/mutms/patches/tree/patch/mutenancy/MOODLE_502_STABLE)
+* Moodle™ LMS 5.3
+* [MuTMS core patch](https://github.com/mutms/patches/tree/patch/mutenancy/MOODLE_503_DEV)
 * [Additional tools library plugin](https://github.com/mutms/moodle-tool_mulib)
 
 ## Documentation
