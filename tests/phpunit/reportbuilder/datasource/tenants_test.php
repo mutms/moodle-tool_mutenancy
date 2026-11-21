@@ -71,8 +71,6 @@ final class tenants_test extends \core_reportbuilder\tests\core_reportbuilder_te
     }
 
     public function test_stress_datasource(): void {
-        global $DB;
-
         /** @var \tool_mutenancy_generator $generator */
         $generator = $this->getDataGenerator()->get_plugin_generator('tool_mutenancy');
 
@@ -81,9 +79,7 @@ final class tenants_test extends \core_reportbuilder\tests\core_reportbuilder_te
         $tenant3 = $generator->create_tenant(['archived' => 1]);
 
         $this->datasource_stress_test_columns(templatesource::class);
-        if ($DB->get_dbfamily() !== 'mssql') {
-            $this->datasource_stress_test_columns_aggregation(templatesource::class);
-        }
+        $this->datasource_stress_test_columns_aggregation(templatesource::class);
         $this->datasource_stress_test_conditions(templatesource::class, 'tenant:name');
         $this->datasource_stress_test_conditions(templatesource::class, 'tenant:idnumber');
         $this->datasource_stress_test_conditions(templatesource::class, 'tenant:archived');
