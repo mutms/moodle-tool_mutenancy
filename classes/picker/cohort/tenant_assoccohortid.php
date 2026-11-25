@@ -16,7 +16,7 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\muform\cohortpicker;
+namespace tool_mutenancy\picker\cohort;
 
 use core\context;
 use tool_mulib\local\sql;
@@ -28,7 +28,7 @@ use tool_mulib\local\sql;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_assoccohortid extends \tool_mulib\muform\cohortpicker\base {
+final class tenant_assoccohortid extends \tool_mulib\picker\cohort\base {
     /** @var context tenant or system context */
     private context $context;
 

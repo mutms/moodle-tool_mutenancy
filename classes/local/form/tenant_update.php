@@ -29,7 +29,7 @@ use tool_mulib\muform\element\text;
 use tool_mulib\muform\form;
 use tool_mutenancy\local\tenancy;
 use tool_mutenancy\local\tenant;
-use tool_mutenancy\muform\cohortpicker\tenant_assoccohortid;
+use tool_mutenancy\picker\cohort\tenant_assoccohortid;
 
 /**
  * Update tenant form.

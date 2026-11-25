@@ -16,7 +16,7 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\muform\userpicker;
+namespace tool_mutenancy\picker\user;
 
 use tool_mulib\local\sql;
 
@@ -27,7 +27,7 @@ use tool_mulib\local\sql;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class tenant_managers extends \tool_mulib\muform\userpicker\base {
+final class tenant_managers extends \tool_mulib\picker\user\base {
     /** @var \context tenant context */
     private \context $context;
 

@@ -16,9 +16,9 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\userpicker;
+namespace tool_mutenancy\phpunit\picker\user;
 
-use tool_mutenancy\muform\userpicker\tenant_managers;
+use tool_mutenancy\picker\user\tenant_managers;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -29,18 +29,18 @@ use PHPUnit\Framework\Attributes\Group;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\userpicker\tenant_managers::class)]
+#[CoversClass(\tool_mutenancy\picker\user\tenant_managers::class)]
 #[Group('MuTMS')]
 final class tenant_managers_test extends \advanced_testcase {
     /**
      * Users on the first page of the panel.
      *
-     * @param \tool_mulib\muform\userpicker\base $source
+     * @param \tool_mulib\picker\user\base $source
      * @param string $query
      * @param string[] $exclude
      * @return array user id => label html
      */
-    private function search(\tool_mulib\muform\userpicker\base $source, string $query, array $exclude = []): array {
+    private function search(\tool_mulib\picker\user\base $source, string $query, array $exclude = []): array {
         $result = $source->search($query, $exclude, 0, []);
         return array_combine(array_column($result['rows'], 'id'), array_column($result['rows'], 'label'));
     }

@@ -25,7 +25,7 @@ use tool_mulib\muform\element\inforawhtml;
 use tool_mulib\muform\element\submit;
 use tool_mulib\muform\element\userpickermany;
 use tool_mulib\muform\form;
-use tool_mutenancy\muform\userpicker\tenant_managers as managers_source;
+use tool_mutenancy\picker\user\tenant_managers as managers_source;
 
 /**
  * Tenant managers form.

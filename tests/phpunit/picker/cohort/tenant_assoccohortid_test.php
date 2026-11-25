@@ -16,9 +16,9 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\phpunit\muform\cohortpicker;
+namespace tool_mutenancy\phpunit\picker\cohort;
 
-use tool_mutenancy\muform\cohortpicker\tenant_assoccohortid;
+use tool_mutenancy\picker\cohort\tenant_assoccohortid;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 
@@ -29,29 +29,29 @@ use PHPUnit\Framework\Attributes\Group;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-#[CoversClass(\tool_mutenancy\muform\cohortpicker\tenant_assoccohortid::class)]
+#[CoversClass(\tool_mutenancy\picker\cohort\tenant_assoccohortid::class)]
 #[Group('MuTMS')]
 final class tenant_assoccohortid_test extends \advanced_testcase {
     /**
      * Cohorts offered by the source.
      *
-     * @param \tool_mulib\muform\cohortpicker\base $source
+     * @param \tool_mulib\picker\cohort\base $source
      * @param string $query
      * @param string[] $exclude
      * @return string[] cohort names indexed with cohort ids, in the order of names
      */
-    private function search(\tool_mulib\muform\cohortpicker\base $source, string $query, array $exclude = []): array {
+    private function search(\tool_mulib\picker\cohort\base $source, string $query, array $exclude = []): array {
         return array_column($source->search($query, $exclude)['cohorts'], 'name', 'id');
     }
 
     /**
      * Values the source does not accept.
      *
-     * @param \tool_mulib\muform\cohortpicker\base $source
+     * @param \tool_mulib\picker\cohort\base $source
      * @param string[] $values
      * @return string[]
      */
-    private function refused(\tool_mulib\muform\cohortpicker\base $source, array $values): array {
+    private function refused(\tool_mulib\picker\cohort\base $source, array $values): array {
         return array_values(array_diff($values, array_map('strval', array_keys($source->labels($values)))));
     }
 

@@ -16,7 +16,7 @@
 
 // phpcs:disable moodle.Files.BoilerplateComment.CommentEndedTooSoon
 
-namespace tool_mutenancy\muform\userpicker;
+namespace tool_mutenancy\picker\user;
 
 use core\exception\invalid_parameter_exception;
 use tool_mulib\local\sql;
@@ -28,7 +28,7 @@ use tool_mulib\local\sql;
  * @copyright   2026 Petr Skoda
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-final class associate_add extends \tool_mulib\muform\userpicker\base {
+final class associate_add extends \tool_mulib\picker\user\base {
     /** @var \context tenant context */
     private \context $context;
     /** @var int associated cohort id */
