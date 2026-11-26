@@ -113,13 +113,15 @@ final class reports_test extends \advanced_testcase {
         $user2 = $this->getDataGenerator()->create_user(['firstname' => 'Bob', 'lastname' => 'Beta', 'tenantid' => $tenant->id,
             'suspended' => 1]);
         $user3 = $this->getDataGenerator()->create_user(['firstname' => 'Cyril', 'lastname' => 'Gamma']);
-        $this->getDataGenerator()->create_user(['firstname' => 'Dan', 'lastname' => 'Delta', 'tenantid' => $other->id]);
+        $user4 = $this->getDataGenerator()->create_user(['firstname' => 'Dan', 'lastname' => 'Delta', 'tenantid' => $other->id]);
         cohort_add_member($cohort->id, $user3->id);
 
         $this->setAdminUser();
         $report = users::make_instance((int)$tenant->id);
         $rows = $this->get_rows($report);
-        $this->assertSame(['Anna Alpha', 'Bob Beta', 'Cyril Gamma'], $this->get_texts($rows, 'auser:fullname'));
+        $this->assertSame([(string)$user1->id, (string)$user2->id, (string)$user3->id], array_column($rows, 'key'));
+        $this->assertStringContainsString('Anna Alpha', $rows[0]['cells']['auser:fullname']);
+        $this->assertStringContainsString(get_string('suspended', 'auth'), $rows[1]['cells']['auser:fullname']);
         $this->assertSame(['Yes', 'Yes', 'No'], $this->get_texts($rows, 'auser:tenantmember'));
         $this->assertSame([false, true, false], array_column($rows, 'muted'));
         $actions = fn(array $row): array => array_column($row['actions']['auser:actions'], 'name');
@@ -127,10 +129,10 @@ final class reports_test extends \advanced_testcase {
         $this->assertSame(['update', 'unsuspend', 'allocate', 'delete'], $actions($rows[1]));
         $this->assertSame(['associateremove', 'allocate'], $actions($rows[2]));
         $rows = $this->get_rows($report, new request(['auser:tenantmember' => ['value' => 0]]));
-        $this->assertSame(['Cyril Gamma'], $this->get_texts($rows, 'auser:fullname'));
+        $this->assertSame([(string)$user3->id], array_column($rows, 'key'));
 
         $rows = $this->get_rows(users::make_instance((int)$other->id));
-        $this->assertSame(['Dan Delta'], $this->get_texts($rows, 'auser:fullname'));
+        $this->assertSame([(string)$user4->id], array_column($rows, 'key'));
 
         $viewer = $this->getDataGenerator()->create_user();
         $roleid = $this->getDataGenerator()->create_role();
