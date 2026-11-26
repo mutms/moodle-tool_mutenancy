@@ -49,6 +49,10 @@ require_capability('tool/mutenancy:view', $context);
 $PAGE->set_context($context);
 $PAGE->set_url('/admin/tool/mutenancy/tenant_users.php', ['id' => $tenant->id]);
 
+$report = \tool_mutenancy\mureport\system_report\users::make_instance((int)$tenant->id);
+$report->require_access();
+$report->init_page(new \core\url('/admin/tool/mutenancy/tenant_users.php', ['id' => $tenant->id]));
+
 /** @var \tool_mutenancy\output\tenant_users\renderer $output */
 $output = $PAGE->get_renderer('tool_mutenancy', 'tenant_users');
 
@@ -90,6 +94,6 @@ if ($buttons) {
 
 echo $OUTPUT->header();
 
-echo $output->render_section($tenant);
+echo $OUTPUT->render(new \tool_mureport\output\report_full($report));
 
 echo $OUTPUT->footer();

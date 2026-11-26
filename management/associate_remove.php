@@ -84,7 +84,7 @@ if ($form->is_cancelled()) {
 
 if ($data = $form->get_data()) {
     cohort_remove_member($cohort->id, $user->id);
-    $handler->submitted($returnurl);
+    $handler->submitted($returnurl, ['changed' => 'rows']);
 }
 
 $handler->render($form);

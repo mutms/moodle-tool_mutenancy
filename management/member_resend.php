@@ -81,13 +81,13 @@ if ($data = $form->get_data()) {
     tenancy::force_current_tenantid($user->tenantid);
     $success = \tool_mutenancy\local\member::resend($user->id);
     if ($success) {
-        $handler->submitted($returnurl);
+        $handler->submitted($returnurl, ['changed' => 'rows']);
     } else {
         \core\notification::add(
             get_string('emailconfirmsentfailure'),
             \core\output\notification::NOTIFY_ERROR
         );
-        $handler->submitted($returnurl);
+        $handler->submitted($returnurl, ['changed' => 'rows']);
     }
 }
 

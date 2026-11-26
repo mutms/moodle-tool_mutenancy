@@ -81,7 +81,7 @@ if ($data = $form->get_data()) {
     } else {
         $returnurl = new \core\url('/admin/tool/user.php');
     }
-    $handler->submitted($returnurl);
+    $handler->submitted($returnurl, ['changed' => 'rows']);
 }
 
 $handler->render($form);

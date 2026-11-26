@@ -92,6 +92,7 @@ jobs:
         run: |
           moodle-plugin-ci add-plugin --branch $PLUGIN_BRANCH mutms/moodle-tool_mulib
           moodle-plugin-ci add-plugin --branch $PLUGIN_BRANCH mutms/moodle-tool_mucohort
+          moodle-plugin-ci add-plugin --branch $PLUGIN_BRANCH mutms/moodle-tool_mureport
           moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.db }}
@@ -140,11 +141,12 @@ jobs:
           moodle-plugin-ci phpunit --fail-on-warning
           cd moodle
           vendor/bin/phpunit --group=plugin_checks --filter=tool_mutenancy
+          vendor/bin/phpunit --fail-on-warning --group=MuTMS
 
       - name: Behat features
         id: behat
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci behat --profile chrome --scss-deprecations
+        run: moodle-plugin-ci behat --profile chrome --scss-deprecations --tags=@MuTMS
 
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}

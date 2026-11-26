@@ -80,13 +80,13 @@ if ($form->is_cancelled()) {
 if ($data = $form->get_data()) {
     $success = \tool_mutenancy\local\member::confirm($user->id);
     if ($success) {
-        $handler->submitted($returnurl);
+        $handler->submitted($returnurl, ['changed' => 'rows']);
     } else {
         \core\notification::add(
             get_string('usernotconfirmed', '', fullname($user, true)),
             \core\output\notification::NOTIFY_ERROR
         );
-        $handler->submitted($returnurl);
+        $handler->submitted($returnurl, ['changed' => 'rows']);
     }
 }
 

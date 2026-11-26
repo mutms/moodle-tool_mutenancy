@@ -25,8 +25,8 @@ Feature: Tenant members and associated users section
       | Last name     | Member               |
       | Email address | member1@example.com  |
     And I press "Create account"
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name    | Email address        | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name     | Email address        | Tenant member |
       | First Member  | member1@example.com  | Yes           |
 
     And I log out
@@ -38,30 +38,26 @@ Feature: Tenant members and associated users section
 
     And I log in as "manager1"
     And I am on the "TEN1" "tool_mutenancy > Tenant users" page
-    When I click on "Actions" "link" in the "First Member" "table_row"
-    And I click on "Edit" "link" in the "First Member" "table_row"
+    When I click on "Edit" action in the "First Member" mureport row
     And I set the following fields to these values:
       | Username      | student1             |
       | First name    | Prvni                |
       | Last name     | Student              |
       | Email address | student1@example.com |
     And I press "Update account"
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name    | Email address        | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name     | Email address        | Tenant member |
       | Prvni Student | student1@example.com | Yes           |
 
-    When I click on "Actions" "link" in the "Prvni Student" "table_row"
-    And I click on "Suspend user account" "link" in the "Prvni Student" "table_row"
+    When I click on "Suspend user account" action in the "Prvni Student" mureport row
     And I click on "Suspend user account" "button" in the "dialog[open]" "css_element"
     Then I should see "Suspended" in the "student1@example.com" "table_row"
 
-    When I click on "Actions" "link" in the "Prvni Student" "table_row"
-    And I click on "Activate user account" "link" in the "Prvni Student" "table_row"
+    When I click on "Activate user account" action in the "Prvni Student" mureport row
     And I click on "Activate user account" "button" in the "dialog[open]" "css_element"
     Then I should not see "Suspended" in the "student1@example.com" "table_row"
 
-    When I click on "Actions" "link" in the "Prvni Student" "table_row"
-    And I click on "Delete" "link" in the "Prvni Student" "table_row"
+    When I click on "Delete" action in the "Prvni Student" mureport row
     And I click on "Delete" "button" in the "dialog[open]" "css_element"
     Then I should not see "Prvni student"
 
@@ -78,25 +74,19 @@ Feature: Tenant members and associated users section
     And I log in as "manager1"
     And I am on the "TEN1" "tool_mutenancy > Tenant users" page
 
-    When I click on "Actions" "link" in the "Neovereny Clen" "table_row"
-    And I click on "Resend confirmation email" "link" in the "Neovereny Clen" "table_row"
+    When I click on "Resend confirmation email" action in the "Neovereny Clen" mureport row
     And I click on "Resend confirmation email" "button" in the "dialog[open]" "css_element"
     Then I should see "Neovereny Clen"
     And "dialog[open]" "css_element" should not exist
 
-    When I click on "Actions" "link" in the "Neovereny Clen" "table_row"
-    And I click on "Confirm account" "link" in the "Neovereny Clen" "table_row"
+    When I click on "Confirm account" action in the "Neovereny Clen" mureport row
     And I click on "Confirm account" "button" in the "dialog[open]" "css_element"
-    And I click on "Actions" "link" in the "Neovereny Clen" "table_row"
-    Then I should not see "Confirm account" in the "Neovereny Clen" "table_row"
-    And I should not see "Resend confirmation email" in the "Neovereny Clen" "table_row"
-    And I press the escape key
+    Then the "Confirm account" action should not exist in the "Neovereny Clen" mureport row
+    And the "Resend confirmation email" action should not exist in the "Neovereny Clen" mureport row
 
-    When I click on "Actions" "link" in the "Zamceny Clen" "table_row"
-    And I click on "Unlock account" "link" in the "Zamceny Clen" "table_row"
+    When I click on "Unlock account" action in the "Zamceny Clen" mureport row
     And I click on "Unlock account" "button" in the "dialog[open]" "css_element"
-    And I click on "Actions" "link" in the "Zamceny Clen" "table_row"
-    Then I should not see "Unlock account" in the "Zamceny Clen" "table_row"
+    Then the "Unlock account" action should not exist in the "Zamceny Clen" mureport row
 
   Scenario: Global users may be associated with tenant and disassociated
     Given the following "cohorts" exist:
@@ -122,8 +112,8 @@ Feature: Tenant members and associated users section
     Then "Associate users" "button" should not exist
 
     When I am on the "TEN3" "tool_mutenancy > Tenant users" page
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name     | Email address       | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name      | Email address       | Tenant member |
       | Vlastni Clen   | member3@example.com | Yes           |
       | Globalni Treti | global3@example.com | No            |
     And I should not see "Globalni Prvni"
@@ -138,16 +128,15 @@ Feature: Tenant members and associated users section
     And I set the following muform fields in the "dialog[open]" "css_element":
       | Users | Globalni Prvni, global2@example.com |
     And I click on "Associate users" "button" in the "dialog[open]" "css_element"
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name     | Email address       | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name      | Email address       | Tenant member |
       | Vlastni Clen   | member3@example.com | Yes           |
       | Globalni Prvni | global1@example.com | No            |
       | Globalni Druhy | global2@example.com | No            |
       | Globalni Treti | global3@example.com | No            |
     And I should not see "Cizi Clen"
 
-    When I click on "Actions" "link" in the "Globalni Druhy" "table_row"
-    And I click on "Disassociate user" "link" in the "Globalni Druhy" "table_row"
+    When I click on "Disassociate user" action in the "Globalni Druhy" mureport row
     Then I should see "Globalni Druhy" in the "dialog[open]" "css_element"
     And I click on "Disassociate user" "button" in the "dialog[open]" "css_element"
     Then I should not see "Globalni Druhy"

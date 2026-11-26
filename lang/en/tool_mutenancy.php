@@ -216,6 +216,7 @@ $string['tenant_update_a'] = 'Update {$a}';
 $string['tenant_users'] = 'Tenant users';
 $string['tenant_users_a'] = '{$a} users';
 $string['tenants'] = 'Tenants';
+$string['tenantsearch'] = 'Search tenants';
 $string['user_allocate'] = 'Allocate user';
 $string['user_allocate_info'] = 'When allocating user to a tenant their tenant manager assignments are removed
 and they will lose access to all other tenants.';

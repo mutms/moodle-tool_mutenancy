@@ -220,6 +220,7 @@ $string['tenant_update_a'] = 'Editar: {$a}';
 $string['tenant_users'] = 'Usuarios del inquilino';
 $string['tenant_users_a'] = 'Usuarios: {$a}';
 $string['tenants'] = 'Inquilinos';
+$string['tenantsearch'] = 'Buscar inquilinos';
 $string['user_allocate'] = 'Asignar usuario';
 $string['user_allocate_info'] = 'Al asignar un usuario a un inquilino se quitan sus asignaciones como gestor de inquilinos
 y perderá el acceso a todos los demás inquilinos.';

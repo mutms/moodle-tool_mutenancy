@@ -216,6 +216,7 @@ $string['tenant_update_a'] = 'Upravit: {$a}';
 $string['tenant_users'] = 'Uživatelé klienta';
 $string['tenant_users_a'] = 'Uživatelé: {$a}';
 $string['tenants'] = 'Klienti';
+$string['tenantsearch'] = 'Hledat klienty';
 $string['user_allocate'] = 'Přiřadit uživatele';
 $string['user_allocate_info'] = 'Při přiřazení uživatele ke klientovi přestane být správcem klienta
 a ztratí přístup ke všem ostatním klientům.';

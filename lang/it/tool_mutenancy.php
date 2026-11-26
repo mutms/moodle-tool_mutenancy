@@ -216,6 +216,7 @@ $string['tenant_update_a'] = 'Modifica {$a}';
 $string['tenant_users'] = 'Utenti del tenant';
 $string['tenant_users_a'] = 'Utenti: {$a}';
 $string['tenants'] = 'Tenant';
+$string['tenantsearch'] = 'Cerca tenant';
 $string['user_allocate'] = 'Assegna utente';
 $string['user_allocate_info'] = 'Quando un utente viene assegnato a un tenant, le sue assegnazioni come manager del tenant vengono rimosse
 e l\'utente perde l\'accesso a tutti gli altri tenant.';

@@ -79,7 +79,7 @@ if ($form->is_cancelled()) {
 
 if ($data = $form->get_data()) {
     \tool_mutenancy\local\member::unsuspend($user->id);
-    $handler->submitted($returnurl);
+    $handler->submitted($returnurl, ['changed' => 'rows']);
 }
 
 $handler->render($form);

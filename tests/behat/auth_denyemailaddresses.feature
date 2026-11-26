@@ -200,11 +200,10 @@ Feature: Tenant authentication setting denyemailaddresses
       | TEN1   | manager1 |
     And I log in as "manager1"
     And I am on the "TEN1" "tool_mutenancy > Tenant users" page
-    And I click on "Actions" "link" in the "Prvni Student" "table_row"
-    And I click on "Edit" "link" in the "Prvni Student" "table_row"
+    And I click on "Edit" action in the "Prvni Student" mureport row
     When I set the following fields to these values:
       | Email address | student1@zzz.example.com |
     And I press "Update account"
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name    | Email address            | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name     | Email address            | Tenant member |
       | Prvni Student | student1@zzz.example.com | Yes           |

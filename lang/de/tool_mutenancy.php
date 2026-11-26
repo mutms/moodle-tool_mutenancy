@@ -220,6 +220,7 @@ $string['tenant_update_a'] = '{$a} bearbeiten';
 $string['tenant_users'] = 'Nutzer/innen des Mandanten';
 $string['tenant_users_a'] = 'Nutzer/innen ({$a})';
 $string['tenants'] = 'Mandanten';
+$string['tenantsearch'] = 'Mandanten suchen';
 $string['user_allocate'] = 'Nutzer/in zuweisen';
 $string['user_allocate_info'] = 'Bei der Zuweisung einer Nutzer/in zu einem Mandanten werden ihre Zuweisungen als Mandantenmanager/in entfernt
 und sie verliert den Zugriff auf alle anderen Mandanten.';

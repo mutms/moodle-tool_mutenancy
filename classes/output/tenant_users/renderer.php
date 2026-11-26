@@ -29,18 +29,8 @@ namespace tool_mutenancy\output\tenant_users;
 final class renderer extends \tool_mutenancy\output\tenant_renderer_base {
     #[\Override]
     public function render_section(\stdClass $tenant): string {
-        $context = \context_tenant::instance($tenant->id);
-        $report = \core_reportbuilder\system_report_factory::create(
-            \tool_mutenancy\reportbuilder\local\systemreports\users::class,
-            $context
-        );
-        $result = $this->output->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
-            'user:fullname' => null,
-            'user:tenantmember' => null,
-            'user:suspended' => null,
-        ]));
-        $result .= $report->output();
-        $result .= $this->output->render(new \tool_mulib\output\report_pager($report));
-        return $result;
+        $report = \tool_mutenancy\mureport\system_report\users::make_instance((int)$tenant->id);
+        $report->require_access();
+        return $this->output->render(new \tool_mureport\output\report_full($report));
     }
 }

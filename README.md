@@ -40,6 +40,8 @@ For manual installation:
 * Moodle™ LMS 5.3
 * [MuTMS core patch](https://github.com/mutms/patches/tree/patch/mutenancy/MOODLE_503_DEV)
 * [Additional tools library plugin](https://github.com/mutms/moodle-tool_mulib)
+* [Cohort management plugin](https://github.com/mutms/moodle-tool_mucohort)
+* [Advanced report builder plugin](https://github.com/mutms/moodle-tool_mureport)
 
 ## Documentation
 

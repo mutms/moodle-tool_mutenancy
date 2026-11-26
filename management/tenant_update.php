@@ -77,7 +77,7 @@ if ($form->is_cancelled()) {
 if ($data = $form->get_data()) {
     $data->id = $tenant->id;
     $tenant = tenant::update($data);
-    $handler->submitted($returnurl);
+    $handler->submitted($returnurl, ['changed' => 'rows']);
 }
 
 $handler->render($form);

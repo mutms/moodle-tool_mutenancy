@@ -8,7 +8,8 @@
     "moodle/composer-installer": "*",
     "moodle/moodle": "5.3.*",
     "mutms/moodle-tool_mulib": "*",
-    "mutms/moodle-tool_mucohort": "*"
+    "mutms/moodle-tool_mucohort": "*",
+    "mutms/moodle-tool_mureport": "*"
   },
   "support": {
     "issues": "https://github.com/mutms/moodle-tool_mutenancy/issues",

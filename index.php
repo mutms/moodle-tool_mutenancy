@@ -54,6 +54,10 @@ if (!tenancy::is_active()) {
 
 $PAGE->set_secondary_navigation(false);
 
+$report = \tool_mutenancy\mureport\system_report\tenants::make_instance();
+$report->require_access();
+$report->init_page(new \core\url('/admin/tool/mutenancy/index.php'));
+
 if (has_capability('tool/mutenancy:admin', $syscontext)) {
     $tenantlimit = get_config('tool_mutenancy', 'tenantlimit');
     $notenantsyet = !$DB->record_exists('tool_mutenancy_tenant', []);
@@ -71,18 +75,7 @@ if (has_capability('tool/mutenancy:admin', $syscontext)) {
 
 echo $OUTPUT->header();
 
-$report = \core_reportbuilder\system_report_factory::create(
-    \tool_mutenancy\reportbuilder\local\systemreports\tenants::class,
-    context_system::instance()
-);
-echo $OUTPUT->render(new \tool_mulib\output\report_filter_bar($report, pinned: [
-    'tenant:name' => null,
-    'tenant:archived' => null,
-], defaults: [
-    'tenant:archived' => ['operator' => \core_reportbuilder\local\filters\boolean_select::NOT_CHECKED],
-]));
-echo $report->output();
-echo $OUTPUT->render(new \tool_mulib\output\report_pager($report));
+echo $OUTPUT->render(new \tool_mureport\output\report_full($report));
 
 $buttons = [];
 

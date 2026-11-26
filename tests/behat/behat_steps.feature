@@ -31,7 +31,7 @@ Feature: Multi-tenancy behat step tests
       | Tenant 2 | TEN2     |
     And I log in as "tviewer"
     When I am on the "tool_mutenancy > Tenants" page
-    Then the following should exist in the "reportbuilder-table" table:
+    Then the following should exist in the mureport:
       | Tenant name | Tenant ID | Tenant category | Tenant users | Archived | Tenant login URL    |
       | Tenant 1    | TEN1      | Tenant 1        | 0            | No       | /login/?tenant=TEN1 |
       | Tenant 2    | TEN2      | Tenant 2        | 0            | No       | /login/?tenant=TEN2 |
@@ -120,8 +120,8 @@ Feature: Multi-tenancy behat step tests
       | student2 | COH1    |
     And I log in as "tviewer"
     When I am on the "TEN1" "tool_mutenancy > Tenant users" page
-    Then the following should exist in the "reportbuilder-table" table:
-      | First name | Email address        | Tenant member |
+    Then the following should exist in the mureport:
+      | Full name  | Email address        | Tenant member |
       | Student 0  | student0@example.com | No            |
       | Student 1  | student1@example.com | Yes           |
     And I should not see "student2@example.com"

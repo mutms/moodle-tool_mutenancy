@@ -45,5 +45,19 @@ function xmldb_tool_mutenancy_upgrade($oldversion): bool {
         upgrade_plugin_savepoint(true, 2026111653, 'tool', 'mutenancy');
     }
 
+    if ($oldversion < 2026112653) {
+        $classes = [
+            'tool_mutenancy\\reportbuilder\\local\\systemreports\\tenants',
+            'tool_mutenancy\\reportbuilder\\local\\systemreports\\users',
+        ];
+        foreach ($classes as $classname) {
+            foreach (\core_reportbuilder\local\models\report::get_records(['source' => $classname]) as $report) {
+                $report->delete();
+            }
+        }
+
+        upgrade_plugin_savepoint(true, 2026112653, 'tool', 'mutenancy');
+    }
+
     return true;
 }

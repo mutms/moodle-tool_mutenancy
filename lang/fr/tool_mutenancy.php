@@ -220,6 +220,7 @@ $string['tenant_update_a'] = 'Modifier : {$a}';
 $string['tenant_users'] = 'Utilisateurs du locataire';
 $string['tenant_users_a'] = 'Utilisateurs : {$a}';
 $string['tenants'] = 'Locataires';
+$string['tenantsearch'] = 'Rechercher des locataires';
 $string['user_allocate'] = 'Affecter l’utilisateur';
 $string['user_allocate_info'] = 'Lorsqu’un utilisateur est affecté à un locataire, ses attributions de gestionnaire du locataire sont retirées
 et il perd l’accès à tous les autres locataires.';
