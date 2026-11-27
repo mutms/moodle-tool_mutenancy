@@ -96,6 +96,12 @@ final class reports_test extends \advanced_testcase {
         $rows = $this->get_rows($report, new request([], null, 0, null, 'tb'));
         $this->assertSame(['Beta'], $this->get_texts($rows, 'tenant:name'));
         $this->assertSame($tenant2->id, $DB->get_field('tool_mutenancy_tenant', 'id', ['idnumber' => 'tb']));
+        $rows = $this->get_rows($report, new request([], null, 0, null, (string)$tenant3->id));
+        $this->assertSame(['Gamma'], $this->get_texts($rows, 'tenant:name'));
+        $rows = $this->get_rows($report, new request(['tenant:id' => ['from' => (int)$tenant2->id, 'to' => (int)$tenant2->id]]));
+        $this->assertSame(['Beta'], $this->get_texts($rows, 'tenant:name'));
+        $column = tenants::make_inspector()->get_selector_columns('tenant:id')['tenant:id'];
+        $this->assertSame('Tenant ID', $column->get_title());
 
         $this->setUser($this->getDataGenerator()->create_user());
         $this->expectException(\core\exception\required_capability_exception::class);

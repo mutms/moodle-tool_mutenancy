@@ -66,8 +66,8 @@ class tenant extends entity {
     #[\Override]
     public function get_column_names(): array {
         return [
-            'name', 'idnumber', 'category', 'sitefullname', 'siteshortname', 'usercount', 'memberlimit', 'archived', 'loginurl',
-            'timecreated', 'actions',
+            'name', 'idnumber', 'id', 'category', 'sitefullname', 'siteshortname', 'usercount', 'memberlimit', 'archived',
+            'loginurl', 'timecreated', 'actions',
         ];
     }
 
@@ -75,6 +75,7 @@ class tenant extends entity {
     protected function define_columns(string $selector): array {
         $alias = $this->alias;
         $column = match ($selector) {
+            'id' => $this->create_id_column(),
             'name' => $this->define_name_column(),
             'idnumber' => $this->create_column('idnumber', new lang_string('tenant_idnumber', 'tool_mutenancy'), column::TYPE_TEXT)
                 ->add_field('idnumber', "$alias.idnumber")
@@ -112,13 +113,14 @@ class tenant extends entity {
 
     #[\Override]
     public function get_filter_names(): array {
-        return ['name', 'idnumber', 'archived'];
+        return ['name', 'idnumber', 'id', 'archived'];
     }
 
     #[\Override]
     protected function define_filters(string $selector): array {
         $alias = $this->alias;
         $filter = match ($selector) {
+            'id' => $this->create_id_filter(),
             'name' => new filter\text($alias, 'name', new lang_string('tenant_name', 'tool_mutenancy'), "$alias.name"),
             'idnumber' => new filter\text(
                 $alias,

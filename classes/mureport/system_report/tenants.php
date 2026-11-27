@@ -79,6 +79,7 @@ final class tenants extends system_report {
         $this->set_default_filters([
             'tenant:name' => ['multisearch' => true],
             'tenant:idnumber' => ['multisearch' => true],
+            'tenant:id' => ['multisearch' => true],
             'tenant:archived',
         ]);
         $this->set_preset_filters(['tenant:archived' => ['value' => 0]]);
